@@ -2,14 +2,26 @@
     <p>
         bienvenido a la pagina de inicio
     </p>
-    <form action="./calculos" method="POST">
-        <input type="text" name="nombre">
-        <input type="number" name="nota1">
-        <input type="number" name="nota2">
-        <input type="number" name="nota3">
-        <button class="btn btn-primary">Calcular</button>
+    <form class="form" action="./calculos" method="POST">
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre del usuario" required>
+        <div class="row">
+            <div class="col-3">
+                <label for="nota1">Nota 1:</label>
+                <input type="number" class="form-control" placeholder="digite la nota" name="nota1" required>
+            </div>
+            <div class="col-3">
+                <label for="nota2">Nota 2:</label>
+                <input type="number" class="form-control" placeholder="digite la nota" name="nota2" required>
+            </div>
+            <div class="col-3">
+                <label for="nota3">Nota 3:</label>
+                <input type="number" class="form-control" placeholder="digite la nota" name="nota3" required>
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary btn-dark">Calcular</button>
+    </div>
     </form>
-    <p>
-        {{{listar}}}
-    </p>
 {{>footer}}

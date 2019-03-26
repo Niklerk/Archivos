@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
-require('./helpers');
+require('./helpers/helpers');
 
 const directorioPublico = path.join(__dirname,'../public');
 const directorioPartials = path.join(__dirname,'../partials');
@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.set('view engine','hbs');
 app.get('/',(req,res)=>{
     res.render('index', {
-        estudiante: 'elkin'
+        titulo: 'Estudiantes'
     });
 });
 app.post('/calculos', (req,res)=>{
@@ -32,6 +32,11 @@ app.post('/calculos', (req,res)=>{
         nota3: parseFloat(req.body.nota3)
     })
 });
+
+app.get('/listado', (req,res)=>{
+    res.render('listado');
+});
+
 app.get('*',(req,res)=>{
     res.render('error',{
         estudiante: 'error'

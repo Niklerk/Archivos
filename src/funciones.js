@@ -33,7 +33,7 @@ const mostrar = () => {
     listar();
     let texto = 'listado de estudiantes ';
     texto += '<br/>';
-    texto += "<table class='table'> \
+    texto += "<table class='table table-striped table-hover'> \
              <thead class='thead-dark'> \
              <th> Nombre </th>\
             <th> Matematicas </th>\
@@ -114,14 +114,12 @@ let ImprimirLog = (estudiante, mat = true, ing = true, prog = true, prom = false
 }
 
 let Imprimir = (estudiante, mat = true, ing = true, prog = true, prom = false) => {
-    let texto = '<br/>';
-    
-    texto += "<tr>";
+    let texto = "<tr>";
     texto += "<td>" + estudiante.nombre + "</td>";
-    if (mat) texto += "<td>" + 'Matematicas ' + estudiante.matematicas + "</td>";
-    if (ing) texto += "<td>" + ' Ingles ' + estudiante.ingles + "</td>";
-    if (prog) texto += "<td>" + ' Programacion ' + estudiante.programacion + "</td>";
-    if (prom) texto += "<td>" + ' Promedio ' + promedio(estudiante) + "</td>";
+    if (mat) texto += "<td>" +  estudiante.matematicas + "</td>";
+    if (ing) texto += "<td>" +  estudiante.ingles + "</td>";
+    if (prog) texto += "<td>" + estudiante.programacion + "</td>";
+    if (prom) texto += "<td>" + promedio(estudiante) + "</td>";
     texto += '<tr/>';
     return texto;
 }
