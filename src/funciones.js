@@ -1,7 +1,6 @@
 const fs = require('fs');
 listaEstudiantes = [];
 
-listaCursosAspirante = [];
 listaCursos = [];
 
 
@@ -143,13 +142,9 @@ const listarCursos = () =>
 {
     try 
     {
-        listaCursos = require('./listadoCursos.json');
-        if(cursosDisponibles.length == 0 )
-            console.log('vacia');
-        else
-            console.log('llena');
+        listaCursos = require('../listadoCursos.json');
     } catch (error) {
-        console.log('cathc');
+        console.log('error = '+error);
         listaCursos = [];
     }
 }
@@ -177,7 +172,7 @@ const obtenerCuerpo = (cursosDisponibles) =>
                     "<td>" + curso.nombre + "</td>" + 
                     "<td>" + curso.descripcion + "</td>" + 
                     "<td>" + curso.valor + "</td>" + 
-                    "<td>" + sdsfdsf + "</td>" + 
+                    "<td>" + "sdsfdsf" + "</td>" + 
                 "</tr>";                
     });
     return texto;
