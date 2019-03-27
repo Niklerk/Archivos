@@ -1,0 +1,8 @@
+[
+	{"id":"1","nombre":"Node JS","descripción":"Curso virtual de Node JS.","valor":300000,"modalidad":"Virtual","intensidad":4,"estado":"Disponible"},
+	{"id":"2","nombre":"Angular 4","descripción":"Fundamentos de Angular 4.","valor":220000,"modalidad":"Presencial","intensidad":10,"estado":"Disponible","estado":"Disponible"},
+	{"id":"3","nombre":"Inteligencia Artificial","descripción":"Fundamentos de redes neuronales.","valor":10000,"modalidad":"No especifica","intensidad":89,"estado":"Cerrado"},
+	{"id":"4","nombre":"React JS","descripción":"Curso avanzado de componentes con React JS.","valor":45000,"modalidad":"No especifica","intensidad":"No especifica","estado":"Disponible"},
+	{"id":"5","nombre":"DevOps","descripción":"Curso profesional de DevOps.","valor":2300000,"modalidad":"Presencial","intensidad":"No especifica","estado":"Cerrado"},
+	{"id":"6","nombre":"Calidad de Software","descripción":"Curso gratis de Calidad de Software.","valor":87000,"modalidad":"Virtual","intensidad":"No especifica","estado":"Disponible"}
+]

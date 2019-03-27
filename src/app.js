@@ -19,6 +19,7 @@ hbs.registerPartials(directorioPartials);
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.set('view engine','hbs');
+
 app.get('/',(req,res)=>{
     res.render('index', {
         titulo: 'Estudiantes'
@@ -37,12 +38,17 @@ app.get('/listado', (req,res)=>{
     res.render('listado');
 });
 
+app.get('/vistaAspirante', (req,res)=>{
+    res.render('vistaAspirante');
+});
+
+
+
 app.get('*',(req,res)=>{
     res.render('error',{
         estudiante: 'error'
     });
 })
-
 
 app.listen(3000, ()=>{
     console.log('iniciado')

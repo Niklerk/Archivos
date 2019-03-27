@@ -8,3 +8,8 @@ hbs.registerHelper('listar',()=>{
     return funciones.mostrar();
 })
 
+hbs.registerHelper('listado_total_cursos_aspirante', () =>
+{
+	return funciones.mostrarCursosTotalesAspirante();
+})
+

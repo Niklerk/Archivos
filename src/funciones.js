@@ -1,6 +1,10 @@
 const fs = require('fs');
 listaEstudiantes = [];
 
+listaCursosAspirante = [];
+listaCursos = [];
+
+
 const crear = (estudiantes) => {
     listar();
     let est = {
@@ -132,6 +136,76 @@ let promedio = (estudiante) => {
     return (estudiante.matematicas + estudiante.ingles + estudiante.programacion) / 3
 }
 
+
+/******************* SECCION AGREGADA POR MARCELA *************************************/
+
+const listarCursos = () => 
+{
+    try 
+    {
+        listaCursos = require('./listadoCursos.json');
+        if(cursosDisponibles.length == 0 )
+            console.log('vacia');
+        else
+            console.log('llena');
+    } catch (error) {
+        console.log('cathc');
+        listaCursos = [];
+    }
+}
+
+const obtenerCabecera = () =>
+{
+    let texto = "<table class='table table-striped table-hover'>" +
+                "<thead class='thead-dark'>" +
+                    "<th>Nombre</th>" +
+                    "<th>Descripción</th>" +
+                    "<th>Valor</th>" +
+                    "<th>Acciones</th>"+
+                "</thead>" +
+                "<tbody>";
+    return texto;
+}
+
+const obtenerCuerpo = (cursosDisponibles) =>
+{
+    let texto = '';
+    cursosDisponibles.forEach(curso =>
+    {
+        texto = texto +
+                "<tr> " + 
+                    "<td>" + curso.nombre + "</td>" + 
+                    "<td>" + curso.descripcion + "</td>" + 
+                    "<td>" + curso.valor + "</td>" + 
+                    "<td>" + sdsfdsf + "</td>" + 
+                "</tr>";                
+    });
+    return texto;
+}
+
+const obtenerPie = () =>
+{
+    let texto = "</tbody>" + 
+        "</table>";
+    return texto;
+}
+
+const mostrarCursosTotalesAspirante = () =>
+{
+    listarCursos();
+
+    let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Disponible");
+
+    let cabecera = obtenerCabecera();
+    let cuerpo = obtenerCuerpo(cursosDisponibles);
+    let pie = obtenerPie();
+    let tabla = cabecera + cuerpo + pie;
+    return tabla;
+}
+
+/******************* SECCION DE MARCELA FINALIZADA *************************************/
+
+
 module.exports = {
     crear,
     mostrar,
@@ -139,5 +213,6 @@ module.exports = {
     mostrarMat,
     mostrarPro,
     actualizar,
-    eliminar
+    eliminar,
+    mostrarCursosTotalesAspirante
 }
