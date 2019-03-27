@@ -27,6 +27,9 @@ switch (comando.toLowerCase()) {
     case 'mostrarpro':
         funciones.mostrarPro();
         break;
+    case 'mostrarCursosDetalles':
+        funciones.mostrarCursosDetalles(argv.nombre, argv.asignatura);
+        break;
     default:
         console.log('no ingreso un comando valido');
         break;

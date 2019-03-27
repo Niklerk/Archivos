@@ -200,6 +200,30 @@ const mostrarCursosTotalesAspirante = () =>
 
 /******************* SECCION DE MARCELA FINALIZADA *************************************/
 
+/******************* SECCION AGREGADA POR JHON *************************************/
+
+const mostrarCursosDetalles = (nom, curso) =>
+{
+    listarCursos();
+
+    let encontrado = listaEstudiantes.find(buscar => buscar.nombre == nom)
+    if(!encontrado){
+        console.log('No existe este estudiante');
+    } else if(encontrado[curso]) {
+        let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Disponible");
+
+        let cabecera = obtenerCabecera();
+        let cuerpo = obtenerCuerpo(cursosDisponibles);
+        let pie = obtenerPie();
+        let tabla = cabecera + cuerpo + pie;
+        return tabla;
+    } else {
+        console.log('No existe este curso');
+    }
+}
+
+/******************* SECCION DE JHON FINALIZADA *************************************/
+
 
 module.exports = {
     crear,
@@ -209,5 +233,6 @@ module.exports = {
     mostrarPro,
     actualizar,
     eliminar,
-    mostrarCursosTotalesAspirante
+    mostrarCursosTotalesAspirante,
+    mostrarCursosDetalles
 }

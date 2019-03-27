@@ -41,6 +41,11 @@ const actualizar = {
     calificacion
 }
 
+const mostrarCursosDetalles = {
+    nombre, 
+    asignatura
+}
+
 const argv = require('yargs')
             .command('crear', 'crear estudiante',creacion)
             .command('actualizar', 'actualizar estudiante',actualizar)
@@ -48,6 +53,7 @@ const argv = require('yargs')
             .command('mostrarpro', 'Mostrar todos los estudiante que estan con un promedio mayor a 3')
             .command('mostrarest', 'Mostrar un estudiante',mostrar)
             .command('eliminar', 'Eliminar un estudiante',eliminar)
+            .command('mostrardet', 'Ingrese el nombre del estudiante y del curso', mostrarCursosDetalles)
             .argv;
 
 module.exports={
