@@ -144,23 +144,22 @@ const listarCursos = () =>
     {
         listaCursos = require('../listadoCursos.json');
     } catch (error) {
-        console.log('error = '+error);
         listaCursos = [];
     }
 }
 
 const obtenerCabecera = () =>
 {
-    let texto = "<div class='container'>" + 
+    let texto = "<div class='container'>" +
                     "<div class='accordion' id='accordionExample'>";
     return texto;
 }
 
-const obtenerCuerpo = (cursosDisponibles) =>
+const obtenerCuerpo = (cursos) =>
 {
     let texto = '';
     var i = 1;
-    cursosDisponibles.forEach(curso =>
+    cursos.forEach(curso =>
     {
         texto = texto +
                 `<div class="card">
@@ -217,6 +216,44 @@ const mostrarCursosTotalesAspirante = () =>
     return tabla;
 }
 
+const listarCursosAspirantes = () =>
+{
+    try 
+    {
+        listaCursosAspirantes = require('../listadoCursosAspirantes.json');
+    } catch (error) {
+        listaCursosAspirantes = [];
+    }
+}
+
+const obtenerCursosPorAspirante = () =>
+{
+    listarCursos();
+    listarCursosAspirantes();
+    var ident = '1234567';
+    var cursosAspirante = [];
+
+    let duplasCursosAspirante = listaCursosAspirantes.filter(dupla => dupla.usu_id == ident);
+
+    duplasCursosAspirante.forEach(dupla =>
+    {
+        cursosAspirante.push(listaCursos.filter(curso => curso.id == dupla.cur_id).pop());
+    });
+
+    return cursosAspirante;
+}
+
+const mostrarCursosAspirante = () =>
+{
+    let cursosAspirante = obtenerCursosPorAspirante();
+
+    let cabecera = obtenerCabecera();
+    let cuerpo = obtenerCuerpo(cursosAspirante);
+    let pie = obtenerPie();
+    let tabla = cabecera + cuerpo + pie;
+    return tabla;
+}
+
 
 /******************* SECCION DE MARCELA FINALIZADA *************************************/
 
@@ -254,5 +291,6 @@ module.exports = {
     actualizar,
     eliminar,
     mostrarCursosTotalesAspirante,
-    mostrarCursosDetalles
+    mostrarCursosDetalles,
+    mostrarCursosAspirante
 }
