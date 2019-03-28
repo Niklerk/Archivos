@@ -42,6 +42,10 @@ app.get('/vistaAspirante', (req,res)=>{
     res.render('vistaAspirante');
 });
 
+app.get('/cursosAspirante', (req,res)=>{
+    res.render('cursosAspirante');
+});
+
 
 
 app.get('*',(req,res)=>{
