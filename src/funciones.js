@@ -144,44 +144,62 @@ const listarCursos = () =>
     {
         listaCursos = require('../listadoCursos.json');
     } catch (error) {
-        console.log('error = '+error);
         listaCursos = [];
     }
 }
 
 const obtenerCabecera = () =>
 {
-    let texto = "<table class='table table-striped table-hover'>" +
-                "<thead class='thead-dark'>" +
-                    "<th>Nombre</th>" +
-                    "<th>Descripción</th>" +
-                    "<th>Valor</th>" +
-                    "<th>Acciones</th>"+
-                "</thead>" +
-                "<tbody>";
+    let texto = "<div class='container'>" +
+                    "<div class='accordion' id='accordionExample'>";
     return texto;
 }
 
-const obtenerCuerpo = (cursosDisponibles) =>
+const obtenerCuerpo = (cursos) =>
 {
     let texto = '';
-    cursosDisponibles.forEach(curso =>
+    var i = 1;
+    cursos.forEach(curso =>
     {
         texto = texto +
-                "<tr> " + 
-                    "<td>" + curso.nombre + "</td>" + 
-                    "<td>" + curso.descripcion + "</td>" + 
-                    "<td>" + curso.valor + "</td>" + 
-                    "<td>" + "sdsfdsf" + "</td>" + 
-                "</tr>";                
+                `<div class="card">
+                    <div class="card-header" id="heading${i}">
+                        <div class="row">
+                            <div class="col-sm-12 text-justify">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
+                                        Curso ${i}: ${curso.nombre}
+                                    </button>
+                                </h5>
+                            </div>
+                            <div class="col-sm-12 text-justify" style="padding-left: 50px">
+                                Código de curso: ${curso.id}.
+                                <br>
+                                Descripción: ${curso.descripcion}
+                                <br>
+                                Valor: ${curso.valor} pesos.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
+                      <div class="card-body" style="padding-left: 60px">
+                            <h6 style="color: blue"> Información Detallada:</h6>
+                            Modalidad: ${curso.modalidad}
+                            <br>
+                            Intensidad: ${curso.intensidad}
+                      </div>
+                    </div>
+                  </div>`; 
+        i = i+1;           
     });
     return texto;
 }
 
 const obtenerPie = () =>
 {
-    let texto = "</tbody>" + 
-        "</table>";
+    let texto =     "</div>";
+                "</div>";
     return texto;
 }
 
@@ -197,6 +215,45 @@ const mostrarCursosTotalesAspirante = () =>
     let tabla = cabecera + cuerpo + pie;
     return tabla;
 }
+
+const listarCursosAspirantes = () =>
+{
+    try 
+    {
+        listaCursosAspirantes = require('../listadoCursosAspirantes.json');
+    } catch (error) {
+        listaCursosAspirantes = [];
+    }
+}
+
+const obtenerCursosPorAspirante = () =>
+{
+    listarCursos();
+    listarCursosAspirantes();
+    var ident = '1234567';
+    var cursosAspirante = [];
+
+    let duplasCursosAspirante = listaCursosAspirantes.filter(dupla => dupla.usu_id == ident);
+
+    duplasCursosAspirante.forEach(dupla =>
+    {
+        cursosAspirante.push(listaCursos.filter(curso => curso.id == dupla.cur_id).pop());
+    });
+
+    return cursosAspirante;
+}
+
+const mostrarCursosAspirante = () =>
+{
+    let cursosAspirante = obtenerCursosPorAspirante();
+
+    let cabecera = obtenerCabecera();
+    let cuerpo = obtenerCuerpo(cursosAspirante);
+    let pie = obtenerPie();
+    let tabla = cabecera + cuerpo + pie;
+    return tabla;
+}
+
 
 /******************* SECCION DE MARCELA FINALIZADA *************************************/
 
@@ -234,5 +291,6 @@ module.exports = {
     actualizar,
     eliminar,
     mostrarCursosTotalesAspirante,
-    mostrarCursosDetalles
+    mostrarCursosDetalles,
+    mostrarCursosAspirante
 }

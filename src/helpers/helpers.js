@@ -13,3 +13,9 @@ hbs.registerHelper('listado_total_cursos_aspirante', () =>
 	return funciones.mostrarCursosTotalesAspirante();
 })
 
+hbs.registerHelper('listado_cursos_aspirante', () =>
+{
+	return funciones.mostrarCursosAspirante();
+})
+
+
