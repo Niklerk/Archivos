@@ -45,6 +45,12 @@ app.get('/vistaAspirante', (req,res)=>{
     res.render('vistaAspirante');
 });
 
+app.post('/resultadoInscripcion', (req,res)=>{
+    res.render('resultadoInscripcion',{
+        codCurso: req.body.codCurso
+    });
+});
+
 app.get('/cursosAspirante', (req,res)=>{
     res.render('cursosAspirante');
 });

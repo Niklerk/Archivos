@@ -1,1 +1,5 @@
-[{"cedula":"4532","nombre":"Catalina","telefono":"3422","correo":"prueba@gmail.com","password":"99999","rol":"Aspirante"}]
+[
+	{"cedula":"4532","nombre":"Catalina","telefono":"3422","correo":"prueba@gmail.com","password":"99999","rol":"Aspirante"},
+	{"cedula":"4532","nombre":"Catalina","telefono":"3422","correo":"prueba@gmail.com","password":"99999","rol":"Aspirante"},
+	{"cedula":"4532","nombre":"Catalina","telefono":"3422","correo":"prueba@gmail.com","password":"99999","rol":"Aspirante"}
+]
