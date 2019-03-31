@@ -18,4 +18,8 @@ hbs.registerHelper('listado_cursos_aspirante', () =>
 	return funciones.mostrarCursosAspirante();
 })
 
+hbs.registerHelper('cursosAspirante', (nom, curso) => {
+    return funciones.mostrarCursosDetalles(nom, curso);
+})
+
 

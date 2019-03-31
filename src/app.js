@@ -46,7 +46,9 @@ app.get('/cursosAspirante', (req,res)=>{
     res.render('cursosAspirante');
 });
 
-
+app.get('/aspirante', (req,res)=>{
+    res.render('cursosAspirante');
+});
 
 app.get('*',(req,res)=>{
     res.render('error',{
