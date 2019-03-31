@@ -89,6 +89,14 @@ app.post('/sesionusuario', (req,res)=>{
     });
 });
 
+app.post('/eliminarCursoPreinscripto', (req,res)=>{
+    res.render('eliminarCursoPreinscripto',{
+         
+        id: parseInt(req.body.id)
+        
+    });
+});
+
 
 app.get('*',(req,res)=>{
     res.render('error',{

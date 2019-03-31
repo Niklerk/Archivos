@@ -42,3 +42,11 @@ hbs.registerHelper('inicioSesion', (correo, password) =>
 {
 	return funciones.inicioSesion(correo, password);
 })
+
+hbs.registerHelper('mostrarCursosDetalles', (nombre) => {
+	return funciones.mostrarCursosDetalles(nombre);
+})
+
+hbs.registerHelper('eliminarCursoPreinscripto', (id) => {
+	return funciones.eliminarCursoPreinscripto(id);
+})

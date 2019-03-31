@@ -205,6 +205,13 @@ const obtenerPie = () =>
     return texto;
 }
 
+const eliminadoExito = () =>
+{
+    let texto = "<div class='container'>" + "Eliminado con éxito" +
+                    "<div class='accordion' id='accordionExample'>";
+    return texto;
+}
+
 const mostrarCursosTotalesAspirante = () =>
 {
     listarCursos();
@@ -378,23 +385,46 @@ const inscribirCurso = (codCurso) =>
 
 /******************* SECCION AGREGADA POR JHON *************************************/
 
-const mostrarCursosDetalles = (nom, curso) =>
+const mostrarCursosDetalles = (correo) =>
 {
+    listarUsuariosInscritos();
     listarCursos();
 
-    let encontrado = listaEstudiantes.find(buscar => buscar.nombre == nom)
+    listaUsuarios = require('../listadoUsuarios.json') 
+
+    let encontrado = listaUsuarios.find(buscar => buscar.correo == correo)
+  
     if(!encontrado){
         console.log('No existe este estudiante');
-    } else if(encontrado[curso]) {
-        let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Disponible");
+    }
+    let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Aspirante");
 
-        let cabecera = obtenerCabecera();
-        let cuerpo = obtenerCuerpo(cursosDisponibles);
-        let pie = obtenerPie();
-        let tabla = cabecera + cuerpo + pie;
-        return tabla;
+    let cabecera = obtenerCabecera();
+    let cuerpo = obtenerCuerpo(cursosDisponibles);
+    let pie = obtenerPie();
+    let tabla = cabecera + cuerpo + pie;
+    return tabla;
+}
+
+const eliminarCursoPreinscripto = (id) =>
+{
+    listarCursos();
+    let encontrado = listaCursos.filter(buscar => buscar.estado == "Aspirante")
+  
+    if(!encontrado){
+        console.log('No tiene cursos preinscriptos');
     } else {
-        console.log('No existe este curso');
+        if(!encontrado) {
+            let cursosDisponibles = listaCursos.filter(cur => cur.id == id);
+    
+            let cabecera = eliminadoExito();
+            let cuerpo = obtenerCuerpo(cursosDisponibles);
+            let pie = obtenerPie();
+            let tabla = cabecera + cuerpo + pie;
+            return tabla;
+        } else {
+            console.log('No existe este curso');
+        }
     }
 }
 
@@ -580,5 +610,6 @@ module.exports = {
     mostrarregistrados,
     listarCursosDisponibles,
     inicioSesion,
-    inscribirCurso
+    inscribirCurso,
+    eliminarCursoPreinscripto
 }

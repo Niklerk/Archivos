@@ -1,6 +1,45 @@
 {{>header}}
+
    		<div class="text-center">
     		{{inicioSesion correo password}}
     	</div>
+
+		<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!--Bootstrap css -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css"  type="text/css">
+    <title>Oferta Cursos</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/popper.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <header>
+            <div class="jumbotron">
+            <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: black;">
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/cursoPreinscripto">Cursos Preinscriptos</a>
+							{{{mostrarCursosDetalles correo}}}
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">Eliminar Cursos Preinscriptos</a>
+                            <form action="/eliminarCursoPreinscripto" method="post" >
+                            <input type="number" name="id">
+                            <button>Enviar</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            </div>
+        </header>
 
 {{>footer}}
