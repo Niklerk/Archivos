@@ -278,7 +278,8 @@ const mostrarCursosAspirante = () =>
 const cursoExiste = (codCurso) =>
 {
     listarCursos();
-    let curso = listaCursos.find(curso => curso.id == codCurso);
+    let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Disponible");
+    let curso = cursosDisponibles.find(curso => curso.id == codCurso);
     if(curso != null) return true;
     else return false;
 }
