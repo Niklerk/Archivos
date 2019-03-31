@@ -1,8 +1,8 @@
 const fs = require('fs');
 listaEstudiantes = [];
-
+listaUsuarios = [];
 listaCursos = [];
-
+listaInicio = [];
 
 const crear = (estudiantes) => {
     listar();
@@ -19,6 +19,7 @@ const crear = (estudiantes) => {
     } else
         console.log('ya existe otro estudiante con ese nombre');
 }
+
 const guardar = () => {
     let datos = JSON.stringify(listaEstudiantes);
     fs.writeFile('listado.json', datos, (err) => {
@@ -203,6 +204,13 @@ const obtenerPie = () =>
     return texto;
 }
 
+const eliminadoExito = () =>
+{
+    let texto = "<div class='container'>" + "Eliminado con éxito" +
+                    "<div class='accordion' id='accordionExample'>";
+    return texto;
+}
+
 const mostrarCursosTotalesAspirante = () =>
 {
     listarCursos();
@@ -259,27 +267,214 @@ const mostrarCursosAspirante = () =>
 
 /******************* SECCION AGREGADA POR JHON *************************************/
 
-const mostrarCursosDetalles = (nom, curso) =>
+const mostrarCursosDetalles = (correo) =>
 {
+    listarUsuariosInscritos();
     listarCursos();
 
-    let encontrado = listaEstudiantes.find(buscar => buscar.nombre == nom)
+    listaUsuarios = require('../listadoUsuarios.json') 
+
+    let encontrado = listaUsuarios.find(buscar => buscar.correo == correo)
+  
     if(!encontrado){
         console.log('No existe este estudiante');
-    } else if(encontrado[curso]) {
-        let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Disponible");
+    }
+    let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Aspirante");
 
-        let cabecera = obtenerCabecera();
-        let cuerpo = obtenerCuerpo(cursosDisponibles);
-        let pie = obtenerPie();
-        let tabla = cabecera + cuerpo + pie;
-        return tabla;
+    let cabecera = obtenerCabecera();
+    let cuerpo = obtenerCuerpo(cursosDisponibles);
+    let pie = obtenerPie();
+    let tabla = cabecera + cuerpo + pie;
+    return tabla;
+}
+
+const eliminarCursoPreinscripto = (id) =>
+{
+    listarCursos();
+    let encontrado = listaCursos.filter(buscar => buscar.estado == "Aspirante")
+  
+    if(!encontrado){
+        console.log('No tiene cursos preinscriptos');
     } else {
-        console.log('No existe este curso');
+        if(!encontrado) {
+            let cursosDisponibles = listaCursos.filter(cur => cur.id == id);
+    
+            let cabecera = eliminadoExito();
+            let cuerpo = obtenerCuerpo(cursosDisponibles);
+            let pie = obtenerPie();
+            let tabla = cabecera + cuerpo + pie;
+            return tabla;
+        } else {
+            console.log('No existe este curso');
+        }
     }
 }
 
 /******************* SECCION DE JHON FINALIZADA *************************************/
+
+/******************* SECCION AGREGADA POR CATALINA *************************************/
+
+const guardarusurarios = () => {
+    let datos = JSON.stringify(listaUsuarios);
+    fs.writeFile('listadoUsuarios.json', datos, (err) => {
+        if (err) throw (err);
+    })
+}
+
+
+
+const crearusuario = (cedula, nombre, rol, telefono, correo, password) => {
+        
+        listarUsuariosInscritos();
+        let usu = {
+            cedula: cedula,
+            nombre: nombre,
+            telefono: telefono,
+            correo: correo,
+            password: password,
+            rol: rol
+        };
+        
+
+        let encontrado = listaUsuarios.find(buscar => buscar.cedula == cedula)
+
+        if (!encontrado) {
+        listaUsuarios.push(usu);
+        guardarusurarios();
+
+        return "El usuario se a registrado con exito";
+        
+        }else{
+
+            return "Ya hay un usuario registrado con el número de cedula ";
+       } 
+
+}
+
+const listarUsuariosInscritos = () => {
+    try {
+        listaUsuarios = JSON.parse(fs.readFileSync('listadoUsuarios.json'));
+    } catch (error) {
+        listaUsuarios = [];
+    }
+}
+
+
+const mostrarregistrados = () => {
+
+    listarUsuariosInscritos();
+    listaUsuarios = require('../listadoUsuarios.json')   
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th>CEDULA</th>\
+                <th>NOMBRE</th>\
+                <th>ROL</th>\
+                <th>TELEFONO</th>\
+                <th>CORREO</th>\
+                <th>PASSWORD</th>\
+                </thead>\
+                <tbody>";
+
+
+    listaUsuarios.forEach(usuarios =>{
+  
+      texto = texto +
+             '<tr>' +
+             '<td>' + usuarios.cedula + '</td>' +
+             '<td>' + usuarios.nombre + '</td>' +
+             '<td>' + usuarios.rol + '</td>' +
+             '<td>' + usuarios.telefono + '</td>' +
+             '<td>' + usuarios.correo + '</td>' +
+             '<td>' + usuarios.password + '</td></tr>'
+    
+    })
+
+    texto = texto + '</tbody></table>';
+    return texto;
+
+}
+
+const listarCursosDisponibles = () => {
+    
+    listaCursos = require('../listadoCursos.json')   
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th>ID</th>\
+                <th>NOMBRE</th>\
+                <th>DESCRIPCION</th>\
+                <th>VALOR</th>\
+                <th>MODALIDAD</th>\
+                <th>INTENSIDAD</th>\
+                <th>ESTADO</th>\
+                </thead>\
+                <tbody>";
+
+
+    listaCursos.forEach(cursos =>{
+
+    if(cursos.estado=="Disponible"){    
+      
+      texto = texto +
+             '<tr>' +
+             '<td>' + cursos.id + '</td>' +
+             '<td>' + cursos.nombre + '</td>' +
+             '<td>' + cursos.descripción + '</td>' +
+             '<td>' + cursos.valor + '</td>' +
+             '<td>' + cursos.modalidad + '</td>' +
+             '<td>' + cursos.intensidad + '</td>' +
+             '<td>' + cursos.estado + '</td></tr>'
+    
+    }  
+    
+    })
+
+    texto = texto + '</tbody></table>';
+    return texto;
+
+}
+
+const guardarinicio = () => {
+    let datos = JSON.stringify(listaInicio);
+    fs.writeFile('listadoInicio.json', datos, (err) => {
+        if (err) throw (err);
+    })
+}
+
+
+const inicioSesion = (correo, password) => {
+
+        listaUsuarios = require('../listadoUsuarios.json')
+        listaInicio = require('../listadoInicio.json')
+        
+        let usu = { 
+            
+            correo: correo,
+            password: password
+            
+        };
+        
+        
+        let buscarInicio = listaInicio.find(ini => ini.correo == correo)
+        let buscarUsuCo = listaUsuarios.find(buscar => buscar.correo == correo)
+        let buscarUsuPas = listaUsuarios.find(buscar => buscar.password == password)
+      
+            
+        if (buscarUsuCo == buscarUsuPas) {
+
+                listaInicio.push(buscarUsuCo);
+                guardarinicio();
+            
+        return "Bienvenid@ " + buscarUsuCo.nombre + " usted a iniciado sesión"; 
+            
+        }else{
+
+            return "Usted a ingresado un dato errado";
+        }           
+}
+
+
+
+/******************* SECCION DE CATALINA FINALIZADA *************************************/
 
 
 module.exports = {
@@ -292,5 +487,10 @@ module.exports = {
     eliminar,
     mostrarCursosTotalesAspirante,
     mostrarCursosDetalles,
-    mostrarCursosAspirante
+    mostrarCursosAspirante,
+    crearusuario,
+    mostrarregistrados,
+    listarCursosDisponibles,
+    inicioSesion,
+    eliminarCursoPreinscripto
 }

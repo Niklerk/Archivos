@@ -4,5 +4,5 @@
 	{"id":"3","nombre":"Inteligencia Artificial","descripcion":"Fundamentos de redes neuronales.","valor":10000,"modalidad":"No especifica","intensidad":89,"estado":"Cerrado"},
 	{"id":"4","nombre":"React JS","descripcion":"Curso avanzado de componentes con React JS.","valor":45000,"modalidad":"No especifica","intensidad":"No especifica","estado":"Disponible"},
 	{"id":"5","nombre":"DevOps","descripcion":"Curso profesional de DevOps.","valor":2300000,"modalidad":"Presencial","intensidad":"No especifica","estado":"Cerrado"},
-	{"id":"6","nombre":"Calidad de Software","descripcion":"Curso gratis de Calidad de Software.","valor":87000,"modalidad":"Virtual","intensidad":"No especifica","estado":"Disponible"}
+	{"id":"6","nombre":"Calidad de Software","descripcion":"Curso gratis de Calidad de Software.","valor":87000,"modalidad":"Virtual","intensidad":"No especifica","estado":"Aspirante"}
 ]

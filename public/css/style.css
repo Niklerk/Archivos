@@ -18,3 +18,14 @@ header {
 h1 {
     margin-bottom: 16px;
 }
+
+.abs-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+}
+
+.form {
+  width: 260px;
+}
