@@ -32,3 +32,8 @@ hbs.registerHelper('listarCursosDisponibles', () =>
 {
 	return funciones.listarCursosDisponibles();
 })
+
+hbs.registerHelper('inicioSesion', (correo, password) =>
+{
+	return funciones.inicioSesion(correo, password);
+})

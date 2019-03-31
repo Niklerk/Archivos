@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
+var tipo = "Aspirante";
 require('./helpers/helpers');
 
 const directorioPublico = path.join(__dirname,'../public');
@@ -22,9 +23,11 @@ app.set('view engine','hbs');
 
 app.get('/',(req,res)=>{
     res.render('index', {
-        titulo: 'Estudiantes'
+        titulo: 'Aspirante'
     });
 });
+
+
 app.post('/calculos', (req,res)=>{
     res.render('calculos',{
         estudiante: req.body.nombre,
@@ -68,6 +71,15 @@ app.post('/registro', (req,res)=>{
         correo: req.body.correo,
         password: req.body.password,
         rol: req.body.rol
+    });
+});
+
+app.post('/sesionusuario', (req,res)=>{
+    res.render('sesionusuario',{
+         
+        correo: req.body.correo,
+        password: req.body.password
+        
     });
 });
 

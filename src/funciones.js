@@ -2,7 +2,7 @@ const fs = require('fs');
 listaEstudiantes = [];
 listaUsuarios = [];
 listaCursos = [];
-
+listaInicio = [];
 
 const crear = (estudiantes) => {
     listar();
@@ -291,6 +291,8 @@ const guardarusurarios = () => {
     })
 }
 
+
+
 const crearusuario = (cedula, nombre, rol, telefono, correo, password) => {
         
         listarUsuariosInscritos();
@@ -303,11 +305,13 @@ const crearusuario = (cedula, nombre, rol, telefono, correo, password) => {
             rol: rol
         };
         
+
         let encontrado = listaUsuarios.find(buscar => buscar.cedula == cedula)
 
         if (!encontrado) {
         listaUsuarios.push(usu);
         guardarusurarios();
+
         return "El usuario se a registrado con exito";
         
         }else{
@@ -324,6 +328,7 @@ const listarUsuariosInscritos = () => {
         listaUsuarios = [];
     }
 }
+
 
 const mostrarregistrados = () => {
 
@@ -398,6 +403,47 @@ const listarCursosDisponibles = () => {
 
 }
 
+const guardarinicio = () => {
+    let datos = JSON.stringify(listaInicio);
+    fs.writeFile('listadoInicio.json', datos, (err) => {
+        if (err) throw (err);
+    })
+}
+
+
+const inicioSesion = (correo, password) => {
+
+        listaUsuarios = require('../listadoUsuarios.json')
+        listaInicio = require('../listadoInicio.json')
+        
+        let usu = { 
+            
+            correo: correo,
+            password: password
+            
+        };
+        
+        
+        let buscarInicio = listaInicio.find(ini => ini.correo == correo)
+        let buscarUsuCo = listaUsuarios.find(buscar => buscar.correo == correo)
+        let buscarUsuPas = listaUsuarios.find(buscar => buscar.password == password)
+      
+            
+        if (buscarUsuCo == buscarUsuPas) {
+
+                listaInicio.push(buscarUsuCo);
+                guardarinicio();
+            
+        return "Bienvenid@ " + buscarUsuCo.nombre + " usted a iniciado sesión"; 
+            
+        }else{
+
+            return "Usted a ingresado un dato errado";
+        }           
+}
+
+
+
 /******************* SECCION DE CATALINA FINALIZADA *************************************/
 
 
@@ -414,5 +460,6 @@ module.exports = {
     mostrarCursosAspirante,
     crearusuario,
     mostrarregistrados,
-    listarCursosDisponibles
+    listarCursosDisponibles,
+    inicioSesion
 }
