@@ -23,7 +23,7 @@ app.set('view engine','hbs');
 
 app.get('/',(req,res)=>{
     res.render('index', {
-        titulo: 'Aspirante'
+        esCoordinador: true
     });
 });
 
@@ -45,6 +45,29 @@ app.get('/vistaAspirante', (req,res)=>{
     res.render('vistaAspirante');
 });
 
+app.get('/cursosCoordinador', (req,res)=>{
+    let usuario = require('../listadoInicio.json');
+    if (usuario.rol == "Coordinador") {
+        res.render('cursosCoordinador');
+    } else {
+        res.render('index');
+    }
+});
+
+app.post('/cambiarEstado', (req,res)=>{
+    res.render('cambiarEstado',{
+        cursoId : req.body.id
+    });
+});
+
+app.post('/eliminarEstudiante', (req,res)=>{
+    var texto  = req.body.cedula;
+    res.render('eliminarEstudiante',{
+        cedula : texto.split("&")[0],
+        id : texto.split("&")[1],
+    });
+});
+
 app.get('/cursosAspirante', (req,res)=>{
     res.render('cursosAspirante');
 });
@@ -55,6 +78,22 @@ app.get('/usuarios', (req,res)=>{
 
 app.get('/mostrarRegistrados', (req,res)=>{
     res.render('mostrarRegistrados');
+});
+
+app.get('/agregarCurso', (req,res)=>{
+    res.render('agregarCurso');
+});
+
+app.post('/agregarCursos', (req,res)=>{
+    res.render('agregarCursos',{
+        id: req.body.id,
+        nombre: req.body.nombre,
+        descripcion:req.body.descripcion,
+        valor: req.body.valor,
+        modalidad: req.body.modalidad,
+        intensidad: req.body.intensidad,
+        estado: req.body.estado
+    });
 });
 
 app.get('/usuariosexiste', (req,res)=>{

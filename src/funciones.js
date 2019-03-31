@@ -20,9 +20,9 @@ const crear = (estudiantes) => {
         console.log('ya existe otro estudiante con ese nombre');
 }
 
-const guardar = () => {
-    let datos = JSON.stringify(listaEstudiantes);
-    fs.writeFile('listado.json', datos, (err) => {
+const guardar = (nombre, lista) => {
+    let datos = JSON.stringify(lista);
+    fs.writeFile(`${nombre}.json`, datos, (err) => {
         if (err) throw (err);
     })
 }
@@ -136,6 +136,174 @@ let promedio = (estudiante) => {
     return (estudiante.matematicas + estudiante.ingles + estudiante.programacion) / 3
 }
 
+const listarCursosCoordinador = () => {
+    listarCursos();
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th style='display: none' >ID</th>\
+                <th>NOMBRE</th>\
+                <th>DESCRIPCION</th>\
+                <th>VALOR</th>\
+                <th>MODALIDAD</th>\
+                <th>INTENSIDAD</th>\
+                <th>ESTADO</th>\
+                <th>CAMBIAR ESTADO</th>\
+                <th>AGREGAR CURSO</th>\
+                </thead>\
+                <tbody>";
+
+
+    listaCursos.forEach(cursos =>{
+    texto +='<tr>' +
+            "<td style='display: none'>" + cursos.id + '</td>' +
+            '<td>' + crearDetalleUsuarios(cursos) + '</td>' +
+            '<td>' + cursos.descripcion + '</td>' +
+            '<td>' + cursos.valor + '</td>' +
+            '<td>' + cursos.modalidad + '</td>' +
+            '<td>' + cursos.intensidad + '</td>' +
+            '<td>' + cursos.estado + '</td>' +
+            `<td> <form class='form' action="/cambiarEstado" method="POST"><button class="btn btn-outline-danger" name='id' value="${cursos.id}">Cambiar</form> </td>` +
+            "<td> <a href= '/agregarCurso'><i class='fas fa-address-book fa-w-14 fa-3x'></i></a></td>" +
+            '</tr>'
+    })
+
+    texto = texto + '</tbody></table>';
+    return texto;
+
+}
+
+let crearDetalleUsuarios = (_curso)=>{
+    let html = '';
+    listarCursosAspirantes();
+    listarUsuariosInscritos();
+    html += obtenerCabeceraCoordinador(_curso);
+    html += obtenerCuerpoCoordinador(_curso);
+    html += obtenerPie();
+    return html;
+}
+
+const obtenerCuerpoCoordinador = (_curso) =>
+{
+    let texto = '';
+    texto += `<div class="card">
+                <div class="card-header" id="heading${_curso.id}">
+                        <div class="col-sm-12 text-justify">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${_curso.id}" aria-expanded="true" aria-controls="collapse${_curso.id}">
+                                    ${_curso.nombre}
+                                </button>
+                            </h5>
+                        </div>
+                    </div>
+                </div>`;
+                if(_curso.estado == 'Disponible'){
+                    let aspirante = listaCursosAspirantes.filter(dupla => dupla.cur_id == _curso.id);
+                    if (aspirante.length > 0) {
+                        texto +=  `<div id="collapse${_curso.id}" class="collapse" aria-labelledby="heading${_curso.id}" data-parent="#Curso${_curso.id}">
+                            <div class="card-body" style="padding-left: 60px">`;
+                            aspirante.forEach(e => {
+                                let encontrado = listaUsuarios.find(buscar => buscar.cedula == e.usu_id);
+                                if(!encontrado){
+                                    texto += 'no hay usuario';
+                                }else{
+                                    texto += mostrarUsuarioCurso(encontrado,_curso.id);
+                                }
+                            });
+                        }
+                    }
+                    texto +=  `</div>
+                </div>
+                </div>`; 
+    return texto;
+}
+
+const obtenerCabeceraCoordinador = (curso) =>
+{
+    let texto = "<div class='container'>" +
+                    "<div class='accordion' id='Curso"+ curso.id+"'>";
+    return texto;
+}
+
+
+const mostrarUsuarioCurso = (_Usuarios, id) => {
+
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th>CEDULA</th>\
+                <th>NOMBRE</th>\
+                <th>TELEFONO</th>\
+                <th>ELIMINAR</th>\
+                </thead>\
+                <tbody>";
+      texto +='<tr>' +
+             '<td>' + _Usuarios.cedula + '</td>' +
+             '<td>' + _Usuarios.nombre + '</td>' +
+             '<td>' + _Usuarios.telefono + '</td>' +
+             `<td><form class='form' action="/eliminarEstudiante" method="POST"><button class="btn btn-danger" name='cedula' value="${_Usuarios.cedula}&${id}">Eliminar</form> </td>` 
+
+    texto += '</tbody></table>';
+    return texto;
+
+}
+
+let cambiarEstado = (cursoId)=>{
+    if(cursoId > 0);
+    {
+        listarCursos();
+
+        let encontrado = listaCursos.find(e => e.id == cursoId);
+
+        if (encontrado.length != listaCursos.length ) {
+            if (encontrado.estado == 'Disponible') {
+                encontrado["estado"] = 'Cerrado';
+            } else {
+                encontrado["estado"] = 'Disponible';
+            }
+
+        }
+        guardar('listadoCursos',listaCursos);
+    }
+}
+
+let eliminarEstudiante = (cedula, id)=>{
+    if(cedula > 0);
+    {
+        listarCursosAspirantes();
+        let encontrado = listaCursosAspirantes.find(e => e.usu_id == cedula && e.cur_id == id);
+        if (encontrado.length != listaCursos.length ) {
+            encontrado["estado"] = false;
+            encontrado = listaCursosAspirantes.filter(e => e.estado);
+            listaCursosAspirantes = encontrado;
+            guardar('listadoCursosAspirantes',listaCursosAspirantes);
+        }
+    }
+}
+
+let agregarCurso = (id, nombre, descripcion, valor, modalidad, intensidad, estado)=>{
+    if(id > 0);
+    {
+        listarCursos();
+
+        let encontrado = listaCursos.find(e => e.id == id);
+
+        if (!encontrado ) {
+            let curso = {
+                id: id,
+                nombre: nombre,
+                descripcion:descripcion,
+                valor: valor,
+                modalidad: modalidad,
+                intensidad: intensidad,
+                estado: estado
+            };
+            listaCursos.push(curso);
+            guardar('listadoCursos',listaCursos);
+            return "el curso se ha creado con exito"
+        }else
+            return "el curso ya existe"
+
+    }
+}
 
 /******************* SECCION AGREGADA POR MARCELA *************************************/
 
@@ -431,7 +599,7 @@ const inicioSesion = (correo, password) => {
             
         if (buscarUsuCo == buscarUsuPas) {
 
-                listaInicio.push(buscarUsuCo);
+                listaInicio = buscarUsuCo;
                 guardarinicio();
             
         return "Bienvenid@ " + buscarUsuCo.nombre + " usted a iniciado sesión"; 
@@ -461,5 +629,9 @@ module.exports = {
     crearusuario,
     mostrarregistrados,
     listarCursosDisponibles,
-    inicioSesion
+    inicioSesion,
+    listarCursosCoordinador,
+    cambiarEstado,
+    agregarCurso,
+    eliminarEstudiante
 }
