@@ -737,21 +737,15 @@ const inicioSesion = (correo, password) => {
             
             correo: correo,
             password: password
-            
         };
         
-        
-        let buscarInicio = listaInicio.find(ini => ini.correo == correo)
-        let buscarUsuCo = listaUsuarios.find(buscar => buscar.correo == correo)
-        let buscarUsuPas = listaUsuarios.find(buscar => buscar.password == password)
-      
-            
+        let buscarUsuCo = listaUsuarios.find(buscar => buscar.correo == correo);
+        let buscarUsuPas = listaUsuarios.find(buscar => buscar.password == password);
         if (buscarUsuCo == buscarUsuPas) {
-
-                listaInicio = buscarUsuCo;
-                guardarinicio();
-            
-        return "Bienvenid@ " + buscarUsuCo.nombre + " usted a iniciado sesión"; 
+            listaInicio = [];
+            listaInicio.push(buscarUsuCo);
+            guardarinicio();
+            return "Bienvenid@ " + buscarUsuCo.nombre + " usted a iniciado sesión"; 
             
         }else{
 
