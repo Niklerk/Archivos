@@ -64,7 +64,13 @@ app.post('/eliminarEstudiante', (req,res)=>{
     var texto  = req.body.cedula;
     res.render('eliminarEstudiante',{
         cedula : texto.split("&")[0],
-        id : texto.split("&")[1],
+        id : texto.split("&")[1]
+    });
+});
+
+app.post('/resultadoInscripcion', (req,res)=>{
+    res.render('resultadoInscripcion',{
+        codCurso: req.body.codCurso
     });
 });
 
@@ -118,6 +124,14 @@ app.post('/sesionusuario', (req,res)=>{
          
         correo: req.body.correo,
         password: req.body.password
+        
+    });
+});
+
+app.post('/eliminarCursoPreinscripto', (req,res)=>{
+    res.render('eliminarCursoPreinscripto',{
+         
+        id: parseInt(req.body.id)
         
     });
 });

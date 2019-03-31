@@ -13,6 +13,11 @@ hbs.registerHelper('listado_total_cursos_aspirante', () =>
 	return funciones.mostrarCursosTotalesAspirante();
 })
 
+hbs.registerHelper('inscribirCurso',(codCurso)=>
+{
+    return funciones.inscribirCurso(codCurso);
+})
+
 hbs.registerHelper('listado_cursos_aspirante', () =>
 {
 	return funciones.mostrarCursosAspirante();
@@ -56,4 +61,11 @@ hbs.registerHelper('inicioSesion', (correo, password) =>
 hbs.registerHelper('listarCursosCoordinador', () =>
 {
 	return funciones.listarCursosCoordinador();
+})
+hbs.registerHelper('mostrarCursosDetalles', (nombre) => {
+	return funciones.mostrarCursosDetalles(nombre);
+})
+
+hbs.registerHelper('eliminarCursoPreinscripto', (id) => {
+	return funciones.eliminarCursoPreinscripto(id);
 })
