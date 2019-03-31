@@ -18,4 +18,17 @@ hbs.registerHelper('listado_cursos_aspirante', () =>
 	return funciones.mostrarCursosAspirante();
 })
 
+hbs.registerHelper('crearusuario',(cedula, nombre, rol, telefono, correo, password)=>
+{
+    return funciones.crearusuario(cedula, nombre, rol, telefono, correo, password);
+})
 
+hbs.registerHelper('mostrarregistrados', () =>
+{
+	return funciones.mostrarregistrados();
+})
+
+hbs.registerHelper('listarCursosDisponibles', () =>
+{
+	return funciones.listarCursosDisponibles();
+})

@@ -46,6 +46,30 @@ app.get('/cursosAspirante', (req,res)=>{
     res.render('cursosAspirante');
 });
 
+app.get('/usuarios', (req,res)=>{
+    res.render('usuarios');
+});
+
+app.get('/mostrarRegistrados', (req,res)=>{
+    res.render('mostrarRegistrados');
+});
+
+app.get('/usuariosexiste', (req,res)=>{
+    res.render('usuariosexiste');
+});
+
+
+app.post('/registro', (req,res)=>{
+    res.render('registro',{
+        
+        cedula: req.body.cedula,
+        nombre: req.body.nombre,
+        telefono: req.body.telefono,
+        correo: req.body.correo,
+        password: req.body.password,
+        rol: req.body.rol
+    });
+});
 
 
 app.get('*',(req,res)=>{

@@ -1,0 +1,30 @@
+{{>header}}
+    <p>
+        <div class="text-center"> 
+        <h3>Bienvenido a la pagina de ingreso a los cursos</h3>
+        </div>
+    </p>
+    
+   <div class="abs-center"> 
+    <div class="text-center">
+      <form class="form" action="./registro" method="POST">
+      
+      <div class="form-group">
+ 
+             <label for="cedula">Número de Documento:</label>
+             <input type="number" class="form-control" placeholder="Digite la cedula" name="Cedula" required>
+            <br>
+        
+            <label for="contraseña">Contraseña:</label>
+            <input type="pass" class="form-control" placeholder="Digite la contraseña" name="contraseña" required>
+          
+            <br>
+        
+        <button class="btn btn-primary btn-dark">Ingresar</button>
+        
+    </div>
+    </form>
+   </div>
+</div>
+
+{{>footer}}

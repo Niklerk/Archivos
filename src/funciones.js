@@ -1,6 +1,6 @@
 const fs = require('fs');
 listaEstudiantes = [];
-
+listaUsuarios = [];
 listaCursos = [];
 
 
@@ -19,6 +19,7 @@ const crear = (estudiantes) => {
     } else
         console.log('ya existe otro estudiante con ese nombre');
 }
+
 const guardar = () => {
     let datos = JSON.stringify(listaEstudiantes);
     fs.writeFile('listado.json', datos, (err) => {
@@ -281,6 +282,124 @@ const mostrarCursosDetalles = (nom, curso) =>
 
 /******************* SECCION DE JHON FINALIZADA *************************************/
 
+/******************* SECCION AGREGADA POR CATALINA *************************************/
+
+const guardarusurarios = () => {
+    let datos = JSON.stringify(listaUsuarios);
+    fs.writeFile('listadoUsuarios.json', datos, (err) => {
+        if (err) throw (err);
+    })
+}
+
+const crearusuario = (cedula, nombre, rol, telefono, correo, password) => {
+        
+        listarUsuariosInscritos();
+        let usu = {
+            cedula: cedula,
+            nombre: nombre,
+            telefono: telefono,
+            correo: correo,
+            password: password,
+            rol: rol
+        };
+        
+        let encontrado = listaUsuarios.find(buscar => buscar.cedula == cedula)
+
+        if (!encontrado) {
+        listaUsuarios.push(usu);
+        guardarusurarios();
+        return "El usuario se a registrado con exito";
+        
+        }else{
+
+            return "Ya hay un usuario registrado con el número de cedula ";
+       } 
+
+}
+
+const listarUsuariosInscritos = () => {
+    try {
+        listaUsuarios = JSON.parse(fs.readFileSync('listadoUsuarios.json'));
+    } catch (error) {
+        listaUsuarios = [];
+    }
+}
+
+const mostrarregistrados = () => {
+
+    listarUsuariosInscritos();
+    listaUsuarios = require('../listadoUsuarios.json')   
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th>CEDULA</th>\
+                <th>NOMBRE</th>\
+                <th>ROL</th>\
+                <th>TELEFONO</th>\
+                <th>CORREO</th>\
+                <th>PASSWORD</th>\
+                </thead>\
+                <tbody>";
+
+
+    listaUsuarios.forEach(usuarios =>{
+  
+      texto = texto +
+             '<tr>' +
+             '<td>' + usuarios.cedula + '</td>' +
+             '<td>' + usuarios.nombre + '</td>' +
+             '<td>' + usuarios.rol + '</td>' +
+             '<td>' + usuarios.telefono + '</td>' +
+             '<td>' + usuarios.correo + '</td>' +
+             '<td>' + usuarios.password + '</td></tr>'
+    
+    })
+
+    texto = texto + '</tbody></table>';
+    return texto;
+
+}
+
+const listarCursosDisponibles = () => {
+    
+    listaCursos = require('../listadoCursos.json')   
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th>ID</th>\
+                <th>NOMBRE</th>\
+                <th>DESCRIPCION</th>\
+                <th>VALOR</th>\
+                <th>MODALIDAD</th>\
+                <th>INTENSIDAD</th>\
+                <th>ESTADO</th>\
+                </thead>\
+                <tbody>";
+
+
+    listaCursos.forEach(cursos =>{
+
+    if(cursos.estado=="Disponible"){    
+      
+      texto = texto +
+             '<tr>' +
+             '<td>' + cursos.id + '</td>' +
+             '<td>' + cursos.nombre + '</td>' +
+             '<td>' + cursos.descripción + '</td>' +
+             '<td>' + cursos.valor + '</td>' +
+             '<td>' + cursos.modalidad + '</td>' +
+             '<td>' + cursos.intensidad + '</td>' +
+             '<td>' + cursos.estado + '</td></tr>'
+    
+    }  
+    
+    })
+
+    texto = texto + '</tbody></table>';
+    return texto;
+
+}
+
+/******************* SECCION DE CATALINA FINALIZADA *************************************/
+
 
 module.exports = {
     crear,
@@ -292,5 +411,8 @@ module.exports = {
     eliminar,
     mostrarCursosTotalesAspirante,
     mostrarCursosDetalles,
-    mostrarCursosAspirante
+    mostrarCursosAspirante,
+    crearusuario,
+    mostrarregistrados,
+    listarCursosDisponibles
 }
