@@ -536,7 +536,8 @@ const inscribirCurso = (codCurso) =>
         {
             let dupla = {
                 cur_id: codCurso,
-                usu_id: usuarioConectado.cedula
+                usu_id: usuarioConectado.cedula,
+                estado: true
             };
             listaCursosAspirantes.push(dupla);
             guardarCursoAspirante();
