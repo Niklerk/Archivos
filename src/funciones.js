@@ -793,6 +793,11 @@ const iniciarSesion = (correo, contrasena) =>
         return "usuarioInicioInexistente";
 }
 
+const cerrarSesion = () =>
+{
+    fs.unlinkSync('listadoInicio.json');
+}
+
 /******************* SECCION DE INICIO DE SESION FINALIZADA *************************************/
 
 
@@ -817,5 +822,6 @@ module.exports = {
     eliminarEstudiante,
     inscribirCurso,
     eliminarCursoPreinscripto, 
-    iniciarSesion
+    iniciarSesion,
+    cerrarSesion
 }
