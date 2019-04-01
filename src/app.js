@@ -5,6 +5,7 @@ const hbs = require('hbs');
 const bodyParser = require('body-parser');
 var tipo = "Aspirante";
 require('./helpers/helpers');
+const funciones = require('./funciones');
 
 const directorioPublico = path.join(__dirname,'../public');
 const directorioPartials = path.join(__dirname,'../partials');
@@ -80,13 +81,10 @@ app.post('/registro', (req,res)=>{
     });
 });
 
-app.post('/sesionusuario', (req,res)=>{
-    res.render('sesionusuario',{
-         
-        correo: req.body.correo,
-        password: req.body.password
-        
-    });
+app.post('/sesionusuario', (req,res)=>
+{
+    var vista = funciones.iniciarSesion(req.body.correo, req.body.password);
+    res.render(vista);
 });
 
 app.post('/eliminarCursoPreinscripto', (req,res)=>{

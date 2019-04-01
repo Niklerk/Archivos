@@ -239,7 +239,7 @@ const obtenerUsuarioConectado = () =>
 {
     try 
     {
-        usuarioConectado = require('../listadoInicio.json')[0];
+        usuarioConectado = require('../listadoInicio.json');
     } catch (error) {
         usuarioConectado = null;
     }
@@ -552,13 +552,6 @@ const listarCursosDisponibles = () => {
 
 }
 
-const guardarinicio = () => {
-    let datos = JSON.stringify(listaInicio);
-    fs.writeFile('listadoInicio.json', datos, (err) => {
-        if (err) throw (err);
-    })
-}
-
 
 const inicioSesion = (correo, password) => {
 
@@ -596,6 +589,50 @@ const inicioSesion = (correo, password) => {
 /******************* SECCION DE CATALINA FINALIZADA *************************************/
 
 
+/******************* SECCION DE INICIO DE SESION *************************************/
+
+const usuarioInicioExiste = (correo) =>
+{
+    listarUsuariosInscritos();
+    var usuario = listaUsuarios.find(usuario => usuario.correo == correo);
+    if(usuario) return usuario;
+    else return null;
+}
+
+const guardarinicio = (usuario) => {
+    let datos = JSON.stringify(usuario);
+    fs.writeFile('listadoInicio.json', datos, (err) => {
+        if (err) throw (err);
+    })
+}
+
+const iniciarSesion = (correo, contrasena) =>
+{
+    var usuario = usuarioInicioExiste(correo);
+    if(usuario)
+    {
+        if(correo == usuario.correo && contrasena == usuario.password)
+        {
+            guardarinicio(usuario);
+
+            var rol = usuario.rol;
+            if(rol == "Aspirante")
+                return "vistaAspirante";
+            else if(rol == "Coordinador")
+                return "vistaCoordinador"; //CAMBIAR POR EL NOMBRE DE LA VISTA DEL COORDINADOR
+        }
+        else
+        {
+            return "datosInicioErroneos";
+        }
+    }
+    else
+        return "usuarioInicioInexistente";
+}
+
+/******************* SECCION DE INICIO DE SESION FINALIZADA *************************************/
+
+
 module.exports = {
     crear,
     mostrar,
@@ -612,5 +649,6 @@ module.exports = {
     listarCursosDisponibles,
     inicioSesion,
     inscribirCurso,
-    eliminarCursoPreinscripto
+    eliminarCursoPreinscripto, 
+    iniciarSesion
 }
