@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
+const port = process.env.PORT || 3000;
 var tipo = "Aspirante";
 require('./helpers/helpers');
 const funciones = require('./funciones');
@@ -55,6 +56,17 @@ app.post('/cambiarEstado', (req,res)=>{
         cursoId : req.body.id
     });
 });
+
+app.get('/usuariosRol', (req,res)=>{
+    res.render('usuariosRol');
+});
+
+app.post('/cambiarEstadoRol', (req,res)=>{
+    res.render('cambiarEstadoRol',{
+        cedula : req.body.cedula
+    });
+});
+
 
 app.post('/eliminarEstudiante', (req,res)=>{
     var texto  = req.body.cedula;
@@ -144,6 +156,6 @@ app.get('*',(req,res)=>{
     });
 })
 
-app.listen(3000, ()=>{
+app.listen(port, ()=>{
     console.log('iniciado')
 })

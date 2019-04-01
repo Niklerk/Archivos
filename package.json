@@ -4,6 +4,7 @@
   "description": "segundo proyecto node js",
   "main": "src/app",
   "scripts": {
+    "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "elkin cardoso niklerg23@gmail.com",

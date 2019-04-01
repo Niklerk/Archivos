@@ -173,6 +173,39 @@ const listarCursosCoordinador = () => {
 
 }
 
+
+const listarUsuariosRol = () => {
+    listarUsuariosInscritos();
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th style='display: none' >ID</th>\
+                <th>CEDULA</th>\
+                <th>NOMBRE</th>\
+                <th>CORREO</th>\
+                <th>TELEFONO</th>\
+                <th>ROL</th>\
+                <th>CAMBIAR ROL</th>\
+                </thead>\
+                <tbody>";
+
+
+    listaUsuarios.forEach(_usuarios =>{
+    texto +='<tr>' +
+            "<td>" + _usuarios.cedula + '</td>' +
+            '<td>' + _usuarios.nombre + '</td>' +
+            '<td>' + _usuarios.correo + '</td>' +
+            '<td>' + _usuarios.telefono + '</td>' +
+            '<td>' + _usuarios.rol + '</td>' +
+            `<td> <form class='form' action="/cambiarEstadoRol" method="POST"><button class="btn btn-outline-danger" name='cedula' value="${_usuarios.cedula}">Cambiar</form> </td>` +
+            '</tr>'
+    })
+
+    texto = texto + '</tbody></table>';
+    return texto;
+
+}
+
+
 let crearDetalleUsuarios = (_curso)=>{
     let html = '';
     listarCursosAspirantes();
@@ -263,6 +296,22 @@ let cambiarEstado = (cursoId)=>{
 
         }
         guardar('listadoCursos',listaCursos);
+    }
+}
+
+let cambiarEstadoRol = (cedula)=>{
+    if(cedula > 0);
+    {
+        listarUsuariosInscritos();
+        let encontrado = listaUsuarios.find(e => e.cedula == cedula);
+        if (encontrado.length != listaUsuarios.length ) {
+            if (encontrado.rol == 'Aspirante') {
+                encontrado["rol"] = 'Coordinador';
+            } else {
+                encontrado["rol"] = 'Aspirante';
+            }
+        }
+        guardar('listadoUsuarios',listaUsuarios);
     }
 }
 
@@ -806,5 +855,7 @@ module.exports = {
     inscribirCurso,
     eliminarCursoPreinscripto, 
     iniciarSesion,
+    listarUsuariosRol,
+    cambiarEstadoRol,
     cerrarSesion
 }
