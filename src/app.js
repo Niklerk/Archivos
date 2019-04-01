@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
+const port = process.env.PORT || 3000;
 var tipo = "Aspirante";
 require('./helpers/helpers');
 const funciones = require('./funciones');
@@ -136,6 +137,6 @@ app.get('*',(req,res)=>{
     });
 })
 
-app.listen(3000, ()=>{
+app.listen(port, ()=>{
     console.log('iniciado')
 })
