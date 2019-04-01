@@ -187,8 +187,6 @@ const listarUsuariosRol = () => {
                 <th>CAMBIAR ROL</th>\
                 </thead>\
                 <tbody>";
-
-
     listaUsuarios.forEach(_usuarios =>{
     texto +='<tr>' +
             "<td>" + _usuarios.cedula + '</td>' +
@@ -198,11 +196,9 @@ const listarUsuariosRol = () => {
             '<td>' + _usuarios.rol + '</td>' +
             `<td> <form class='form' action="/cambiarEstadoRol" method="POST"><button class="btn btn-outline-danger" name='cedula' value="${_usuarios.cedula}">Cambiar</form> </td>` +
             '</tr>'
-    })
-
+    });
     texto = texto + '</tbody></table>';
     return texto;
-
 }
 
 
