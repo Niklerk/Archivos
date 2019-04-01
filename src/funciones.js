@@ -163,7 +163,7 @@ const listarCursosCoordinador = () => {
             '<td>' + cursos.modalidad + '</td>' +
             '<td>' + cursos.intensidad + '</td>' +
             '<td>' + cursos.estado + '</td>' +
-            `<td> <form class='form' action="/cambiarEstado" method="POST"><button class="btn btn-outline-danger" name='id' value="${cursos.id}">Cambiar</form> </td>` +
+            `<td> <form class='form' action="/cursosCoordinador" method="POST"><button class="btn btn-outline-danger" name='id' value="${cursos.id}">Cambiar</form> </td>` +
             "<td> <a href= '/agregarCurso'><i class='fas fa-address-book fa-w-14 fa-3x'></i></a></td>" +
             '</tr>'
     })
@@ -194,7 +194,7 @@ const listarUsuariosRol = () => {
             '<td>' + _usuarios.correo + '</td>' +
             '<td>' + _usuarios.telefono + '</td>' +
             '<td>' + _usuarios.rol + '</td>' +
-            `<td> <form class='form' action="/cambiarEstadoRol" method="POST"><button class="btn btn-outline-danger" name='cedula' value="${_usuarios.cedula}">Cambiar</form> </td>` +
+            `<td> <form class='form' action="/usuariosRol" method="POST"><button class="btn btn-outline-danger" name='cedula' value="${_usuarios.cedula}">Cambiar</form> </td>` +
             '</tr>'
     });
     texto = texto + '</tbody></table>';

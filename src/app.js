@@ -51,22 +51,19 @@ app.get('/cursosCoordinador', (req,res)=>{
     res.render('cursosCoordinador');
 });
 
-app.post('/cambiarEstado', (req,res)=>{
-    res.render('cambiarEstado',{
-        cursoId : req.body.id
-    });
+app.post('/cursosCoordinador', (req,res)=>{
+    funciones.cambiarEstado(req.body.id);
+    res.render('cursosCoordinador');
 });
 
 app.get('/usuariosRol', (req,res)=>{
     res.render('usuariosRol');
 });
 
-app.post('/cambiarEstadoRol', (req,res)=>{
-    res.render('cambiarEstadoRol',{
-        cedula : req.body.cedula
-    });
+app.post('/usuariosRol', (req,res)=>{
+    funciones.cambiarEstadoRol(req.body.cedula);
+    res.render('usuariosRol');
 });
-
 
 app.post('/eliminarEstudiante', (req,res)=>{
     var texto  = req.body.cedula;

@@ -28,11 +28,6 @@ hbs.registerHelper('crearusuario',(cedula, nombre, rol, telefono, correo, passwo
     return funciones.crearusuario(cedula, nombre, rol, telefono, correo, password);
 })
 
-hbs.registerHelper('cambiarEstado',(cursoId)=>
-{
-    return funciones.cambiarEstado(cursoId);
-})
-
 hbs.registerHelper('eliminarEstudiante',(cedula, id)=>
 {
     return funciones.eliminarEstudiante(cedula, id);
@@ -75,7 +70,3 @@ hbs.registerHelper('listarUsuariosRol', () =>
 	return funciones.listarUsuariosRol();
 })
 
-hbs.registerHelper('cambiarEstadoRol',(cedula)=>
-{
-    return funciones.cambiarEstadoRol(cedula);
-})
