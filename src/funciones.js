@@ -782,8 +782,7 @@ const iniciarSesion = (correo, contrasena) =>
             if(rol == "Aspirante")
                 return "vistaAspirante";
             else if(rol == "Coordinador")
-                return "vistaCoordinador"; //CAMBIAR POR EL NOMBRE DE LA VISTA DEL COORDINADOR
-        }
+                return "cursosCoordinador";
         else
         {
             return "datosInicioErroneos";

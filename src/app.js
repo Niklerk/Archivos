@@ -47,12 +47,7 @@ app.get('/vistaAspirante', (req,res)=>{
 });
 
 app.get('/cursosCoordinador', (req,res)=>{
-    let usuario = require('../listadoInicio.json');
-    if (usuario.rol == "Coordinador") {
-        res.render('cursosCoordinador');
-    } else {
-        res.render('index');
-    }
+    res.render('cursosCoordinador');
 });
 
 app.post('/cambiarEstado', (req,res)=>{
