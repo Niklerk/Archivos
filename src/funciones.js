@@ -731,72 +731,56 @@ const mostrarregistrados = () => {
 
 }
 
-const listarCursosDisponibles = () => {
+const listarCursosDisponibles = () => 
+{
+    listaCursos = require('../listadoCursos.json') 
+    let texto = "<div class='container'>" +
+                    "<div class='accordion' id='accordionExample'>";
+    var i = 1;
+    listaCursos.forEach(curso =>
+    {
+     if(curso.estado=="Disponible"){ 
+        texto = texto +
+                `<div class="card">
+                    <div class="card-header" id="heading${i}">
+                        <div class="row">
+                            <div class="col-sm-12 text-justify">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
+                                        Curso ${i}: ${curso.nombre}
+                                    </button>
+                                </h5>
+                            </div>
+                            <div class="col-sm-12 text-justify" style="padding-left: 50px">
+                                Código de curso: ${curso.id}.
+                                <br>
+                                Valor: ${curso.valor} pesos.
+                                <br>
+                                Estado: ${curso.estado}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
+                      <div class="card-body" style="padding-left: 60px">
+                            <h6 style="color: blue"> Información Detallada:</h6>
+                            Modalidad: ${curso.modalidad}
+                            <br>
+                            Intensidad: ${curso.intensidad}
+                            <br>
+                            Descripción: ${curso.descripcion}
+                      </div>
+                    </div>
+                  </div>`; 
+        i = i+1;           
+      }   
+    });
     
-    listaCursos = require('../listadoCursos.json')   
-    let texto = "<table class='table table-striped table-hover'> \
-                <thead class='thead-dark'> \
-                <th>ID</th>\
-                <th>NOMBRE</th>\
-                <th>DESCRIPCION</th>\
-                <th>VALOR</th>\
-                <th>MODALIDAD</th>\
-                <th>INTENSIDAD</th>\
-                <th>ESTADO</th>\
-                </thead>\
-                <tbody>";
-
-
-    listaCursos.forEach(cursos =>{
-
-    if(cursos.estado=="Disponible"){    
-      
-      texto = texto +
-             '<tr>' +
-             '<td>' + cursos.id + '</td>' +
-             '<td>' + cursos.nombre + '</td>' +
-             '<td>' + cursos.descripción + '</td>' +
-             '<td>' + cursos.valor + '</td>' +
-             '<td>' + cursos.modalidad + '</td>' +
-             '<td>' + cursos.intensidad + '</td>' +
-             '<td>' + cursos.estado + '</td></tr>'
-    
-    }  
-    
-    })
-
-    texto = texto + '</tbody></table>';
+    texto = texto  + "</div>";
+            
     return texto;
 
 }
-
-
-const inicioSesion = (correo, password) => {
-
-        listaUsuarios = require('../listadoUsuarios.json')
-        listaInicio = require('../listadoInicio.json')
-        
-        let usu = { 
-            
-            correo: correo,
-            password: password
-        };
-        
-        let buscarUsuCo = listaUsuarios.find(buscar => buscar.correo == correo);
-        let buscarUsuPas = listaUsuarios.find(buscar => buscar.password == password);
-        if (buscarUsuCo == buscarUsuPas) {
-            listaInicio = [];
-            listaInicio.push(buscarUsuCo);
-            guardarinicio();
-            return "Bienvenid@ " + buscarUsuCo.nombre + " usted a iniciado sesión"; 
-            
-        }else{
-
-            return "Usted a ingresado un dato errado";
-        }           
-}
-
-
 
 /******************* SECCION DE CATALINA FINALIZADA *************************************/
 
@@ -842,6 +826,11 @@ const iniciarSesion = (correo, contrasena) =>
         return "usuarioInicioInexistente";
 }
 
+const cerrarSesion = () =>
+{
+    fs.unlinkSync('listadoInicio.json');
+}
+
 /******************* SECCION DE INICIO DE SESION FINALIZADA *************************************/
 
 
@@ -859,7 +848,6 @@ module.exports = {
     crearusuario,
     mostrarregistrados,
     listarCursosDisponibles,
-    inicioSesion,
     listarCursosCoordinador,
     cambiarEstado,
     agregarCurso,
@@ -868,5 +856,6 @@ module.exports = {
     eliminarCursoPreinscripto, 
     iniciarSesion,
     listarUsuariosRol,
-    cambiarEstadoRol
+    cambiarEstadoRol,
+    cerrarSesion
 }

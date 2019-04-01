@@ -141,6 +141,14 @@ app.post('/eliminarCursoPreinscripto', (req,res)=>{
     });
 });
 
+app.get('/cerrarSesion', (req,res)=>
+{
+    funciones.cerrarSesion();
+    res.render('index', {
+        esCoordinador: true
+    });
+});
+
 
 app.get('*',(req,res)=>{
     res.render('error',{
