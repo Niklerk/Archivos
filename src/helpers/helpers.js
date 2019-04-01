@@ -69,3 +69,13 @@ hbs.registerHelper('mostrarCursosDetalles', (nombre) => {
 hbs.registerHelper('eliminarCursoPreinscripto', (id) => {
 	return funciones.eliminarCursoPreinscripto(id);
 })
+
+hbs.registerHelper('listarUsuariosRol', () =>
+{
+	return funciones.listarUsuariosRol();
+})
+
+hbs.registerHelper('cambiarEstadoRol',(cedula)=>
+{
+    return funciones.cambiarEstadoRol(cedula);
+})

@@ -57,6 +57,17 @@ app.post('/cambiarEstado', (req,res)=>{
     });
 });
 
+app.get('/usuariosRol', (req,res)=>{
+    res.render('usuariosRol');
+});
+
+app.post('/cambiarEstadoRol', (req,res)=>{
+    res.render('cambiarEstadoRol',{
+        cedula : req.body.cedula
+    });
+});
+
+
 app.post('/eliminarEstudiante', (req,res)=>{
     var texto  = req.body.cedula;
     res.render('eliminarEstudiante',{
