@@ -1,10 +1,22 @@
-{{>header}}
-    <div class="text-center" >
-        <h3>Bienvenido a la página de Cursos<h3>
+{{>headerConectado}}
+    
+	<div class="container">
+        <nav class="navbar navbar-expand-sm navbar-dark"  style="background-color: black;">
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cursosCoordinador">Gestión de Cursos</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/usuariosRol">Gestión de Usuarios</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+	    <h3 style="color: #076633" class="text-center">Bienvenido a la página de Usuarios</h3>
+	    <br>
     </div>
-    <br>
-   
-{{cambiarEstadoRol cedula}}
-    {{{listarUsuariosRol}}}
 
+    {{{listarUsuariosRol}}}
+    {{cambiarEstadoRol cedula}}
 {{>footer}}
