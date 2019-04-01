@@ -28,6 +28,21 @@ hbs.registerHelper('crearusuario',(cedula, nombre, rol, telefono, correo, passwo
     return funciones.crearusuario(cedula, nombre, rol, telefono, correo, password);
 })
 
+hbs.registerHelper('cambiarEstado',(cursoId)=>
+{
+    return funciones.cambiarEstado(cursoId);
+})
+
+hbs.registerHelper('eliminarEstudiante',(cedula, id)=>
+{
+    return funciones.eliminarEstudiante(cedula, id);
+})
+
+hbs.registerHelper('agregarCurso',(id, nombre, descripcion, valor, modalidad, intensidad, estado)=>
+{
+    return funciones.agregarCurso(id, nombre, descripcion, valor, modalidad, intensidad, estado);
+})
+
 hbs.registerHelper('mostrarregistrados', () =>
 {
 	return funciones.mostrarregistrados();
@@ -43,6 +58,10 @@ hbs.registerHelper('inicioSesion', (correo, password) =>
 	return funciones.inicioSesion(correo, password);
 })
 
+hbs.registerHelper('listarCursosCoordinador', () =>
+{
+	return funciones.listarCursosCoordinador();
+})
 hbs.registerHelper('mostrarCursosDetalles', (nombre) => {
 	return funciones.mostrarCursosDetalles(nombre);
 })
