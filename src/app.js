@@ -7,6 +7,10 @@ const port = process.env.PORT || 3000;
 var tipo = "Aspirante";
 require('./helpers/helpers');
 const funciones = require('./funciones');
+const mongoose = require('mongoose');
+const estudiante = require('./Models/estudiante');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 
 const directorioPublico = path.join(__dirname,'../public');
 const directorioPartials = path.join(__dirname,'../partials');
@@ -22,6 +26,21 @@ hbs.registerPartials(directorioPartials);
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.set('view engine','hbs');
+
+app.use(session({
+    secret: 'cat',
+    resave: false,
+    saveUninitialized: true
+}))
+
+app.use((req,res, next)=>{
+    if (req.session.usuario) {
+        res.locals.sesion= true,
+        res.locals.nombre= req.session.nombre 
+    }
+    next()
+})
+
 
 app.get('/',(req,res)=>{
     res.render('index', {
@@ -151,6 +170,13 @@ app.get('*',(req,res)=>{
     res.render('error',{
         estudiante: 'error'
     });
+})
+
+mongoose.connect('mongodb://localhost:27017/asignaturas',{useNewUrlParser: true}, (err,result)=>{
+    if (err) {
+        return console.log(err);
+    }
+    console.log('conectado');
 })
 
 app.listen(port, ()=>{
