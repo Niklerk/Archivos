@@ -172,7 +172,7 @@ app.get('*',(req,res)=>{
     });
 })
 
-mongoose.connect('mongodb://localhost:27017/asignaturas',{useNewUrlParser: true}, (err,result)=>{
+mongoose.connect('mongodb+srv://curso:clave@cluster0-vxm4f.mongodb.net/test?retryWrites=true',{useNewUrlParser: true}, (err,result)=>{
     if (err) {
         return console.log(err);
     }
