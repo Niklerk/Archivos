@@ -242,7 +242,7 @@ app.get('*',(req,res)=>{
     });
 })
 
-mongoose.connect('mongodb://localhost:27017/bdedcontinua',{useNewUrlParser: true}, (err,result)=>{
+mongoose.connect('mongodb://admin:admin1@ds141641.mlab.com:41641/dbedcontinua',{useNewUrlParser: true}, (err,result)=>{
     if (err) {
         return console.log(err);
     }
