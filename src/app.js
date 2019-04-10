@@ -73,10 +73,11 @@ app.get('/vistaAspirante', (req,res)=>
         if (err){
             return console.log(err)
         }
-        res.render('vistaAspirante',
+        console.log("ENTREE");
+        /*res.render('vistaAspirante',
         {
             cursosDisponibles: respuesta
-        })
+        })*/
     })
 });
 
