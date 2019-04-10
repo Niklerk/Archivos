@@ -8,7 +8,11 @@ var tipo = "Aspirante";
 require('./helpers/helpers');
 const funciones = require('./funciones');
 const mongoose = require('mongoose');
+
 const estudiante = require('./Models/estudiante');
+const Curso = require('./Models/curso');
+const CursoAspirante = require('./Models/cursoAspirante');
+
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 
@@ -62,8 +66,18 @@ app.get('/listado', (req,res)=>{
     res.render('listado');
 });
 
-app.get('/vistaAspirante', (req,res)=>{
-    res.render('vistaAspirante');
+app.get('/vistaAspirante', (req,res)=>
+{
+    Curso.find({estado: "Disponible"}, (err,respuesta) =>
+    {
+        if (err){
+            return console.log(err)
+        }
+        res.render('vistaAspirante',
+        {
+            cursosDisponibles: respuesta
+        })
+    })
 });
 
 app.get('/cursosCoordinador', (req,res)=>{
@@ -92,10 +106,66 @@ app.post('/eliminarEstudiante', (req,res)=>{
     });
 });
 
-app.post('/resultadoInscripcion', (req,res)=>{
-    res.render('resultadoInscripcion',{
-        codCurso: req.body.codCurso
+app.post('/resultadoInscripcion', (req,res)=>
+{   
+    let codigoCurso =  req.body.codigo;
+
+    if(cursoExiste(codCurso))
+    {
+        if(!usuarioInscrito(codCurso))
+        {
+            let dupla = {
+                cur_id: codCurso,
+                usu_id: usuarioConectado.cedula,
+                estado: true
+            };
+            listaCursosAspirantes.push(dupla);
+            guardarCursoAspirante();
+            return mostrarInscripcionExitosa(codCurso);
+        }
+        else
+            return mostrarUsuarioInscrito();
+    }
+    else
+        return mostrarCursoInexistente();
+
+
+    Curso.findById(codigoCurso, (err, curso) =>
+    {
+        if (err){
+            return console.log(err)
+        }
+
+        if (!curso)
+        {
+            res.render ('resultadoInscripcion', {          
+                respuestaInscripcion: funciones.mostrarCursoInexistente()
+            })
+        }
+
+        var cedula = 4532;
+        
     });
+
+    /*let estudiante = new Estudiante ({
+        nombre : req.body.nombre,
+        matematicas : req.body.matematicas,
+        ingles : req.body.ingles,
+        programacion :  req.body.programacion,
+        password : bcrypt.hashSync(req.body.password, 10)
+        
+    })
+
+    estudiante.save((err, resultado) => {
+        if (err){
+            return res.render ('indexpost', {
+                mostrar : err
+            })          
+        }       
+        res.render ('resultadoInscripcion', {          
+            codCurso: req.body.codigo
+        })      
+    })*/ 
 });
 
 app.get('/cursosAspirante', (req,res)=>{
@@ -172,7 +242,7 @@ app.get('*',(req,res)=>{
     });
 })
 
-mongoose.connect('mongodb+srv://curso:clave@cluster0-vxm4f.mongodb.net/test?retryWrites=true',{useNewUrlParser: true}, (err,result)=>{
+mongoose.connect('mongodb://localhost:27017/bdedcontinua',{useNewUrlParser: true}, (err,result)=>{
     if (err) {
         return console.log(err);
     }

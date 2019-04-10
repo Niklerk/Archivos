@@ -8,14 +8,14 @@ hbs.registerHelper('listar',()=>{
     return funciones.mostrar();
 })
 
-hbs.registerHelper('listado_total_cursos_aspirante', () =>
+hbs.registerHelper('mostrarCursosTotalesAspirante', (cursosDisponibles) =>
 {
-	return funciones.mostrarCursosTotalesAspirante();
+	return funciones.mostrarCursosTotalesAspirante(cursosDisponibles);
 })
 
-hbs.registerHelper('inscribirCurso',(codCurso)=>
+hbs.registerHelper('inscribirCurso', (texto)=>
 {
-    return funciones.inscribirCurso(codCurso);
+    return funciones.inscribirCurso(texto);
 })
 
 hbs.registerHelper('listado_cursos_aspirante', () =>

@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 listaEstudiantes = [];
 listaUsuarios = [];
 listaCursos = [];
@@ -365,8 +366,9 @@ const listarCursos = () =>
 
 const obtenerCabecera = () =>
 {
-    let texto = "<div class='container'>" +
-                    "<div class='accordion' id='accordionExample'>";
+    let texto = "<form action='/resultadoInscripcion' method='post'>" + 
+                    "<div class='container'>" +
+                        "<div class='accordion' id='accordionExample'>";
     return texto;
 }
 
@@ -387,12 +389,15 @@ const obtenerCuerpo = (cursos) =>
                                 </button>
                             </h5>
                         </div>
-                        <div class="col-sm-12 text-justify" style="padding-left: 50px">
-                            Código de curso: ${curso.id}.
-                            <br>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-10 text-justify" style="padding-left: 50px">
                             Descripción: ${curso.descripcion}
                             <br>
                             Valor: ${curso.valor} pesos.
+                        </div>
+                        <div class="col-sm-2 text-justify" >
+                            <button class="btn btn-primary" name="codigo" value="${curso.id}">Inscribir</button>
                         </div>
                     </div>
                 </div>
@@ -413,8 +418,9 @@ const obtenerCuerpo = (cursos) =>
 
 const obtenerPie = () =>
 {
-    let texto =     "</div>";
-                "</div>";
+    let texto =         "</div>" + 
+                    "</div>" +
+                "</form>";
     return texto;
 }
 
@@ -425,12 +431,8 @@ const eliminadoExito = () =>
     return texto;
 }
 
-const mostrarCursosTotalesAspirante = () =>
+const mostrarCursosTotalesAspirante = (cursosDisponibles) =>
 {
-    listarCursos();
-
-    let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Disponible");
-
     let cabecera = obtenerCabecera();
     let cuerpo = obtenerCuerpo(cursosDisponibles);
     let pie = obtenerPie();
