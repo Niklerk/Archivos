@@ -73,7 +73,6 @@ app.get('/vistaAspirante', (req,res)=>
         if (err){
             return console.log(err)
         }
-        console.log("ENTREE");
         /*res.render('vistaAspirante',
         {
             cursosDisponibles: respuesta
@@ -217,7 +216,20 @@ app.post('/registro', (req,res)=>{
 app.post('/sesionusuario', (req,res)=>
 {
     var vista = funciones.iniciarSesion(req.body.correo, req.body.password);
-    res.render(vista);
+    
+    Curso.find({estado: "Disponible"}, (err,respuesta) =>
+    {
+        if (err){
+            return console.log(err)
+        }
+        console.log("\nRESPUESTA = "+respuesta);
+        /*res.render('vistaAspirante',
+        {
+            cursosDisponibles: respuesta
+        })*/
+    })
+
+    //res.render(vista);
 });
 
 app.post('/eliminarCursoPreinscripto', (req,res)=>{
