@@ -72,14 +72,14 @@ app.get('/vistaAspirante', (req,res)=>
     db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
     {
         if (err){
-            return console.log(err)
+            return console.log("\nERROR EN VISTAASPIRANTE = "+err)
         }
         let cursosDis = JSON.parse(JSON.stringify(respuesta));
         res.render('vistaAspirante',
         {
             cursosDisponibles: cursosDis
         })
-    })
+    });
 });
 
 app.get('/cursosCoordinador', (req,res)=>{
@@ -116,27 +116,9 @@ app.post('/resultadoInscripcion', (req,res)=>
 {   
     let codigoCurso =  req.body.codigo;
 
-    /*if(cursoExiste(codCurso))
-    {
-        if(!usuarioInscrito(codCurso))
-        {
-            let dupla = {
-                cur_id: codCurso,
-                usu_id: usuarioConectado.cedula,
-                estado: true
-            };
-            listaCursosAspirantes.push(dupla);
-            guardarCursoAspirante();
-            return mostrarInscripcionExitosa(codCurso);
-        }
-        else
-            return mostrarUsuarioInscrito();
-    }
-    else
-        return mostrarCursoInexistente();*/
+    var idCurso = new mongoose.mongo.ObjectId(codigoCurso);
 
-
-    db.collection("cursos").findById(codigoCurso, (err, curso) =>
+    db.collection("cursos").findOne({ _id: idCurso }, (err, curso) =>
     {
         if (err){
             return console.log(err)
@@ -144,49 +126,45 @@ app.post('/resultadoInscripcion', (req,res)=>
 
         if (!curso)
         {
-            res.render ('resultadoInscripcion', {          
+            return res.render ('resultadoInscripcion', {          
                 respuestaInscripcion: funciones.mostrarCursoInexistente()
             })
         }
 
-        var cedula = 4532;  //REEMPLAZAR POR ID REAL
+        var ident = "5caeb6e2e7179a36ac344aa4";  //REEMPLAZAR POR ID REAL
 
-        db.collection("cursos").findById(codigoCurso, (err, curso) =>
+        db.collection("cursosAspirantes").find({cur_id: codigoCurso}, {usu_id: ident}).toArray( (err, dupla) =>
         {
-            listaCursosAspirantes.filter(dupla => dupla.cur_id == codCurso && dupla.usu_id == cedula);
             if (err){
                 return console.log(err)
             }
 
-            if (!curso)
+            dupla = JSON.parse(JSON.stringify(dupla));
+            if (dupla.length != 0)
             {
-                res.render ('resultadoInscripcion', {          
-                    respuestaInscripcion: funciones.mostrarCursoInexistente()
+                return res.render ('resultadoInscripcion', {          
+                    respuestaInscripcion: funciones.mostrarUsuarioInscrito()
                 })
             }
-        });
-        
+
+            let duplaNueva = {
+                cur_id: codigoCurso,
+                usu_id: ident,
+                estado: true
+            };
+
+            db.collection("cursosAspirantes").insertOne(duplaNueva, (err, resultado) => 
+            {
+                if (err){
+                    return console.log(err)
+                }
+                return res.render ('resultadoInscripcion', {          
+                    //respuestaInscripcion: funciones.mostrarInscripcionExitosa;
+                    respuestaInscripcion: "Inscripcion Exitosa"
+                })   
+            });  
+        });   
     });
-
-    /*let estudiante = new Estudiante ({
-        nombre : req.body.nombre,
-        matematicas : req.body.matematicas,
-        ingles : req.body.ingles,
-        programacion :  req.body.programacion,
-        password : bcrypt.hashSync(req.body.password, 10)
-        
-    })
-
-    estudiante.save((err, resultado) => {
-        if (err){
-            return res.render ('indexpost', {
-                mostrar : err
-            })          
-        }       
-        res.render ('resultadoInscripcion', {          
-            codCurso: req.body.codigo
-        })      
-    })*/ 
 });
 
 app.get('/cursosAspirante', (req,res)=>{
@@ -259,7 +237,8 @@ app.post('/sesionusuario', (req,res)=>
             let cursosDis = JSON.parse(JSON.stringify(respuesta));
             res.render('vistaAspirante',
             {
-                cursosDisponibles: cursosDis
+                cursosDisponibles: cursosDis,
+                sesion: true
             })
         })
     }

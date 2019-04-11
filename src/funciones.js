@@ -441,7 +441,7 @@ const obtenerCuerpo = (cursos) =>
                             Valor: ${curso.valor} pesos.
                         </div>
                         <div class="col-sm-2 text-justify" >
-                            <button class="btn btn-primary" name="codigo" value="${curso.id}">Inscribir</button>
+                            <button class="btn btn-primary" name="codigo" value="${curso._id}">Inscribir</button>
                         </div>
                     </div>
                 </div>
@@ -912,5 +912,8 @@ module.exports = {
     listarUsuariosRol,
     cambiarEstadoRol,
     cerrarSesion,
-    listarCursosDocentes
+    listarCursosDocentes,
+    mostrarCursoInexistente,
+    mostrarUsuarioInscrito,
+    mostrarInscripcionExitosa
 }
