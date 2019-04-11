@@ -9,6 +9,7 @@ require('./helpers/helpers');
 const funciones = require('./funciones');
 const mongoose = require('mongoose');
 
+var db = null;
 const estudiante = require('./Models/estudiante');
 const Curso = require('./Models/curso');
 const CursoAspirante = require('./Models/cursoAspirante');
@@ -68,11 +69,12 @@ app.get('/listado', (req,res)=>{
 
 app.get('/vistaAspirante', (req,res)=>
 {
-    Curso.find({estado: "Disponible"}, (err,respuesta) =>
+    db.collection("cursos").find({}).toArray((err,respuesta) =>
     {
         if (err){
             return console.log(err)
         }
+        console.log("respuesta = "+ JSON.stringify(respuesta)[0] );
         /*res.render('vistaAspirante',
         {
             cursosDisponibles: respuesta
@@ -216,18 +218,39 @@ app.post('/registro', (req,res)=>{
 app.post('/sesionusuario', (req,res)=>
 {
     var vista = funciones.iniciarSesion(req.body.correo, req.body.password);
-    
-    Curso.find({estado: "Disponible"}, (err,respuesta) =>
+
+    let est = new estudiante ({
+        nombre : 334,
+        matematicas : 23,
+        ingles : 234,
+        programacion :  234,
+        password : 'sdad'
+    })
+
+    est.validate(function(err) {
+        if (err)
+            console.log("Error = "+err);
+        else
+            console.log('pass validate');
+    });
+
+
+    /*EL SIGUIENTE FRAGMETO DE CODIGO SOLO ES DE PRUEBA*/
+    /*db.collection("cursos").find({}).toArray((err,respuesta) =>
     {
         if (err){
             return console.log(err)
         }
-        console.log("\nRESPUESTA = "+respuesta);
-        /*res.render('vistaAspirante',
+        //console.log( JSON.parse(JSON.stringify(respuesta))[0].nombre );
+
+        let cursosDis = JSON.parse(JSON.stringify(respuesta));
+        
+        res.render('vistaAspirante',
         {
-            cursosDisponibles: respuesta
-        })*/
-    })
+            cursosDisponibles: cursosDis
+        })
+    })*/
+
 
     //res.render(vista);
 });
@@ -255,10 +278,12 @@ app.get('*',(req,res)=>{
     });
 })
 
+
 mongoose.connect('mongodb://admin:admin1@ds141641.mlab.com:41641/dbedcontinua',{useNewUrlParser: true}, (err,result)=>{
     if (err) {
         return console.log(err);
     }
+    db = result;
     console.log('conectado');
 })
 
