@@ -174,6 +174,47 @@ const listarCursosCoordinador = () => {
 
 }
 
+const listarCursosDocentes = () => {
+    listarCursos();
+    listarCursosDocente();
+    obtenerUsuarioConectado()
+    var usuario = usuarioInicioExiste(usuarioConectado.correo)
+    let duplasCursosDocente = listaCursosDocente.filter(dupla => dupla.usu_id == usuario.cedula);
+
+    let texto = "<table class='table table-striped table-hover'> \
+                <thead class='thead-dark'> \
+                <th style='display: none' >ID</th>\
+                <th>NOMBRE</th>\
+                <th>DESCRIPCION</th>\
+                <th>VALOR</th>\
+                <th>MODALIDAD</th>\
+                <th>INTENSIDAD</th>\
+                <th>ESTADO</th>\
+                </thead>\
+                <tbody>";
+    let cursosFiltrados = listaCursos.filter(fil =>{
+        let res = duplasCursosDocente.find((fild)=>{
+            return fil.id == fild.cur_id;
+        });
+     return res != undefined;
+    });
+
+    cursosFiltrados.forEach(cursos =>{
+    texto +='<tr>' +
+            "<td style='display: none'>" + cursos.id + '</td>' +
+            '<td>' + crearDetalleUsuarios(cursos,false) + '</td>' +
+            '<td>' + cursos.descripcion + '</td>' +
+            '<td>' + cursos.valor + '</td>' +
+            '<td>' + cursos.modalidad + '</td>' +
+            '<td>' + cursos.intensidad + '</td>' +
+            '<td>' + cursos.estado + '</td>' +
+            '</tr>'
+    })
+
+    texto = texto + '</tbody></table>';
+    return texto;
+
+}
 
 const listarUsuariosRol = () => {
     listarUsuariosInscritos();
@@ -203,17 +244,17 @@ const listarUsuariosRol = () => {
 }
 
 
-let crearDetalleUsuarios = (_curso)=>{
+let crearDetalleUsuarios = (_curso, esCoordinador = true)=>{
     let html = '';
     listarCursosAspirantes();
     listarUsuariosInscritos();
     html += obtenerCabeceraCoordinador(_curso);
-    html += obtenerCuerpoCoordinador(_curso);
+    html += obtenerCuerpoCoordinador(_curso, esCoordinador);
     html += obtenerPie();
     return html;
 }
 
-const obtenerCuerpoCoordinador = (_curso) =>
+const obtenerCuerpoCoordinador = (_curso, esCoordinador) =>
 {
     let texto = '';
     texto += `<div class="card">
@@ -237,7 +278,7 @@ const obtenerCuerpoCoordinador = (_curso) =>
                                 if(!encontrado){
                                     texto += 'no hay usuario';
                                 }else{
-                                    texto += mostrarUsuarioCurso(encontrado,_curso.id);
+                                    texto += mostrarUsuarioCurso(encontrado,_curso.id, esCoordinador);
                                 }
                             });
                         }
@@ -256,22 +297,25 @@ const obtenerCabeceraCoordinador = (curso) =>
 }
 
 
-const mostrarUsuarioCurso = (_Usuarios, id) => {
+const mostrarUsuarioCurso = (_Usuarios, id, esCoordinador) => {
 
     let texto = "<table class='table table-striped table-hover'> \
                 <thead class='thead-dark'> \
                 <th>CEDULA</th>\
                 <th>NOMBRE</th>\
-                <th>TELEFONO</th>\
-                <th>ELIMINAR</th>\
-                </thead>\
+                <th>TELEFONO</th>"
+    if (esCoordinador){ 
+        texto += "<th>ELIMINAR</th>"
+    }
+    texto += "</thead>\
                 <tbody>";
       texto +='<tr>' +
              '<td>' + _Usuarios.cedula + '</td>' +
              '<td>' + _Usuarios.nombre + '</td>' +
-             '<td>' + _Usuarios.telefono + '</td>' +
-             `<td><form class='form' action="/eliminarEstudiante" method="POST"><button class="btn btn-danger" name='cedula' value="${_Usuarios.cedula}&${id}">Eliminar</form> </td>` 
-
+             '<td>' + _Usuarios.telefono + '</td>' 
+    if (esCoordinador){ 
+        texto += `<td><form class='form' action="/eliminarEstudiante" method="POST"><button class="btn btn-danger" name='cedula' value="${_Usuarios.cedula}&${id}">Eliminar</form> </td>` 
+    }
     texto += '</tbody></table>';
     return texto;
 
@@ -447,6 +491,16 @@ const listarCursosAspirantes = () =>
         listaCursosAspirantes = require('../listadoCursosAspirantes.json');
     } catch (error) {
         listaCursosAspirantes = [];
+    }
+}
+
+const listarCursosDocente = () =>
+{
+    try 
+    {
+        listaCursosDocente = require('../listadoCursosDocente.json');
+    } catch (error) {
+        listaCursosDocente = [];
     }
 }
 
@@ -814,6 +868,8 @@ const iniciarSesion = (correo, contrasena) =>
                 return "vistaAspirante";
             else if(rol == "Coordinador")
                 return "cursosCoordinador"; //CAMBIAR POR EL NOMBRE DE LA VISTA DEL COORDINADOR
+            else
+                return "cursosDocente";
         }
         else
         {
@@ -855,5 +911,6 @@ module.exports = {
     iniciarSesion,
     listarUsuariosRol,
     cambiarEstadoRol,
-    cerrarSesion
+    cerrarSesion,
+    listarCursosDocentes
 }

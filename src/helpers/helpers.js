@@ -70,3 +70,8 @@ hbs.registerHelper('listarUsuariosRol', () =>
 	return funciones.listarUsuariosRol();
 })
 
+hbs.registerHelper('listarCursosDocentes', () =>
+{
+	return funciones.listarCursosDocentes();
+})
+
