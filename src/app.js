@@ -263,7 +263,7 @@ app.post('/sesionusuario', (req,res)=>
         // {
         //     cursosDisponibles: respuesta
         // })
-    });
+        // });
     
     var esCoordinador = vista == 'cursosCoordinador' ? true: false;
     res.render(vista,{
