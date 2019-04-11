@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.set('view engine','hbs');
 
 app.use(session({
-    secret: 'cat',
+    secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true
 }))
@@ -84,6 +84,10 @@ app.get('/vistaAspirante', (req,res)=>
 
 app.get('/cursosCoordinador', (req,res)=>{
     res.render('cursosCoordinador');
+});
+
+app.get('/cursosDocente', (req,res)=>{
+    res.render('cursosDocente');
 });
 
 app.post('/cursosCoordinador', (req,res)=>{
@@ -218,6 +222,8 @@ app.post('/registro', (req,res)=>{
 app.post('/sesionusuario', (req,res)=>
 {
     var vista = funciones.iniciarSesion(req.body.correo, req.body.password);
+    req.session.usuario = req.body.correo;
+    req.session.vista = vista;
 
     let est = new estudiante ({
         nombre : 334,
@@ -252,7 +258,18 @@ app.post('/sesionusuario', (req,res)=>
     })*/
 
 
-    //res.render(vista);
+        // console.log("\nRESPUESTA = "+respuesta);
+        // res.render('vistaAspirante',
+        // {
+        //     cursosDisponibles: respuesta
+        // })
+    });
+    
+    var esCoordinador = vista == 'cursosCoordinador' ? true: false;
+    res.render(vista,{
+        coordinado: esCoordinador,
+        sesion: true
+    });
 });
 
 app.post('/eliminarCursoPreinscripto', (req,res)=>{
