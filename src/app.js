@@ -69,16 +69,16 @@ app.get('/listado', (req,res)=>{
 
 app.get('/vistaAspirante', (req,res)=>
 {
-    db.collection("cursos").find({}).toArray((err,respuesta) =>
+    db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
     {
         if (err){
             return console.log(err)
         }
-        console.log("respuesta = "+ JSON.stringify(respuesta)[0] );
-        /*res.render('vistaAspirante',
+        let cursosDis = JSON.parse(JSON.stringify(respuesta));
+        res.render('vistaAspirante',
         {
-            cursosDisponibles: respuesta
-        })*/
+            cursosDisponibles: cursosDis
+        })
     })
 });
 
@@ -116,7 +116,7 @@ app.post('/resultadoInscripcion', (req,res)=>
 {   
     let codigoCurso =  req.body.codigo;
 
-    if(cursoExiste(codCurso))
+    /*if(cursoExiste(codCurso))
     {
         if(!usuarioInscrito(codCurso))
         {
@@ -133,10 +133,10 @@ app.post('/resultadoInscripcion', (req,res)=>
             return mostrarUsuarioInscrito();
     }
     else
-        return mostrarCursoInexistente();
+        return mostrarCursoInexistente();*/
 
 
-    Curso.findById(codigoCurso, (err, curso) =>
+    db.collection("cursos").findById(codigoCurso, (err, curso) =>
     {
         if (err){
             return console.log(err)
@@ -149,7 +149,22 @@ app.post('/resultadoInscripcion', (req,res)=>
             })
         }
 
-        var cedula = 4532;
+        var cedula = 4532;  //REEMPLAZAR POR ID REAL
+
+        db.collection("cursos").findById(codigoCurso, (err, curso) =>
+        {
+            listaCursosAspirantes.filter(dupla => dupla.cur_id == codCurso && dupla.usu_id == cedula);
+            if (err){
+                return console.log(err)
+            }
+
+            if (!curso)
+            {
+                res.render ('resultadoInscripcion', {          
+                    respuestaInscripcion: funciones.mostrarCursoInexistente()
+                })
+            }
+        });
         
     });
 
@@ -225,7 +240,31 @@ app.post('/sesionusuario', (req,res)=>
     req.session.usuario = req.body.correo;
     req.session.vista = vista;
 
-    let est = new estudiante ({
+    var esCoordinador = vista == 'cursosCoordinador' ? true: false;
+    if(esCoordinador)
+    {
+        res.render(vista,{
+            coordinado: esCoordinador,
+            sesion: true
+        });
+    }
+
+    if(vista == 'vistaAspirante')
+    {
+        db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
+        {
+            if (err){
+                return console.log(err)
+            }
+            let cursosDis = JSON.parse(JSON.stringify(respuesta));
+            res.render('vistaAspirante',
+            {
+                cursosDisponibles: cursosDis
+            })
+        })
+    }
+
+    /*let est = new estudiante ({
         nombre : 334,
         matematicas : 23,
         ingles : 234,
@@ -238,7 +277,7 @@ app.post('/sesionusuario', (req,res)=>
             console.log("Error = "+err);
         else
             console.log('pass validate');
-    });
+    });*/
 
 
     /*EL SIGUIENTE FRAGMETO DE CODIGO SOLO ES DE PRUEBA*/
@@ -256,20 +295,6 @@ app.post('/sesionusuario', (req,res)=>
             cursosDisponibles: cursosDis
         })
     })*/
-
-
-        // console.log("\nRESPUESTA = "+respuesta);
-        // res.render('vistaAspirante',
-        // {
-        //     cursosDisponibles: respuesta
-        // })
-    });
-    
-    var esCoordinador = vista == 'cursosCoordinador' ? true: false;
-    res.render(vista,{
-        coordinado: esCoordinador,
-        sesion: true
-    });
 });
 
 app.post('/eliminarCursoPreinscripto', (req,res)=>{
