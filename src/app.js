@@ -49,9 +49,22 @@ app.use((req,res, next)=>{
 
 
 app.get('/',(req,res)=>{
-    res.render('index', {
-        esCoordinador: true
+
+    esCoordinador: true   
+    
+    Curso.find({}).exec((err,respuesta) =>
+    {
+        if (err){
+            return console.log(" ERROR = " + err)
+        }
+        
+        res.render('index',
+        {
+            listadoCursosdb : respuesta 
+        
+        })
     });
+
 });
 
 

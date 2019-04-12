@@ -75,3 +75,8 @@ hbs.registerHelper('listarCursosDocentes', () =>
 	return funciones.listarCursosDocentes();
 })
 
+hbs.registerHelper('cursosDisponibledb', (listadoCursosdb) =>
+{
+	return funciones.cursosDisponibledb(listadoCursosdb);
+})
+
