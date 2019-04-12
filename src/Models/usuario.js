@@ -3,46 +3,33 @@ const uniqueValidator = require('mongoose-unique-validator');
 const schema = mongoose.Schema;
 
 const usuarioSchema = new schema({
-    cedula : {
+    cedula: {
         type: Number,
         require : true,
-        minlenght: 1,
-        maxlenght: 12,
-        message: 'Cedula no válida.'
+        message: 'Usuario invalido'
     },
     nombre: {
         type: String,
-        require : true,
-        minlenght: 3,
-        maxlenght: 60,
-        message: 'Nombre no válido.'
+        required : true,
+        trim : true,
+
     },
     telefono :{ 
         type: Number,
-        require : true,
-        default: 0,
-        minlenght: 7,
-        maxlenght : 15,
-        message: 'Número no válido.'
+        required : true
     },
     correo: {
         type: String,
-        require : true,
-        default: "Ej: usuario@servidor.com",
-        minlenght: 7,
-        maxlenght: 13,
-        message: 'Modalidad no válida.'
+        required : true,
+        uniqueCaseInsensitive: true
     },
     password: {
         type: String,
-        require : true,
-        minlenght: 1,
-        maxlenght: 30,
-        message: 'Password no válida.'
+        required : true
     },
     rol: {
-        type: String
-        require : true
+        type: String,
+        required : true
     }
 });
 
