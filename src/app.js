@@ -13,6 +13,7 @@ var db = null;
 const estudiante = require('./Models/estudiante');
 const Curso = require('./Models/curso');
 const CursoAspirante = require('./Models/cursoAspirante');
+const Usuario = require('./Models/usuario');
 
 const bcrypt = require('bcrypt');
 const session = require('express-session');
@@ -50,9 +51,22 @@ app.use((req,res, next) =>
 
 
 app.get('/',(req,res)=>{
-    res.render('index', {
-        esCoordinador: true
+
+    esCoordinador: true   
+    
+    Curso.find({}).exec((err,respuesta) =>
+    {
+        if (err){
+            return console.log(" ERROR = " + err)
+        }
+        
+        res.render('index',
+        {
+            listadoCursosdb : respuesta 
+        
+        })
     });
+
 });
 
 
@@ -205,16 +219,59 @@ app.get('/usuariosexiste', (req,res)=>{
 
 
 app.post('/registro', (req,res)=>{
-    res.render('registro',{
+ 
+Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
+
+    if (error) {
+
+        return console.log("error")
+    }
+    if (dato != null) {
+       
+       res.render('registro',{
+         mostrar : "El correo " + dato.correo + " ya se encuentra registrado en la Base de datos"  
+       }) 
+
+    }
+
+    if (!dato) {
+
+    
+        let usuario = new Usuario ({
+            cedula: req.body.cedula,
+            nombre: req.body.nombre,
+            telefono: req.body.telefono,
+            correo: req.body.correo,
+            rol: req.body.rol,
+            password: bcrypt.hashSync(req.body.password, 10)
         
-        cedula: req.body.cedula,
-        nombre: req.body.nombre,
-        telefono: req.body.telefono,
-        correo: req.body.correo,
-        password: req.body.password,
-        rol: req.body.rol
-    });
+        })
+
+        usuario.save((err, resultado) => {
+        
+               if(err){
+
+                  res.render('registro',{
+                   mostrar : err
+               })
+        }
+
+               res.render('registro',{
+                
+                  mostrar : "Usuario " + resultado.nombre + " registrado con exito"
+
+               })
+
+        });
+
+    }
+
+
 });
+
+});
+
+
 
 app.post('/sesionusuario', (req,res)=>
 {

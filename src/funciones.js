@@ -834,6 +834,58 @@ const listarCursosDisponibles = () =>
 
 }
 
+const cursosDisponibledb = (listadoCursosdb) =>
+{
+      
+  let texto = "<div class='container'>" +
+                    "<div class='accordion' id='accordionExample'>";
+    var i = 1;
+    listadoCursosdb.forEach(curso =>
+    {
+     if(curso.estado=="Disponible"){ 
+        texto = texto +
+                `<div class="card">
+                    <div class="card-header" id="heading${i}">
+                        <div class="row">
+                            <div class="col-sm-12 text-justify">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
+                                        Curso ${i}: ${curso.nombre}
+                                    </button>
+                                </h5>
+                            </div>
+                            <div class="col-sm-12 text-justify" style="padding-left: 50px">
+                                Código de curso: ${curso.id}.
+                                <br>
+                                Valor: ${curso.valor} pesos.
+                                <br>
+                                Estado: ${curso.estado}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
+                      <div class="card-body" style="padding-left: 60px">
+                            <h6 style="color: blue"> Información Detallada:</h6>
+                            Modalidad: ${curso.modalidad}
+                            <br>
+                            Intensidad: ${curso.intensidad}
+                            <br>
+                            Descripción: ${curso.descripcion}
+                      </div>
+                    </div>
+                  </div>`; 
+        i = i+1;           
+      }   
+    });
+    
+    texto = texto  + "</div>";
+            
+    return texto;
+
+}
+
+
 /******************* SECCION DE CATALINA FINALIZADA *************************************/
 
 
@@ -885,6 +937,9 @@ const cerrarSesion = () =>
     fs.unlinkSync('listadoInicio.json');
 }
 
+
+
+
 /******************* SECCION DE INICIO DE SESION FINALIZADA *************************************/
 
 
@@ -915,5 +970,7 @@ module.exports = {
     listarCursosDocentes,
     mostrarCursoInexistente,
     mostrarUsuarioInscrito,
-    mostrarInscripcionExitosa
+    mostrarInscripcionExitosa,
+    cursosDisponibledb
+    
 }
