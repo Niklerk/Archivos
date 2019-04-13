@@ -147,11 +147,9 @@ app.post('/resultadoInscripcion', (req,res)=>
             })
         }
 
-        //var ident = "5caeb6e2e7179a36ac344aa4";  //REEMPLAZAR POR ID REAL
-        var ident = usuarioCompleto._id;
-        console.log("ident = "+ident);
+        var ident = res.locals.usuarioCompleto._id;
 
-        /*db.collection("cursosAspirantes").find({cur_id: codigoCurso}, {usu_id: ident}).toArray( (err, dupla) =>
+        db.collection("cursosAspirantes").find({cur_id: codigoCurso}, {usu_id: ident}).toArray( (err, dupla) =>
         {
             if (err){
                 return console.log(err)
@@ -176,12 +174,13 @@ app.post('/resultadoInscripcion', (req,res)=>
                 if (err){
                     return console.log(err)
                 }
-                return res.render ('resultadoInscripcion', {          
-                    //respuestaInscripcion: funciones.mostrarInscripcionExitosa;
-                    respuestaInscripcion: "Inscripcion Exitosa"
+                var usuario = res.locals.usuarioCompleto;
+                return res.render ('resultadoInscripcion', 
+                {          
+                    respuestaInscripcion: funciones.mostrarInscripcionExitosa(curso, usuario)
                 })   
             });  
-        });*/  
+        });
     });
 });
 
@@ -278,8 +277,6 @@ app.post('/sesionusuario', (req,res)=>
     var esCoordinador = false;
     var correoIngresado = req.body.correo;
     var contIngresada = req.body.password;
-
-    console.log("correo = "+correoIngresado + "  contIngresada = "+contIngresada);
 
     db.collection("usuarios").findOne({ correo: correoIngresado }, (err, usuario) =>
     {
