@@ -156,7 +156,7 @@ app.post('/resultadoInscripcion', (req,res)=>
             }
 
             dupla = JSON.parse(JSON.stringify(dupla));
-            if (dupla.length != 0)
+            if (dupla.cur_id != undefined)
             {
                 return res.render ('resultadoInscripcion', {          
                     respuestaInscripcion: funciones.mostrarUsuarioInscrito()
@@ -184,8 +184,71 @@ app.post('/resultadoInscripcion', (req,res)=>
     });
 });
 
-app.get('/cursosAspirante', (req,res)=>{
-    res.render('cursosAspirante');
+app.post('/eliminarInscripcion', (req,res) => 
+{
+    let codigoCurso =  req.body.codigo;
+    var ident = res.locals.usuarioCompleto._id;
+
+    db.collection("cursosAspirantes").findOneAndDelete( ({cur_id: codigoCurso}, {usu_id: ident}), req.body, (err, dupla) =>
+    {
+        if (err){
+            return console.log("\nERROR = "+err)
+        }
+
+        var idCurso = new mongoose.mongo.ObjectId(codigoCurso);
+        db.collection("cursos").findOne({ _id: idCurso }, (err, curso) =>
+        {
+            res.render('resultadoEliminacionInscripcion',{
+                respuestaEliminacionInscripcion: funciones.mostrarEliminacionInscripcionExitosa(curso)
+            });
+        });
+        
+    });
+});
+
+
+app.get('/cursosAspirante', (req,res) => 
+{
+    var ident = res.locals.usuarioCompleto._id;
+    var cursosAspirante = [];
+
+    db.collection("cursosAspirantes").find({ usu_id: ident }).toArray((err,respuesta) =>
+    {
+        if (err){
+            return console.log("\nERROR = "+err)
+        }
+
+        let duplasCursosAspirante = JSON.parse(JSON.stringify(respuesta));
+
+        if(duplasCursosAspirante.length != 0)
+        {
+            db.collection("cursos").find({}).toArray((err,respuesta) =>
+            {
+                if (err){
+                    return console.log("\nERROR = "+err)
+                }
+                let listaCursos = JSON.parse(JSON.stringify(respuesta));
+
+                duplasCursosAspirante.forEach(dupla =>
+                {
+                    cursosAspirante.push(listaCursos.filter(curso => curso._id == dupla.cur_id).pop());
+                });
+
+                return res.render('cursosAspirante', 
+                {          
+                    listado_cursos_aspirante: cursosAspirante
+                }) 
+            });  
+        }
+        else
+        {
+            return res.render('cursosAspirante', 
+            {          
+                listado_cursos_aspirante: []
+            }) 
+        }
+        
+    });
 });
 
 app.get('/usuarios', (req,res)=>{
@@ -303,7 +366,7 @@ app.post('/sesionusuario', (req,res)=>
             db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
             {
                 if (err){
-                    return console.log("\nERROR EN VISTAASPIRANTE = "+err)
+                    return console.log("\nERROR = "+err)
                 }
                 let cursosDis = JSON.parse(JSON.stringify(respuesta));
                 return res.render('vistaAspirante',
@@ -357,14 +420,6 @@ app.post('/sesionusuario', (req,res)=>
             cursosDisponibles: cursosDis
         })
     })*/
-});
-
-app.post('/eliminarCursoPreinscripto', (req,res)=>{
-    res.render('eliminarCursoPreinscripto',{
-         
-        id: parseInt(req.body.id)
-        
-    });
 });
 
 app.get('/cerrarSesion', (req,res)=>
