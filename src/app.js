@@ -46,6 +46,7 @@ app.use((req,res, next) =>
         res.locals.sesion = true,
         res.locals.nombre = req.session.nombre,
         res.locals.usuarioCompleto = req.session.usuarioCompleto;
+        res.locals.nombreUsuario = req.session.usuarioCompleto.nombre;
     }
     next();
 });
@@ -72,32 +73,24 @@ app.get('/',(req,res)=>{
 
 app.get('/vistaDocente',(req,res)=>{
  
-CursoDocente.find({
-})
-   .populate('Cursos') 
-   .exec((err,respuesta) =>
-    {
-        if (err){
-            return console.log(" ERROR = " + err)
-        }
-        
-        res.render('vistaDocente',
+    CursoDocente.find({
+    })
+       .populate('Cursos') 
+       .exec((err,respuesta) =>
         {
-            mostrarCursoDocente : respuesta 
-        
-        })
-        console.log(respuesta);
-});
-  
-
-
+            if (err){
+                return console.log(" ERROR = " + err)
+            }
+            
+            res.render('vistaDocente',
+            {
+                mostrarCursoDocente : respuesta 
+            
+            })
+            console.log(respuesta);
+    });
     
 });
-
-
-
-
-
 
 
 
@@ -391,6 +384,8 @@ app.post('/sesionusuario', (req,res)=>
         req.session.usuario = usuario._id;  
         req.session.nombre = usuario.nombre;
         req.session.usuarioCompleto =  usuario;
+        res.locals.nombreUsuario = usuario.nombre;
+        res.locals.usuarioCompleto = usuario;
 
         var rol = usuario.rol;
         
@@ -421,38 +416,6 @@ app.post('/sesionusuario', (req,res)=>
             //RENDERIZAR LA VISTA DEL DOCENTE
         }
     });
-
-    /*let est = new estudiante ({
-        nombre : 334,
-        matematicas : 23,
-        ingles : 234,
-        programacion :  234,
-        password : 'sdad'
-    })
-
-    est.validate(function(err) {
-        if (err)
-            console.log("Error = "+err);
-        else
-            console.log('pass validate');
-    });*/
-
-
-    /*EL SIGUIENTE FRAGMETO DE CODIGO SOLO ES DE PRUEBA*/
-    /*db.collection("cursos").find({}).toArray((err,respuesta) =>
-    {
-        if (err){
-            return console.log(err)
-        }
-        //console.log( JSON.parse(JSON.stringify(respuesta))[0].nombre );
-
-        let cursosDis = JSON.parse(JSON.stringify(respuesta));
-        
-        res.render('vistaAspirante',
-        {
-            cursosDisponibles: cursosDis
-        })
-    })*/
 });
 
 app.get('/cerrarSesion', (req,res)=>

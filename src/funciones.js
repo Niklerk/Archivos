@@ -428,8 +428,8 @@ const obtenerCuerpoTotales = (cursos) =>
                     <div class="row">
                         <div class="col-sm-12 text-justify">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
-                                    Curso ${i}: ${curso.nombre}
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}" style="color: #076633;">
+                                    <b>Curso ${i}: ${curso.nombre}</b>
                                 </button>
                             </h5>
                         </div>
@@ -441,14 +441,14 @@ const obtenerCuerpoTotales = (cursos) =>
                             Valor: ${curso.valor} pesos.
                         </div>
                         <div class="col-sm-2 text-justify" >
-                            <button class="btn btn-primary" name="codigo" value="${curso._id}">Inscribir</button>
+                            <button class="btn" name="codigo" value="${curso._id}" style="background-color: #338B57; color: white;">Inscribir</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
                   <div class="card-body" style="padding-left: 60px">
-                        <h6 style="color: blue"> Información Detallada:</h6>
+                        <h6 style="color: #076633;"> Información Detallada:</h6>
                         Modalidad: ${curso.modalidad}
                         <br>
                         Intensidad: ${curso.intensidad}
@@ -553,8 +553,8 @@ const obtenerCuerpoInscritos = (cursos) =>
                     <div class="row">
                         <div class="col-sm-12 text-justify">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
-                                    Curso ${i}: ${curso.nombre}
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}" style="color: #076633;">
+                                    <b>Curso ${i}: ${curso.nombre}</b>
                                 </button>
                             </h5>
                         </div>
@@ -566,14 +566,14 @@ const obtenerCuerpoInscritos = (cursos) =>
                             Valor: ${curso.valor} pesos.
                         </div>
                         <div class="col-sm-3 text-justify" >
-                            <button class="btn btn-primary" name="codigo" value="${curso._id}">Eliminar Inscripción</button>
+                            <button class="btn" name="codigo" value="${curso._id}" style="background-color: #338B57; color: white;">Eliminar Inscripción</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
                   <div class="card-body" style="padding-left: 60px">
-                        <h6 style="color: blue"> Información Detallada:</h6>
+                        <h6 style="color: #076633;"> Información Detallada:</h6>
                         Modalidad: ${curso.modalidad}
                         <br>
                         Intensidad: ${curso.intensidad}
