@@ -40,13 +40,15 @@ app.use(session({
     saveUninitialized: true
 }))
 
-app.use((req,res, next)=>{
+app.use((req,res, next) => 
+{
     if (req.session.usuario) {
-        res.locals.sesion= true,
-        res.locals.nombre= req.session.nombre 
+        res.locals.sesion = true,
+        res.locals.nombre = req.session.nombre,
+        res.locals.usuarioCompleto = req.session.usuarioCompleto;
     }
-    next()
-})
+    next();
+});
 
 
 app.get('/',(req,res)=>{
@@ -176,7 +178,7 @@ app.post('/resultadoInscripcion', (req,res)=>
             })
         }
 
-        var ident = "5caeb6e2e7179a36ac344aa4";  //REEMPLAZAR POR ID REAL
+        var ident = res.locals.usuarioCompleto._id;
 
         db.collection("cursosAspirantes").find({cur_id: codigoCurso}, {usu_id: ident}).toArray( (err, dupla) =>
         {
@@ -203,12 +205,13 @@ app.post('/resultadoInscripcion', (req,res)=>
                 if (err){
                     return console.log(err)
                 }
-                return res.render ('resultadoInscripcion', {          
-                    //respuestaInscripcion: funciones.mostrarInscripcionExitosa;
-                    respuestaInscripcion: "Inscripcion Exitosa"
+                var usuario = res.locals.usuarioCompleto;
+                return res.render ('resultadoInscripcion', 
+                {          
+                    respuestaInscripcion: funciones.mostrarInscripcionExitosa(curso, usuario)
                 })   
             });  
-        });   
+        });
     });
 });
 
@@ -304,34 +307,57 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 
 app.post('/sesionusuario', (req,res)=>
 {
-    var vista = funciones.iniciarSesion(req.body.correo, req.body.password);
-    req.session.usuario = req.body.correo;
-    req.session.vista = vista;
+    var esCoordinador = false;
+    var correoIngresado = req.body.correo;
+    var contIngresada = req.body.password;
 
-    var esCoordinador = vista == 'cursosCoordinador' ? true: false;
-    if(esCoordinador)
+    db.collection("usuarios").findOne({ correo: correoIngresado }, (err, usuario) =>
     {
-        res.render(vista,{
-            coordinado: esCoordinador,
-            sesion: true
-        });
-    }
-
-    if(vista == 'vistaAspirante')
-    {
-        db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
+        if (err){
+            return console.log(err)
+        }
+        if(!usuario)
         {
-            if (err){
-                return console.log(err)
-            }
-            let cursosDis = JSON.parse(JSON.stringify(respuesta));
-            res.render('vistaAspirante',
+            return res.render('usuarioInicioInexistente');
+        }
+        if(!bcrypt.compareSync(contIngresada, usuario.password))
+        {
+            return res.render('datosInicioErroneos');
+        }
+
+        req.session.usuario = usuario._id;  
+        req.session.nombre = usuario.nombre;
+        req.session.usuarioCompleto =  usuario;
+
+        var rol = usuario.rol;
+        
+        if(rol == "Aspirante")
+        {
+            db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
             {
-                cursosDisponibles: cursosDis,
+                if (err){
+                    return console.log("\nERROR EN VISTAASPIRANTE = "+err)
+                }
+                let cursosDis = JSON.parse(JSON.stringify(respuesta));
+                return res.render('vistaAspirante',
+                {
+                    cursosDisponibles: cursosDis
+                })
+            });
+        }
+        else if(rol == "Coordinador")
+        {
+            var esCoordinador = true;
+            return res.render('cursosCoordinador',{
+                coordinado: esCoordinador,
                 sesion: true
-            })
-        })
-    }
+            });
+        }
+        else if(rol == 'Docente')
+        {
+            //RENDERIZAR LA VISTA DEL DOCENTE
+        }
+    });
 
     /*let est = new estudiante ({
         nombre : 334,
@@ -376,10 +402,12 @@ app.post('/eliminarCursoPreinscripto', (req,res)=>{
 
 app.get('/cerrarSesion', (req,res)=>
 {
-    funciones.cerrarSesion();
-    res.render('index', {
-        esCoordinador: true
-    });
+    req.session.destroy((err) => 
+    {
+        if (err) return console.log(err)    
+    })  
+    // localStorage.setItem('token', '');
+    res.redirect('/');   
 });
 
 

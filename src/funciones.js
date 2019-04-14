@@ -573,11 +573,8 @@ const guardarCursoAspirante = () =>
     })
 }
 
-const mostrarInscripcionExitosa = (codCurso) =>
-{   
-    var usuario = usuarioConectado;
-    let curso = listaCursos.find(curso => curso.id == codCurso);
-
+const mostrarInscripcionExitosa = (curso, usuario) =>
+{  
     var texto = '';
     texto = texto +  
         `<div class="container">
@@ -593,7 +590,6 @@ const mostrarInscripcionExitosa = (codCurso) =>
                 <p>Correo: ${usuario.correo}</p>
 
                 <h5 style="color: #076633; margin-bottom: 15px">Curso Inscrito: </h5>
-                <p style="margin-bottom: 5px;">Código: ${curso.id}</p>
                 <p style="margin-bottom: 5px;">Nombre: ${curso.nombre}</p>
                 <p style="margin-bottom: 5px;">Descripción: ${curso.descripcion}</p>
                 <p style="margin-bottom: 5px;">Valor: ${curso.valor}</p>
