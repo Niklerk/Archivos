@@ -80,3 +80,7 @@ hbs.registerHelper('cursosDisponibledb', (listadoCursosdb) =>
 	return funciones.cursosDisponibledb(listadoCursosdb);
 })
 
+hbs.registerHelper('cursosDocentedb', (mostrarCursoDocente) =>
+{
+	return funciones.cursosDocentedb(mostrarCursoDocente);
+})

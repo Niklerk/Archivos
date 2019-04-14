@@ -14,6 +14,7 @@ const estudiante = require('./Models/estudiante');
 const Curso = require('./Models/curso');
 const CursoAspirante = require('./Models/cursoAspirante');
 const Usuario = require('./Models/usuario');
+const CursoDocente = require('./Models/cursoDocente');
 
 const bcrypt = require('bcrypt');
 const session = require('express-session');
@@ -66,6 +67,36 @@ app.get('/',(req,res)=>{
     });
 
 });
+
+app.get('/vistaDocente',(req,res)=>{
+ 
+CursoDocente.find({
+})
+   .populate('Cursos') 
+   .exec((err,respuesta) =>
+    {
+        if (err){
+            return console.log(" ERROR = " + err)
+        }
+        
+        res.render('vistaDocente',
+        {
+            mostrarCursoDocente : respuesta 
+        
+        })
+        console.log(respuesta);
+});
+  
+
+
+    
+});
+
+
+
+
+
+
 
 
 app.post('/calculos', (req,res)=>{
@@ -266,6 +297,8 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 });
 
 });
+
+
 
 
 
