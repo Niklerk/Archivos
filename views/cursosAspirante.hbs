@@ -1,25 +1,28 @@
 {{>headerConectado}}
 	
 	<div class="container">
-		<div class="jumbotron">
-	        <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: black;">
+		<div>
+	        <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #338B57;">
 	            <div class="collapse navbar-collapse" id="collapsibleNavId">
 	                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 	                    <li class="nav-item">
-	                        <a class="nav-link" href="/vistaAspirante">Cursos Educación Continua</a>
+	                        <a class="nav-link" href="/vistaAspirante" style="font-size: 18px">Cursos Educación Continua   | </a>
 	                    </li>
 	                    <li class="nav-item active">
-	                        <a class="nav-link" href="/cursosAspirante">Mis cursos</a>
+	                        <a class="nav-link" href="/cursosAspirante" style="font-size: 18px">Mis cursos</a>
 	                    </li>
 	                </ul>
 	            </div>
 	        </nav>
 	    </div>
 
-	    <h3 style="color: #076633">Cursos Inscritos</h3>
+	    <br>
+	    <br>
+
+	    <h3 style="color: #076633" class="text-center">Cursos Inscritos</h3>
 	    <br>
     </div>
 
-    {{{listado_cursos_aspirante}}}
+    {{{mostrarCursosAspirante listado_cursos_aspirante}}}
 
 {{>footer}}

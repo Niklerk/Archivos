@@ -1,20 +1,23 @@
 {{>headerConectado}}
 
 	<div class="container">
-		<div class="jumbotron">
-	        <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: black;">
+		<div>
+	        <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #338B57;">
 	            <div class="collapse navbar-collapse" id="collapsibleNavId">
 	                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 	                    <li class="nav-item active">
-	                        <a class="nav-link" href="/vistaAspirante">Cursos Educación Continua</a>
+	                        <a class="nav-link" href="/vistaAspirante" style="font-size: 18px">Cursos Educación Continua   | </a>
 	                    </li>
 	                    <li class="nav-item">
-	                        <a class="nav-link" href="/cursosAspirante">Mis cursos</a>
+	                        <a class="nav-link" href="/cursosAspirante" style="font-size: 18px">Mis cursos</a>
 	                    </li>
 	                </ul>
 	            </div>
 	        </nav>
 	    </div>
+
+	    <br>
+	    <br>
 
 	    <h3 style="color: #076633" class="text-center">Cursos del Programa de Educación Continua</h3>
 	    <br>
@@ -25,20 +28,5 @@
 
 	<br>
 	<br>
-
-	<h3 style="color: #076633; margin-bottom:-30px" class="text-center">Formulario de Inscripción</h3>
-
-	<div class="abs-center"> 
-        <form action="./resultadoInscripcion" method="post">
-			<div class="form-group">
-				<label>Código del curso: </label>
-				<input type="text" class="form-control" name="codCurso" placeholder="Código del curso" required>
-				<br>
-				<div class="text-center">
-					<button class="btn btn-primary">Inscribir</button>
-				</div>
-			</div>
-		</form>  
-	</div>
 
 {{>footer}}

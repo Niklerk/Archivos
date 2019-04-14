@@ -416,7 +416,7 @@ const obtenerCabecera = () =>
     return texto;
 }
 
-const obtenerCuerpo = (cursos) =>
+const obtenerCuerpoTotales = (cursos) =>
 {
     let texto = '';
     var i = 1;
@@ -428,8 +428,8 @@ const obtenerCuerpo = (cursos) =>
                     <div class="row">
                         <div class="col-sm-12 text-justify">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
-                                    Curso ${i}: ${curso.nombre}
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}" style="color: #076633;">
+                                    <b>Curso ${i}: ${curso.nombre}</b>
                                 </button>
                             </h5>
                         </div>
@@ -441,14 +441,14 @@ const obtenerCuerpo = (cursos) =>
                             Valor: ${curso.valor} pesos.
                         </div>
                         <div class="col-sm-2 text-justify" >
-                            <button class="btn btn-primary" name="codigo" value="${curso._id}">Inscribir</button>
+                            <button class="btn" name="codigo" value="${curso._id}" style="background-color: #338B57; color: white;">Inscribir</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
                   <div class="card-body" style="padding-left: 60px">
-                        <h6 style="color: blue"> Información Detallada:</h6>
+                        <h6 style="color: #076633;"> Información Detallada:</h6>
                         Modalidad: ${curso.modalidad}
                         <br>
                         Intensidad: ${curso.intensidad}
@@ -478,7 +478,7 @@ const eliminadoExito = () =>
 const mostrarCursosTotalesAspirante = (cursosDisponibles) =>
 {
     let cabecera = obtenerCabecera();
-    let cuerpo = obtenerCuerpo(cursosDisponibles);
+    let cuerpo = obtenerCuerpoTotales(cursosDisponibles);
     let pie = obtenerPie();
     let tabla = cabecera + cuerpo + pie;
     return tabla;
@@ -533,15 +533,87 @@ const obtenerCursosPorAspirante = () =>
     return cursosAspirante;
 }
 
-const mostrarCursosAspirante = () =>
+const obtenerCabeceraInscritos = () =>
 {
-    let cursosAspirante = obtenerCursosPorAspirante();
+    let texto = "<form action='/eliminarInscripcion' method='post'>" + 
+                    "<div class='container'>" +
+                        "<div class='accordion' id='accordionExample'>";
+    return texto;
+}
 
-    let cabecera = obtenerCabecera();
-    let cuerpo = obtenerCuerpo(cursosAspirante);
-    let pie = obtenerPie();
-    let tabla = cabecera + cuerpo + pie;
-    return tabla;
+const obtenerCuerpoInscritos = (cursos) =>
+{
+    let texto = '';
+    var i = 1;
+    cursos.forEach(curso =>
+    {
+        texto = texto +
+            `<div class="card">
+                <div class="card-header" id="heading${i}">
+                    <div class="row">
+                        <div class="col-sm-12 text-justify">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}" style="color: #076633;">
+                                    <b>Curso ${i}: ${curso.nombre}</b>
+                                </button>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-sm-9 text-justify" style="padding-left: 50px">
+                            Descripción: ${curso.descripcion}
+                            <br>
+                            Valor: ${curso.valor} pesos.
+                        </div>
+                        <div class="col-sm-3 text-justify" >
+                            <button class="btn" name="codigo" value="${curso._id}" style="background-color: #338B57; color: white;">Eliminar Inscripción</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
+                  <div class="card-body" style="padding-left: 60px">
+                        <h6 style="color: #076633;"> Información Detallada:</h6>
+                        Modalidad: ${curso.modalidad}
+                        <br>
+                        Intensidad: ${curso.intensidad}
+                  </div>
+                </div>
+              </div>`; 
+        i = i+1;           
+    });
+    return texto;
+}
+
+const mostrarCursosAspirante = (listado_cursos_aspirante) =>
+{
+    //let cursosAspirante = obtenerCursosPorAspirante();
+
+    if(listado_cursos_aspirante.length != 0)
+    {
+        let cabecera = obtenerCabeceraInscritos();
+        let cuerpo = obtenerCuerpoInscritos(listado_cursos_aspirante);
+        let pie = obtenerPie();
+        let tabla = cabecera + cuerpo + pie;
+        return tabla;
+    }
+    else
+    {
+        return mostrarAspiranteSinCursos();
+    }
+}
+
+const mostrarAspiranteSinCursos = () =>
+{
+    var texto = '';
+    texto = texto + 
+        `<div class="container">
+            <h5>Hasta el momento usted no se encuentra inscrito(a) en ningún curso.</h5>
+            <h5>Anímate a inscribir uno de ellos en el siguiente enlace: 
+                <a class="nav-link" href="/vistaAspirante"> >>Cursos disponibles</a>
+            </h5>
+        </div>`;
+    return texto; 
 }
 
 const cursoExiste = (codCurso) =>
@@ -647,55 +719,30 @@ const inscribirCurso = (codCurso) =>
         return mostrarCursoInexistente();
 }
 
+const mostrarEliminacionInscripcionExitosa = (curso) =>
+{  
+    var texto = '';
+    texto = texto +  
+        `<div class="container">
+            <h3 style="color: #076633;">Eliminación de Inscripción a curso exitosa</h3>
+            <br>
+            <h5>Te confirmamos los datos del curso que eliminaste su inscripción: </h5>
+            <br>
+            <div style="margin-left: 30px">
+                <p style="margin-bottom: 5px;">Nombre: ${curso.nombre}</p>
+                <p style="margin-bottom: 5px;">Descripción: ${curso.descripcion}</p>
+                <p style="margin-bottom: 5px;">Valor: ${curso.valor}</p>
+                <p style="margin-bottom: 5px;">Modalidad: ${curso.modalidad}</p>
+                <p>Intensidad: ${curso.intensidad}</p>
+            </div>
+            <h5><a class="nav-link" href="/cursosAspirante"> >>Ver mis cursos inscritos</a></h5>
+        </div>`;
+    return texto;
+}
+
 
 /******************* SECCION DE MARCELA FINALIZADA *************************************/
 
-/******************* SECCION AGREGADA POR JHON *************************************/
-
-const mostrarCursosDetalles = (correo) =>
-{
-    listarUsuariosInscritos();
-    listarCursos();
-
-    listaUsuarios = require('../listadoUsuarios.json') 
-
-    let encontrado = listaUsuarios.find(buscar => buscar.correo == correo)
-  
-    if(!encontrado){
-        console.log('No existe este estudiante');
-    }
-    let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Aspirante");
-
-    let cabecera = obtenerCabecera();
-    let cuerpo = obtenerCuerpo(cursosDisponibles);
-    let pie = obtenerPie();
-    let tabla = cabecera + cuerpo + pie;
-    return tabla;
-}
-
-const eliminarCursoPreinscripto = (id) =>
-{
-    listarCursos();
-    let encontrado = listaCursos.filter(buscar => buscar.estado == "Aspirante")
-  
-    if(!encontrado){
-        console.log('No tiene cursos preinscriptos');
-    } else {
-        if(!encontrado) {
-            let cursosDisponibles = listaCursos.filter(cur => cur.id == id);
-    
-            let cabecera = eliminadoExito();
-            let cuerpo = obtenerCuerpo(cursosDisponibles);
-            let pie = obtenerPie();
-            let tabla = cabecera + cuerpo + pie;
-            return tabla;
-        } else {
-            console.log('No existe este curso');
-        }
-    }
-}
-
-/******************* SECCION DE JHON FINALIZADA *************************************/
 
 /******************* SECCION AGREGADA POR CATALINA *************************************/
 
@@ -999,7 +1046,6 @@ module.exports = {
     actualizar,
     eliminar,
     mostrarCursosTotalesAspirante,
-    mostrarCursosDetalles,
     mostrarCursosAspirante,
     crearusuario,
     mostrarregistrados,
@@ -1009,7 +1055,6 @@ module.exports = {
     agregarCurso,
     eliminarEstudiante,
     inscribirCurso,
-    eliminarCursoPreinscripto, 
     iniciarSesion,
     listarUsuariosRol,
     cambiarEstadoRol,
@@ -1019,6 +1064,7 @@ module.exports = {
     mostrarUsuarioInscrito,
     mostrarInscripcionExitosa,
     cursosDisponibledb,
-    cursosDocentedb
-    
+    cursosDocentedb,
+    mostrarAspiranteSinCursos,
+    mostrarEliminacionInscripcionExitosa
 }

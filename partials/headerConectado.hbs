@@ -11,23 +11,29 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/popper.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style type="text/css">
+        .background-jumbo {
+            background-image: url('img/back_header.jpg');
+        }
+    </style>
 </head>
 
-<body>
+<body background="img/green3.jpg">
     <div class="container-fluid">
         <header>
-            <div class="jumbotron">
-            <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: black;">
-                <a class="navbar-brand">Bienvenido</a>
-                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-                    aria-expanded="false" aria-label="Toggle navigation"></button>
-                <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cerrarSesion">Cerrar Sesion</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <div class="jumbotron background-jumbo">
+                <nav class="navbar navbar-expand-sm navbar-dark active" style="background-color: black;">
+                    <a class="navbar-brand" href="#">Bienvenido</a>
+                    <div class="collapse navbar-collapse" id="collapsibleNavId">
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <li class="nav-item active">
+                                <a class="nav-link">Hola, {{nombreUsuario}}</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/cerrarSesion">Cerrar Sesion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
         </header>
