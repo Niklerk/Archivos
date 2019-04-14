@@ -928,6 +928,53 @@ const cursosDisponibledb = (listadoCursosdb) =>
 
 }
 
+const cursosDocentedb = (mostrarCursoDocente) =>
+{
+  
+
+     let texto = "<div class='container'>" +
+                    "<div class='accordion' id='accordionExample'>";
+    var i = 1;
+    mostrarCursoDocente.forEach(docente =>
+    {
+    
+        texto = texto +
+                `<div class="card">
+                    <div class="card-header" id="heading${i}">
+                        <div class="row">
+                            <div class="col-sm-12 text-justify">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
+                                        Curso: ${docente.cur_id}
+                                    </button>
+                                </h5>
+                            </div>
+                            <div class="col-sm-12 text-justify" style="padding-left: 50px">
+                                Cedula Aspirante: ${docente.usu_id}.    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
+                      <div class="card-body" style="padding-left: 60px">
+                            <h6 style="color: blue"> Información Detallada:</h6>
+                            Estado: ${docente.estado}
+                            
+                            
+                                                        
+                      </div>
+                    </div>
+                  </div>`; 
+        i = i+1;           
+      
+    });
+    
+    texto = texto  + "</div>";
+            
+    return texto;
+
+}
+
 
 /******************* SECCION DE CATALINA FINALIZADA *************************************/
 
@@ -1013,6 +1060,7 @@ module.exports = {
     mostrarUsuarioInscrito,
     mostrarInscripcionExitosa,
     cursosDisponibledb,
+    cursosDocentedb,
     mostrarAspiranteSinCursos,
     mostrarEliminacionInscripcionExitosa
 }

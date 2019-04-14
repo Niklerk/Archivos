@@ -44,7 +44,12 @@ const cursoSchema = new schema({
         minlenght: 7,
         maxlenght: 10,
         message: 'Estado no válido.'
+    },
+    CursoDocente : {
+        type : mongoose.Schema.Types.ObjectId, ref : "CursoDocente"
     }
+
+
 });
 
 cursoSchema.plugin(uniqueValidator);
