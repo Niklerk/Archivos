@@ -30,7 +30,12 @@ const usuarioSchema = new schema({
     rol: {
         type: String,
         required : true
+    },
+    CursoDocente : {
+        type : mongoose.Schema.Types.ObjectId, ref : "CursoDocente"
     }
+
+
 });
 
 usuarioSchema.plugin(uniqueValidator);

@@ -898,20 +898,24 @@ const cursosDocentedb = (mostrarCursoDocente) =>
                             <div class="col-sm-12 text-justify">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
-                                        Curso: ${docente.cur_id}
+                                        Curso: ${docente.cur_id.nombre}
                                     </button>
                                 </h5>
                             </div>
                             <div class="col-sm-12 text-justify" style="padding-left: 50px">
-                                Cedula Aspirante: ${docente.usu_id}.    
+                                Modalidad: ${docente.cur_id.modalidad}
+                                <br>
+                                Intensidad: ${docente.cur_id.intensidad}
+                                <br>
+                                Estado: ${docente.cur_id.estado}    
                             </div>
                         </div>
                     </div>
 
                     <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
                       <div class="card-body" style="padding-left: 60px">
-                            <h6 style="color: blue"> Información Detallada:</h6>
-                            Estado: ${docente.estado}
+                            <h6 style="color: blue"> Listado Estudiantes:</h6>
+                            Cedula: ${docente.usu_id}
                             
                             
                                                         

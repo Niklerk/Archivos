@@ -5,12 +5,13 @@ const Curso = require('./curso');
 
 
 const cursoDocenteSchema = new schema({
+    
     cur_id: {
-        type: String,
+        type: Object,
         require : true,
     },
     usu_id: {
-        type: String,
+        type: Number,
         required : true,
 
     },
@@ -19,9 +20,13 @@ const cursoDocenteSchema = new schema({
         required : true
     },
     
-    Curso :[{
+    Curso :{
         type : mongoose.Schema.Types.ObjectId, ref : "Cursos"
-    }]
+    },
+    
+    Usuario :{
+        type : mongoose.Schema.Types.ObjectId, ref : "Usuarios"
+    }
 });
 
 cursoDocenteSchema.plugin(uniqueValidator);

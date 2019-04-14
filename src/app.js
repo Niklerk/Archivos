@@ -72,32 +72,26 @@ app.get('/',(req,res)=>{
 
 app.get('/vistaDocente',(req,res)=>{
  
-CursoDocente.find({
-})
-   .populate('Cursos') 
-   .exec((err,respuesta) =>
-    {
-        if (err){
-            return console.log(" ERROR = " + err)
-        }
-        
-        res.render('vistaDocente',
-        {
-            mostrarCursoDocente : respuesta 
-        
-        })
-        console.log(respuesta);
-});
-  
+CursoDocente.find({}, function(err, cursodocente) {
+        Curso.populate(cursodocente, {path: "cur_id"},
+        //Usuario.populate(cursodocente,{path: "cedula"},
+        function(err, cursodocente){
+            if(err){
 
+                
+            }
 
+            res.render('vistaDocente',
+            {
+                mostrarCursoDocente : cursodocente 
+        
+            })        
+            //res.status(200).send(cursodocente);
+                
+        }); 
+    });
     
 });
-
-
-
-
-
 
 
 
@@ -356,7 +350,12 @@ app.post('/sesionusuario', (req,res)=>
         else if(rol == 'Docente')
         {
             //RENDERIZAR LA VISTA DEL DOCENTE
-        }
+            
+            return res.render('vistaDocente');
+               
+                mostrarCursoDocente: usuario
+
+            }
     });
 
     /*let est = new estudiante ({
