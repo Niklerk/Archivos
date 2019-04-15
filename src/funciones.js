@@ -930,9 +930,9 @@ const cursosDisponibledb = (listadoCursosdb) =>
 
 const cursosDocentedb = (mostrarCursoDocente) =>
 {
-  
+   
 
-     let texto = "<div class='container'>" +
+    let texto = "<div class='container'>" +
                     "<div class='accordion' id='accordionExample'>";
     var i = 1;
     mostrarCursoDocente.forEach(docente =>
@@ -962,8 +962,9 @@ const cursosDocentedb = (mostrarCursoDocente) =>
                     <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
                       <div class="card-body" style="padding-left: 60px">
                             <h6 style="color: blue"> Listado Estudiantes:</h6>
-                            Cedula: ${docente.usu_id}
-                            
+                            Usuario_Id: ${docente.usu_id}
+                            <br>
+                            Cedula: ${docente.cedula}
                             
                                                         
                       </div>

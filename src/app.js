@@ -71,28 +71,35 @@ app.get('/',(req,res)=>{
 
 });
 
+
 app.get('/vistaDocente',(req,res)=>{
  
-CursoDocente.find({}, function(err, cursodocente) {
+     CursoDocente.find({}, function(err, cursodocente) {
         Curso.populate(cursodocente, {path: "cur_id"},
-        //Usuario.populate(cursodocente,{path: "cedula"},
+        //CursoAspirante.populate(cursodocente,{path: "cur_id"},
         function(err, cursodocente){
             if(err){
-
+                
+                return console.log("ERROR = " + err)
                 
             }
 
             res.render('vistaDocente',
             {
-                mostrarCursoDocente : cursodocente 
-            
-            })        
-            //res.status(200).send(cursodocente);
+               mostrarCursoDocente : cursodocente
                 
-        }); 
-    });
-    
+            }) 
+          
+        });        
+            //res.status(200).send(cursodocente);
+              
+     });
+
+ 
+
 });
+
+
 
 app.post('/calculos', (req,res)=>{
     res.render('calculos',{
@@ -359,8 +366,6 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 
 
 
-
-
 app.post('/sesionusuario', (req,res)=>
 {
     var esCoordinador = false;
@@ -387,6 +392,7 @@ app.post('/sesionusuario', (req,res)=>
         res.locals.nombreUsuario = usuario.nombre;
         res.locals.usuarioCompleto = usuario;
 
+        
         var rol = usuario.rol;
         
         if(rol == "Aspirante")
@@ -413,13 +419,25 @@ app.post('/sesionusuario', (req,res)=>
         }
         else if(rol == 'Docente')
         {
-            //RENDERIZAR LA VISTA DEL DOCENTE
             
-            return res.render('vistaDocente');
-               
-                mostrarCursoDocente: usuario
+            CursoDocente.find({}, function(err, cursodocente) {
+                 Curso.populate(cursodocente, {path: "cur_id"},
+                 function(err, cursodocente){
+                    if(err){
+                        return console.log("ERROR = " + err)
+                    }
+                    res.render('vistaDocente',
+                    {
+                    
+                    mostrarCursoDocente : cursodocente
 
-            }
+                    }) 
+        
+                });            
+            });
+
+        }  
+        
     });
 });
 
