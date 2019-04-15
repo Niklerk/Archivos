@@ -5,18 +5,31 @@ const schema = mongoose.Schema;
 const cursoDocenteSchema = new schema({
     
     cur_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         require : true,
     },
     usu_id: {
-        type: Object,
+        type: String,
         required : true,
 
     },
+    
+    cedula :{ 
+        type: String,
+        required : true
+    },
+
     estado :{ 
         type: String,
         required : true
     },
+        type : mongoose.Schema.Types.ObjectId, ref : "Curso"
+        type : mongoose.Schema.Types.ObjectId, ref : "Usuario"
+    },
+
+    CursoAspirante : {
+        type : mongoose.Schema.Types.ObjectId, ref : "cursoAspirante"
+
 });
 
 cursoDocenteSchema.plugin(uniqueValidator);
