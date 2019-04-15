@@ -161,7 +161,7 @@ const listarCursosCoordinador = () => {
 
     listaCursos.forEach(cursos =>{
     texto +='<tr>' +
-            "<td style='display: none'>" + cursos.id + '</td>' +
+            "<td style='display: none'>" + cursos._id + '</td>' +
             '<td>' + crearDetalleUsuarios(cursos) + '</td>' +
             '<td>' + cursos.descripcion + '</td>' +
             '<td>' + cursos.valor + '</td>' +
@@ -182,12 +182,7 @@ const listarCursosDocentes = (mostrarCursoDocente) => {
     listarCursos();
     listarCursosDocente();
     obtenerUsuarioConectado();
-    let texto = '';
-    console.log(mostrarCursoDocente);
-    console.log(listaCursos);
-    console.log(listaCursosDocente);
-
-    let duplasCursosDocente = listaCursosDocente.filter(dupla => dupla.usu_id == mostrarCursoDocente._id);
+    let duplasCursosDocente = listaCursosDocente.filter(dupla => dupla.usu_id == usuarioConectado._id);
     console.log(duplasCursosDocente);
 
     texto = "<table class='table table-striped table-hover'> \
@@ -203,14 +198,15 @@ const listarCursosDocentes = (mostrarCursoDocente) => {
                 <tbody>";
     let cursosFiltrados = listaCursos.filter(fil =>{
         let res = duplasCursosDocente.find((fild)=>{
-            return fil.id == fild.cur_id;
+            return fil._id == fild.cur_id;
         });
-    return res != undefined;
+        return res != undefined;
     });
+    console.log(listaCursos);
 
     cursosFiltrados.forEach(cursos =>{
     texto +='<tr>' +
-            "<td style='display: none'>" + cursos.id + '</td>' +
+            "<td style='display: none'>" + cursos._id + '</td>' +
             '<td>' + crearDetalleUsuarios(cursos,false) + '</td>' +
             '<td>' + cursos.descripcion + '</td>' +
             '<td>' + cursos.valor + '</td>' +
@@ -266,7 +262,7 @@ const obtenerCuerpoCoordinador = (_curso, esCoordinador) =>
 {
     let texto = '';
     texto += `<div class="card">
-                <div class="card-header" id="heading${_curso.id}">
+                <div class="card-header" id="heading${_curso._id}">
                         <div class="col-sm-12 text-justify">
                             <h5 class="mb-0">
                                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${_curso.id}" aria-expanded="true" aria-controls="collapse${_curso.id}">
@@ -277,16 +273,16 @@ const obtenerCuerpoCoordinador = (_curso, esCoordinador) =>
                     </div>
                 </div>`;
                 if(_curso.estado == 'Disponible'){
-                    let aspirante = listaCursosAspirantes.filter(dupla => dupla.cur_id == _curso.id);
+                    let aspirante = listaCursosAspirantes.filter(dupla => dupla.cur_id == _curso._id);
                     if (aspirante.length > 0) {
                         texto +=  `<div id="collapse${_curso.id}" class="collapse" aria-labelledby="heading${_curso.id}" data-parent="#Curso${_curso.id}">
                             <div class="card-body" style="padding-left: 60px">`;
                             aspirante.forEach(e => {
-                                let encontrado = listaUsuarios.find(buscar => buscar.cedula == e.usu_id);
+                                let encontrado = listaUsuarios.find(buscar => buscar._id == e.usu_id);
                                 if(!encontrado){
                                     texto += 'no hay usuario';
                                 }else{
-                                    texto += mostrarUsuarioCurso(encontrado,_curso.id, esCoordinador);
+                                    texto += mostrarUsuarioCurso(encontrado,_curso._id, esCoordinador);
                                 }
                             });
                         }
@@ -300,7 +296,7 @@ const obtenerCuerpoCoordinador = (_curso, esCoordinador) =>
 const obtenerCabeceraCoordinador = (curso) =>
 {
     let texto = "<div class='container'>" +
-                    "<div class='accordion' id='Curso"+ curso.id+"'>";
+                    "<div class='accordion' id='Curso"+ curso._id+"'>";
     return texto;
 }
 
@@ -1079,5 +1075,6 @@ module.exports = {
     cursosDocentedb,
     mostrarAspiranteSinCursos,
     mostrarEliminacionInscripcionExitosa,
-    guardar
+    guardar,
+    guardarinicio
 }

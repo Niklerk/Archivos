@@ -416,7 +416,21 @@ app.post('/sesionusuario', (req,res)=>
             }
             funciones.guardar('listadoCursosDocente', respuesta);
         });
-        
+        CursoAspirante.find({}).exec((err,respuesta) =>
+        {
+            if (err){
+                return console.log(" ERROR = " + err)
+            }
+            funciones.guardar('listadoCursosAspirantes', respuesta);
+        });
+        Usuario.find({}).exec((err,respuesta) =>
+        {
+            if (err){
+                return console.log(" ERROR = " + err)
+            }
+            funciones.guardar('listadoUsuarios', respuesta);
+        });
+        funciones.guardarinicio(usuario);
         if(rol == "Aspirante")
         {
             db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
