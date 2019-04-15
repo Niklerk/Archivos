@@ -19,8 +19,6 @@ const cursoAspiranteSchema = new schema({
     CursoDocente : {
         type : mongoose.Schema.Types.ObjectId, ref : "CursoDocente"
     }
-
-
 });
 
 cursoAspiranteSchema.plugin(uniqueValidator);

@@ -183,7 +183,6 @@ const listarCursosDocentes = (mostrarCursoDocente) => {
     listarCursosDocente();
     obtenerUsuarioConectado();
     let duplasCursosDocente = listaCursosDocente.filter(dupla => dupla.usu_id == usuarioConectado._id);
-    console.log(duplasCursosDocente);
 
     texto = "<table class='table table-striped table-hover'> \
                 <thead class='thead-dark'> \
@@ -202,7 +201,6 @@ const listarCursosDocentes = (mostrarCursoDocente) => {
         });
         return res != undefined;
     });
-    console.log(listaCursos);
 
     cursosFiltrados.forEach(cursos =>{
     texto +='<tr>' +

@@ -136,7 +136,6 @@ app.get('/cursosCoordinador', (req,res)=>{
 });
 
 app.get('/cursosDocente', (req,res)=>{
-    console.log(req.session.usuario);
     res.render('cursosDocente',{
         coordinador : req.session.coordinador,
         mostrarCursoDocente : req.session.usuario
@@ -428,6 +427,7 @@ app.post('/sesionusuario', (req,res)=>
                 return console.log(" ERROR = " + err)
             }
             funciones.guardar('listadoCursosAspirantes', respuesta);
+            console.log(respuesta);
         });
         Usuario.find({}).exec((err,respuesta) =>
         {
@@ -463,24 +463,25 @@ app.post('/sesionusuario', (req,res)=>
         else if(rol == 'Docente')
         {
             return res.render('cursosDocente',{
-            CursoDocente.find({}, function(err, cursodocente) {
-                 Curso.populate(cursodocente, {path: "cur_id"},
-                 function(err, cursodocente){
-                    if(err){
-                        return console.log("ERROR = " + err)
-                    }
-                    res.render('vistaDocente',
-                    {
-                    
-                    mostrarCursoDocente : cursodocente
-
-                    }) 
-        
-                });            
+                coordinador: esCoordinador,
+                sesion: true
             });
 
         }  
-        
+        // CursoDocente.find({}, function(err, cursodocente) {
+        //     Curso.populate(cursodocente, {path: "cur_id"},
+        //     function(err, cursodocente){
+        //        if(err){
+        //            return console.log("ERROR = " + err)
+        //        }
+        //        res.render('vistaDocente',
+        //        {
+               
+        //        mostrarCursoDocente : cursodocente
+
+        //        }) 
+   
+        //    });      
     });
 });
 
