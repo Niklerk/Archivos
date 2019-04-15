@@ -168,7 +168,7 @@ const listarCursosCoordinador = () => {
             '<td>' + cursos.modalidad + '</td>' +
             '<td>' + cursos.intensidad + '</td>' +
             '<td>' + cursos.estado + '</td>' +
-            `<td> <form class='form' action="/cursosCoordinador" method="POST"><button class="btn btn-outline-danger" name='id' value="${cursos.id}">Cambiar</form> </td>` +
+            `<td> <form class='form' action="/cursosCoordinador" method="POST"><button class="btn btn-outline-danger" name='id' value="${cursos._id}">Cambiar</form> </td>` +
             "<td> <a href= '/agregarCurso'><i class='fas fa-address-book fa-w-14 fa-3x'></i></a></td>" +
             '</tr>'
     })
@@ -263,17 +263,17 @@ const obtenerCuerpoCoordinador = (_curso, esCoordinador) =>
                 <div class="card-header" id="heading${_curso._id}">
                         <div class="col-sm-12 text-justify">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${_curso.id}" aria-expanded="true" aria-controls="collapse${_curso.id}">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${_curso._id}" aria-expanded="true" aria-controls="collapse${_curso._id}">
                                     ${_curso.nombre}
                                 </button>
                             </h5>
                         </div>
                     </div>
                 </div>`;
-                if(_curso.estado == 'Disponible'){
+                if(esCoordinador == false || _curso.estado == 'Disponible'){
                     let aspirante = listaCursosAspirantes.filter(dupla => dupla.cur_id == _curso._id);
                     if (aspirante.length > 0) {
-                        texto +=  `<div id="collapse${_curso.id}" class="collapse" aria-labelledby="heading${_curso.id}" data-parent="#Curso${_curso.id}">
+                        texto +=  `<div id="collapse${_curso._id}" class="collapse" aria-labelledby="heading${_curso._id}" data-parent="#Curso${_curso._id}">
                             <div class="card-body" style="padding-left: 60px">`;
                             aspirante.forEach(e => {
                                 let encontrado = listaUsuarios.find(buscar => buscar._id == e.usu_id);
@@ -328,8 +328,10 @@ let cambiarEstado = (cursoId)=>{
     {
         listarCursos();
         listarCursosDocente();
+        console.log(cursoId);
+        console.log(listaCursos);
 
-        let encontrado = listaCursos.find(e => e.id == cursoId);
+        let encontrado = listaCursos.find(e => e._id == cursoId);
 
         if (encontrado.length != listaCursos.length ) {
             if (encontrado.estado == 'Disponible') {

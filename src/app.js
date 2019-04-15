@@ -144,6 +144,7 @@ app.get('/cursosDocente', (req,res)=>{
 });
 
 app.post('/cursosCoordinador', (req,res)=>{
+    console.log(req.body);
     funciones.cambiarEstado(req.body.id);
     res.render('cursosCoordinador',{
         coordinador : res.locals.coordinador
@@ -423,7 +424,7 @@ app.post('/sesionusuario', (req,res)=>
             }
             funciones.guardar('listadoCursosDocente', respuesta);
         });
-        CursoAspirante.find({}).exec((err,respuesta) =>
+        db.collection("cursoAspirantes").find({}).toArray((err,respuesta) =>
         {
             if (err){
                 return console.log(" ERROR = " + err)

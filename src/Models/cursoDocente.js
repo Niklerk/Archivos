@@ -18,9 +18,6 @@ const cursoDocenteSchema = new schema({
     estado :{ 
         type: String,
         required : true
-    },
-    CursoAspirante : {
-        type : mongoose.Schema.Types.ObjectId, ref : "cursoAspirante"
     }
 });
 

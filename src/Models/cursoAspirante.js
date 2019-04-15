@@ -5,19 +5,16 @@ const schema = mongoose.Schema;
 const cursoAspiranteSchema = new schema({
     cur_id: {
         type: String,
-        require : true,
+        require : true
     },
     usu_id: {
         type: String,
-        required : true,
+        required : true
 
     },
     estado :{ 
         type: String,
         required : true
-    },
-    CursoDocente : {
-        type : mongoose.Schema.Types.ObjectId, ref : "CursoDocente"
     }
 });
 
