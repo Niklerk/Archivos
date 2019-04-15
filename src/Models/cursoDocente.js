@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const schema = mongoose.Schema;
-const Curso = require('./curso');
-
 
 const cursoDocenteSchema = new schema({
     
@@ -25,18 +23,12 @@ const cursoDocenteSchema = new schema({
         type: String,
         required : true
     },
-    
-    Curso :{
         type : mongoose.Schema.Types.ObjectId, ref : "Curso"
-    },
-    
-    Usuario :{
         type : mongoose.Schema.Types.ObjectId, ref : "Usuario"
     },
 
     CursoAspirante : {
         type : mongoose.Schema.Types.ObjectId, ref : "cursoAspirante"
-    }
 
 });
 

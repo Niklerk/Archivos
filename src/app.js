@@ -130,25 +130,37 @@ app.get('/vistaAspirante', (req,res)=>
 });
 
 app.get('/cursosCoordinador', (req,res)=>{
-    res.render('cursosCoordinador');
+    res.render('cursosCoordinador',{
+        coordinador : req.session.coordinador
+    });
 });
 
 app.get('/cursosDocente', (req,res)=>{
-    res.render('cursosDocente');
+    console.log(req.session.usuario);
+    res.render('cursosDocente',{
+        coordinador : req.session.coordinador,
+        mostrarCursoDocente : req.session.usuario
+    });
 });
 
 app.post('/cursosCoordinador', (req,res)=>{
     funciones.cambiarEstado(req.body.id);
-    res.render('cursosCoordinador');
+    res.render('cursosCoordinador',{
+        coordinador : req.session.coordinador
+    });
 });
 
 app.get('/usuariosRol', (req,res)=>{
-    res.render('usuariosRol');
+    res.render('usuariosRol',{
+        coordinador : req.session.coordinador
+    });
 });
 
 app.post('/usuariosRol', (req,res)=>{
     funciones.cambiarEstadoRol(req.body.cedula);
-    res.render('usuariosRol');
+    res.render('usuariosRol',{
+        coordinador : req.session.coordinador
+    });
 });
 
 app.post('/eliminarEstudiante', (req,res)=>{
@@ -391,9 +403,25 @@ app.post('/sesionusuario', (req,res)=>
         req.session.usuarioCompleto =  usuario;
         res.locals.nombreUsuario = usuario.nombre;
         res.locals.usuarioCompleto = usuario;
-
+        var esCoordinador = false;
         
         var rol = usuario.rol;
+        req.session.coordinador = esCoordinador;
+
+        Curso.find({}).exec((err,respuesta) =>
+        {
+            if (err){
+                return console.log(" ERROR = " + err)
+            }
+            funciones.guardar('listadoCursos', respuesta);
+        });
+        CursoDocente.find({}).exec((err,respuesta) =>
+        {
+            if (err){
+                return console.log(" ERROR = " + err)
+            }
+            funciones.guardar('listadoCursosDocente', respuesta);
+        });
         
         if(rol == "Aspirante")
         {
@@ -411,15 +439,16 @@ app.post('/sesionusuario', (req,res)=>
         }
         else if(rol == "Coordinador")
         {
-            var esCoordinador = true;
+            esCoordinador = true;
+            req.session.coordinador = esCoordinador;
             return res.render('cursosCoordinador',{
-                coordinado: esCoordinador,
+                coordinador: esCoordinador,
                 sesion: true
             });
         }
         else if(rol == 'Docente')
         {
-            
+            return res.render('cursosDocente',{
             CursoDocente.find({}, function(err, cursodocente) {
                  Curso.populate(cursodocente, {path: "cur_id"},
                  function(err, cursodocente){

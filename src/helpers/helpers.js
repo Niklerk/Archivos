@@ -70,9 +70,9 @@ hbs.registerHelper('listarUsuariosRol', () =>
 	return funciones.listarUsuariosRol();
 })
 
-hbs.registerHelper('listarCursosDocentes', () =>
+hbs.registerHelper('listarCursosDocentes', (mostrarCursoDocente) =>
 {
-	return funciones.listarCursosDocentes();
+	return funciones.listarCursosDocentes(mostrarCursoDocente);
 })
 
 hbs.registerHelper('cursosDisponibledb', (listadoCursosdb) =>
