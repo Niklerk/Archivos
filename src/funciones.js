@@ -1,8 +1,11 @@
 const fs = require('fs');
+const Curso = require('./Models/curso');
+const CursoDocente = require('./Models/cursoDocente');
 
 listaEstudiantes = [];
 listaUsuarios = [];
 listaCursos = [];
+listaCursosDocente = [];
 listaInicio = [];
 usuarioConectado = null;
 
@@ -139,6 +142,7 @@ let promedio = (estudiante) => {
 }
 
 const listarCursosCoordinador = () => {
+    listarCursosDocente();
     listarCursos();
     let texto = "<table class='table table-striped table-hover'> \
                 <thead class='thead-dark'> \
@@ -174,14 +178,19 @@ const listarCursosCoordinador = () => {
 
 }
 
-const listarCursosDocentes = () => {
+const listarCursosDocentes = (mostrarCursoDocente) => {
     listarCursos();
     listarCursosDocente();
-    obtenerUsuarioConectado()
-    var usuario = usuarioInicioExiste(usuarioConectado.correo)
-    let duplasCursosDocente = listaCursosDocente.filter(dupla => dupla.usu_id == usuario.cedula);
+    obtenerUsuarioConectado();
+    let texto = '';
+    console.log(mostrarCursoDocente);
+    console.log(listaCursos);
+    console.log(listaCursosDocente);
 
-    let texto = "<table class='table table-striped table-hover'> \
+    let duplasCursosDocente = listaCursosDocente.filter(dupla => dupla.usu_id == mostrarCursoDocente._id);
+    console.log(duplasCursosDocente);
+
+    texto = "<table class='table table-striped table-hover'> \
                 <thead class='thead-dark'> \
                 <th style='display: none' >ID</th>\
                 <th>NOMBRE</th>\
@@ -196,7 +205,7 @@ const listarCursosDocentes = () => {
         let res = duplasCursosDocente.find((fild)=>{
             return fil.id == fild.cur_id;
         });
-     return res != undefined;
+    return res != undefined;
     });
 
     cursosFiltrados.forEach(cursos =>{
@@ -213,7 +222,6 @@ const listarCursosDocentes = () => {
 
     texto = texto + '</tbody></table>';
     return texto;
-
 }
 
 const listarUsuariosRol = () => {
@@ -325,6 +333,7 @@ let cambiarEstado = (cursoId)=>{
     if(cursoId > 0);
     {
         listarCursos();
+        listarCursosDocente();
 
         let encontrado = listaCursos.find(e => e.id == cursoId);
 
@@ -374,6 +383,7 @@ let agregarCurso = (id, nombre, descripcion, valor, modalidad, intensidad, estad
     if(id > 0);
     {
         listarCursos();
+        listarCursosDocente();
 
         let encontrado = listaCursos.find(e => e.id == id);
 
@@ -494,8 +504,7 @@ const listarCursosAspirantes = () =>
     }
 }
 
-const listarCursosDocente = () =>
-{
+const listarCursosDocente = ()=>{
     try 
     {
         listaCursosDocente = require('../listadoCursosDocente.json');
@@ -517,6 +526,7 @@ const obtenerUsuarioConectado = () =>
 const obtenerCursosPorAspirante = () =>
 {
     listarCursos();
+    listarCursosDocente();
     listarCursosAspirantes();
     obtenerUsuarioConectado();
     
@@ -618,6 +628,7 @@ const mostrarAspiranteSinCursos = () =>
 
 const cursoExiste = (codCurso) =>
 {
+    listarCursosDocente();
     listarCursos();
     let cursosDisponibles = listaCursos.filter(cur => cur.estado == "Disponible");
     let curso = cursosDisponibles.find(curso => curso.id == codCurso);
@@ -828,7 +839,8 @@ const mostrarregistrados = () => {
 
 const listarCursosDisponibles = () => 
 {
-    listaCursos = require('../listadoCursos.json') 
+    listarCursos();
+    listarCursosDocente();
     let texto = "<div class='container'>" +
                     "<div class='accordion' id='accordionExample'>";
     var i = 1;
@@ -1066,5 +1078,6 @@ module.exports = {
     cursosDisponibledb,
     cursosDocentedb,
     mostrarAspiranteSinCursos,
-    mostrarEliminacionInscripcionExitosa
+    mostrarEliminacionInscripcionExitosa,
+    guardar
 }
