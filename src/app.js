@@ -47,6 +47,7 @@ app.use((req,res, next) =>
         res.locals.nombre = req.session.nombre,
         res.locals.usuarioCompleto = req.session.usuarioCompleto;
         res.locals.nombreUsuario = req.session.usuarioCompleto.nombre;
+        res.locals.coordinador = req.session.coordinador;
     }
     next();
 });
@@ -124,7 +125,7 @@ app.get('/vistaAspirante', (req,res)=>
 
 app.get('/cursosCoordinador', (req,res)=>{
     res.render('cursosCoordinador',{
-        coordinador : req.session.coordinador
+        coordinador : res.locals.coordinador
     });
 });
 
@@ -132,27 +133,27 @@ app.get('/cursosDocente', (req,res)=>{
     console.log(req.session.usuario);
     res.render('cursosDocente',{
         coordinador : req.session.coordinador,
-        mostrarCursoDocente : req.session.usuario
+        mostrarCursoDocente : res.locals.usuarioCompleto
     });
 });
 
 app.post('/cursosCoordinador', (req,res)=>{
     funciones.cambiarEstado(req.body.id);
     res.render('cursosCoordinador',{
-        coordinador : req.session.coordinador
+        coordinador : res.locals.coordinador
     });
 });
 
 app.get('/usuariosRol', (req,res)=>{
     res.render('usuariosRol',{
-        coordinador : req.session.coordinador
+        coordinador : res.locals.coordinador
     });
 });
 
 app.post('/usuariosRol', (req,res)=>{
     funciones.cambiarEstadoRol(req.body.cedula);
     res.render('usuariosRol',{
-        coordinador : req.session.coordinador
+        coordinador : res.locals.coordinador
     });
 });
 
@@ -401,6 +402,7 @@ app.post('/sesionusuario', (req,res)=>
         var esCoordinador = false;
         var rol = usuario.rol;
         req.session.coordinador = esCoordinador;
+        res.locals.coordinador = esCoordinador;
 
         Curso.find({}).exec((err,respuesta) =>
         {
