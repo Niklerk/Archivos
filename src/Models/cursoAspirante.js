@@ -3,48 +3,24 @@ const uniqueValidator = require('mongoose-unique-validator');
 const schema = mongoose.Schema;
 
 const cursoAspiranteSchema = new schema({
-    nombre : {
+    cur_id: {
         type: String,
         require : true,
-        minlenght: 3,
-        maxlenght: 60,
-        message: 'Nombre no válido.'
     },
-    descripcion: {
+    usu_id: {
         type: String,
-        require : true,
-        minlenght: 3,
-        maxlenght: 300,
-        message: 'Descripción no válida.'
+        required : true,
+
     },
-    valor :{ 
-        type: Number,
-        require : true,
-        default: 0,
-        min: 0,
-        message: 'Valor no válido.'
-    },
-    modalidad: {
+    estado :{ 
         type: String,
-        default: "No especifica",
-        minlenght: 7,
-        maxlenght: 13,
-        message: 'Modalidad no válida.'
+        required : true
     },
-    intensidad: {
-        type: String,
-        default: "No especifica",
-        minlenght: 1,
-        maxlenght: 40,
-        message: 'Intensidad no válida.'
-    },
-    estado: {
-        type: String,
-        default: "Disponible",
-        minlenght: 7,
-        maxlenght: 10,
-        message: 'Estado no válido.'
+    CursoDocente : {
+        type : mongoose.Schema.Types.ObjectId, ref : "CursoDocente"
     }
+
+
 });
 
 cursoAspiranteSchema.plugin(uniqueValidator);
