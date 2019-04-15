@@ -328,8 +328,6 @@ let cambiarEstado = (cursoId)=>{
     {
         listarCursos();
         listarCursosDocente();
-        console.log(cursoId);
-        console.log(listaCursos);
 
         let encontrado = listaCursos.find(e => e._id == cursoId);
 

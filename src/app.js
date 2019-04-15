@@ -144,7 +144,6 @@ app.get('/cursosDocente', (req,res)=>{
 });
 
 app.post('/cursosCoordinador', (req,res)=>{
-    console.log(req.body);
     funciones.cambiarEstado(req.body.id);
     res.render('cursosCoordinador',{
         coordinador : res.locals.coordinador
