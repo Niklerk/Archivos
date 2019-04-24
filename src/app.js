@@ -1,9 +1,15 @@
+require('./config/config');
 const express = require('express');
 const app = express();
 const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
+
+const port = process.env.PORT;
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 var tipo = "Aspirante";
 require('./helpers/helpers');
 const funciones = require('./funciones');
@@ -323,6 +329,8 @@ app.get('/usuariosexiste', (req,res)=>{
 });
 
 
+//funciones.enviarConfirmacionRegistro(req.body.correo);
+
 app.post('/registro', (req,res)=>{
  
 Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
@@ -360,7 +368,7 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
                    mostrar : err
                })
         }
-
+            console.log(resultado);
                res.render('registro',{
                 
                   mostrar : "Usuario " + resultado.nombre + " registrado con exito"
@@ -375,6 +383,7 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 });
 
 });
+
 
 
 

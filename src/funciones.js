@@ -1,6 +1,11 @@
+require('./config/config');
 const fs = require('fs');
 const Curso = require('./Models/curso');
 const CursoDocente = require('./Models/cursoDocente');
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 
 listaEstudiantes = [];
 listaUsuarios = [];
@@ -1039,9 +1044,24 @@ const cerrarSesion = () =>
 }
 
 
-
-
 /******************* SECCION DE INICIO DE SESION FINALIZADA *************************************/
+
+/******************* SECCION DE ENVIO DE CORREO *************************************/
+
+const enviarConfirmacionRegistro = (correoDestino) =>
+{
+    const correo = 
+    {
+        to: correoDestino,
+        from: "educontinuatdea@gmail.com",
+        subject: 'Registro exitoso',
+        html: 'Gracias por inscribirte en nuestra plataforma'
+    };
+
+    sgMail.send(correo);
+}
+
+/******************* SECCION DE ENVIO DE CORREO FINALIZADA *************************************/
 
 
 module.exports = {
@@ -1075,5 +1095,6 @@ module.exports = {
     mostrarAspiranteSinCursos,
     mostrarEliminacionInscripcionExitosa,
     guardar,
-    guardarinicio
+    guardarinicio,
+    enviarConfirmacionRegistro
 }
