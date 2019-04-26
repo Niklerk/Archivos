@@ -750,35 +750,130 @@ const mostrarEliminacionInscripcionExitosa = (curso) =>
     return texto;
 }
 
-const mostrarHorarioAspirante = (cursosAspirante) =>
+const obtenerColorRandom = () =>
 {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+const obtenerCurso = (horarioFila, cursosPresenciales) =>
+{
+    for (var i = 0; i < cursosPresenciales.length; i++) 
+    {
+        let curso = cursosPresenciales[i];
+        let horarios = curso.horarios;
+
+        horarios = JSON.parse( JSON.stringify(horarios) );
+
+        let horariosCurso = horarios.map(horario => horario.clase);
+
+        for (var j = 0; j < horariosCurso.length; j++) 
+        {
+            let horario = horariosCurso[j];
+            if(horario == horarioFila)
+            {
+                var texto = '';
+                texto = texto + 
+                    `<div style="background-color: ${obtenerColorRandom()};">
+                        ${curso.nombre}
+                    </div>
+                    `
+                return texto;
+            }
+        };
+    };
+    return '';
+}
+
+const obtenerTablaHorario = (cursosAspirante) =>
+{
+    console.log(cursosAspirante);
+
+    let cursosPresenciales = cursosAspirante.filter(curso => curso.modalidad == "Presencial");
+
     var texto = '';
     texto = texto +
-    `<table class="table table-bordered">
-        <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-        </tbody>
-    </table>`
+    `<div class='container table-responsive'>
+        <table class="table table-bordered text-center" style="background-color: white">
+            <thead>
+                <tr>
+                  <th scope="col" class="table-active">Horario</th>
+                  <th scope="col" class="table-active">Lunes</th>
+                  <th scope="col" class="table-active">Martes</th>
+                  <th scope="col" class="table-active">Miercoles</th>
+                  <th scope="col" class="table-active">Jueves</th>
+                  <th scope="col" class="table-active">Viernes</th>
+                  <th scope="col" class="table-active">Sábado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="table-active">7 am - 9 am</th>
+                    <td>${obtenerCurso("Lunes 7 am - 9 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Martes 7 am - 9 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Miercoles 7 am - 9 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Jueves 7 am - 9 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Viernes 7 am - 9 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Sabado 7 am - 9 am", cursosPresenciales)}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">9 am - 11 am</th>
+                    <td>${obtenerCurso("Lunes 9 am - 11 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Martes 9 am - 11 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Miercoles 9 am - 11 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Jueves 9 am - 11 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Viernes 9 am - 11 am", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Sabado 9 am - 11 am", cursosPresenciales)}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">11 am - 1 pm</th>
+                    <td>${obtenerCurso("Lunes 11 am - 1 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Martes 11 am - 1 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Miercoles 11 am - 1 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Jueves 11 am - 1 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Viernes 11 am - 1 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Sabado 11 am - 1 pm", cursosPresenciales)}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">2 pm - 4 pm</th>
+                    <td>${obtenerCurso("Lunes 2 pm - 4 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Martes 2 pm - 4 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Miercoles 2 pm - 4 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Jueves 2 pm - 4 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Viernes 2 pm - 4 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Sabado 2 pm - 4 pm", cursosPresenciales)}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="table-active">4 pm - 6 pm</th>
+                    <td>${obtenerCurso("Lunes 4 pm - 6 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Martes 4 pm - 6 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Miercoles 4 pm - 6 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Jueves 4 pm - 6 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Viernes 4 pm - 6 pm", cursosPresenciales)}</td>
+                    <td>${obtenerCurso("Sabado 4 pm - 6 pm", cursosPresenciales)}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>`
     return texto;
+}
+
+
+const mostrarHorarioAspirante = (cursosAspirante) =>
+{
+     if(cursosAspirante.length != 0)
+    {
+        let tabla = obtenerTablaHorario(cursosAspirante);
+        return tabla;
+    }
+    else
+    {
+        return mostrarAspiranteSinCursos();
+    }
 }
 
 
@@ -1129,5 +1224,6 @@ module.exports = {
     mostrarEliminacionInscripcionExitosa,
     guardar,
     guardarinicio,
-    enviarConfirmacionRegistro
+    enviarConfirmacionRegistro,
+    mostrarHorarioAspirante
 }
