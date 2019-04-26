@@ -1,5 +1,7 @@
 const hbs = require('hbs');
 const funciones = require('../funciones');
+const socket = require('../../public/js/socket.js');
+
 
 hbs.registerHelper('mostrarPro', (nota1, nota2, nota3)=>{
     return (nota1+nota2+nota3)/3;   
@@ -83,4 +85,10 @@ hbs.registerHelper('cursosDisponibledb', (listadoCursosdb) =>
 hbs.registerHelper('cursosDocentedb', (mostrarCursoDocente) =>
 {
 	return funciones.cursosDocentedb(mostrarCursoDocente);
+})
+
+hbs.registerHelper('setUsuarioConectado', (usuarioCompleto) =>
+{
+	console.log("entree " + usuarioCompleto.nombre);
+	return socket.setUsuarioConectado(usuarioCompleto);
 })
