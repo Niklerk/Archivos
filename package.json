@@ -23,6 +23,7 @@
     "mongoose": "^5.4.22",
     "mongoose-unique-validator": "^2.0.2",
     "popper": "^1.0.1",
+    "socket.io": "^2.2.0",
     "yargs": "^13.2.2"
   }
 }

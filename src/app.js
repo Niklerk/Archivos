@@ -1,6 +1,10 @@
 require('./config/config');
 const express = require('express');
 const app = express();
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
 const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
@@ -26,6 +30,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 
 const directorioPublico = path.join(__dirname,'../public');
+
 const directorioPartials = path.join(__dirname,'../partials');
 const dirNode_modules = path.join(__dirname , '../node_modules')
 
@@ -77,7 +82,6 @@ app.get('/',(req,res)=>{
     });
 
 });
-
 
 app.get('/vistaDocente',(req,res)=>{
  
@@ -507,11 +511,35 @@ app.get('/cerrarSesion', (req,res)=>
 });
 
 
+app.get('/chat', (req,res)=>{
+    res.render('chat');
+});
+
+
 app.get('*',(req,res)=>{
     res.render('error',{
         estudiante: 'error'
     });
 })
+
+
+/**************** CHAT *****************************/
+
+io.on('connection', client => {
+
+    console.log("un usuario se ha conectado");
+
+    client.on('usuarioNuevo', (usuarioConectado) =>{
+        /*let listado = usuarios.agregarUsuario(client.id, usuario)
+        console.log(listado)
+        let texto = `Se ha conectado ${usuario}`
+        io.emit('nuevoUsuario', texto )*/
+        console.log("desde usuarioNuevo = "+usuarioConectado);
+    })
+});
+
+
+/**************** CHAT *****************************/
 
 
 mongoose.connect('mongodb://admin:admin1@ds141641.mlab.com:41641/dbedcontinua',{useNewUrlParser: true}, (err,result)=>{
@@ -522,6 +550,8 @@ mongoose.connect('mongodb://admin:admin1@ds141641.mlab.com:41641/dbedcontinua',{
     console.log('conectado');
 })
 
-app.listen(port, ()=>{
+server.listen(port, ()=>{
     console.log('iniciado')
 })
+
+exports.app = app;
