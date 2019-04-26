@@ -898,37 +898,38 @@ const cursosDisponibledb = (listadoCursosdb) =>
     {
      if(curso.estado=="Disponible"){ 
         texto = texto +
+
                 `<div class="card">
-                    <div class="card-header" id="heading${i}">
-                        <div class="row">
-                            <div class="col-sm-12 text-justify">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
-                                        Curso ${i}: ${curso.nombre}
-                                    </button>
-                                </h5>
-                            </div>
-                            <div class="col-sm-12 text-justify" style="padding-left: 50px">
-                                Código de curso: ${curso.id}.
-                                <br>
-                                Valor: ${curso.valor} pesos.
-                                <br>
-                                Estado: ${curso.estado}
-                            </div>
+                <div class="card-header" id="heading${i}">
+                    <div class="row">
+                        <div class="col-sm-12 text-justify">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}" style="color: #076633;">
+                                    <b>Curso ${i}: ${curso.nombre}</b>
+                                </button>
+                            </h5>
                         </div>
                     </div>
-
-                    <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
-                      <div class="card-body" style="padding-left: 60px">
-                            <h6 style="color: blue"> Información Detallada:</h6>
-                            Modalidad: ${curso.modalidad}
+                    <div class="row justify-content-between">
+                        <div class="col-sm-9 text-justify" style="padding-left: 50px">
+                            Valor: ${curso.valor} pesos.
                             <br>
-                            Intensidad: ${curso.intensidad}
-                            <br>
-                            Descripción: ${curso.descripcion}
-                      </div>
+                            Estado: ${curso.estado}
+                        </div>
                     </div>
-                  </div>`; 
+                </div>
+
+                <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#accordionExample">
+                  <div class="card-body" style="padding-left: 60px">
+                        <h6 style="color: #076633;"> Información Detallada:</h6>
+                           Modalidad: ${curso.modalidad}
+                           <br>
+                           Intensidad: ${curso.intensidad}
+                           <br>
+                           Descripción: ${curso.descripcion}
+                  </div>
+                </div>
+              </div>`; 
         i = i+1;           
       }   
     });
@@ -1050,6 +1051,7 @@ const cerrarSesion = () =>
 
 const enviarConfirmacionRegistro = (correoDestino) =>
 {
+    console.log(correoDestino);
     const correo = 
     {
         to: correoDestino,

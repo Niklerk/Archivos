@@ -6,7 +6,7 @@
     </p>
 <div class="abs-center"> 
     <div class="text-center">  
-        <form class="form" action="./registro" method="post">
+        <form class="form" action="./registro" method="post" enctype="multipart/form-data">
          <div class="form-group">
         
        		 <label for="cedula">Número de Documento:</label>
@@ -32,7 +32,10 @@
            <input type="email" name="correo" class="form-control" placeholder="Ej: usuario@servidor.com" required><br>
         
            <label for="password">Contraseña:</label>
-           <input type="password" name="password" class="form-control" placeholder="Digite la contraseña"  required>
+           <input type="password" name="password" class="form-control" placeholder="Digite la contraseña"  required><br>
+
+           <label id="archivo" for="archivo">Foto de Perfil</label>
+           <input type="file" name="archivo" class="form-control"><br>
         
            <br>
         <button class="btn btn-primary btn-dark">Registrar</button>
