@@ -1,5 +1,5 @@
 //const io = require('socket.io')();
-socket = io();
+/*socket = io();
 //var socket = io();
 
 //var param = new URLSearchParams(window.location.search);
@@ -16,4 +16,4 @@ socket.on("connect", () =>{
 	console.log("desde el connect = " + usuarioConectado.nombre);
 	//socket.emit('usuarioNuevo', usuario)
 
-})
+})*/
