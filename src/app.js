@@ -14,6 +14,7 @@ var tipo = "Aspirante";
 require('./helpers/helpers');
 const funciones = require('./funciones');
 const mongoose = require('mongoose');
+const multer  = require('multer');
 
 var db = null;
 const estudiante = require('./Models/estudiante');
@@ -54,6 +55,7 @@ app.use((req,res, next) =>
         res.locals.usuarioCompleto = req.session.usuarioCompleto;
         res.locals.nombreUsuario = req.session.usuarioCompleto.nombre;
         res.locals.coordinador = req.session.coordinador;
+        res.locals.imagen = req.session.imagen;
     }
     next();
 });
@@ -68,7 +70,7 @@ app.get('/',(req,res)=>{
         if (err){
             return console.log(" ERROR = " + err)
         }
-        
+
         res.render('index',
         {
             listadoCursosdb : respuesta 
@@ -102,8 +104,6 @@ app.get('/vistaDocente',(req,res)=>{
               
      });
 
- 
-
 });
 
 
@@ -128,10 +128,12 @@ app.get('/vistaAspirante', (req,res)=>
         if (err){
             return console.log("\nERROR EN VISTAASPIRANTE = "+err)
         }
+
         let cursosDis = JSON.parse(JSON.stringify(respuesta));
         res.render('vistaAspirante',
         {
             cursosDisponibles: cursosDis
+            
         })
     });
 });
@@ -286,6 +288,7 @@ app.get('/cursosAspirante', (req,res) =>
                 return res.render('cursosAspirante', 
                 {          
                     listado_cursos_aspirante: cursosAspirante
+                    
                 }) 
             });  
         }
@@ -330,8 +333,20 @@ app.get('/usuariosexiste', (req,res)=>{
 
 
 //funciones.enviarConfirmacionRegistro(req.body.correo);
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'public/upload')
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, 'Usuario' + "_" + req.body.correo + path.extname(file.originalname)) 
+//   }
+// })
+ 
+var upload = multer({})
 
-app.post('/registro', (req,res)=>{
+
+
+app.post('/registro', upload.single('archivo'), (req,res)=>{
  
 Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 
@@ -342,7 +357,8 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
     if (dato != null) {
        
        res.render('registro',{
-         mostrar : "El correo " + dato.correo + " ya se encuentra registrado en la Base de datos"  
+         mostrar : "El correo " + dato.correo + " ya se encuentra registrado en la Base de datos" 
+         
        }) 
 
     }
@@ -356,7 +372,8 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
             telefono: req.body.telefono,
             correo: req.body.correo,
             rol: req.body.rol,
-            password: bcrypt.hashSync(req.body.password, 10)
+            password: bcrypt.hashSync(req.body.password, 10),
+            imagen: req.file.buffer
         
         })
 
@@ -368,11 +385,12 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
                    mostrar : err
                })
         }
-            console.log(resultado);
+            
+               //funciones.enviarConfirmacionRegistro(req.body.correo)
                res.render('registro',{
                 
                   mostrar : "Usuario " + resultado.nombre + " registrado con exito"
-
+          
                })
 
         });
@@ -383,8 +401,6 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 });
 
 });
-
-
 
 
 app.post('/sesionusuario', (req,res)=>
@@ -407,11 +423,15 @@ app.post('/sesionusuario', (req,res)=>
             return res.render('datosInicioErroneos');
         }
 
+        var imagen =usuario.imagen.toString("base64");
         req.session.usuario = usuario._id;  
         req.session.nombre = usuario.nombre;
         req.session.usuarioCompleto =  usuario;
         res.locals.nombreUsuario = usuario.nombre;
         res.locals.usuarioCompleto = usuario;
+        req.session.imagen =  imagen;
+        res.locals.imagen = imagen;
+
         var esCoordinador = false;
         
         var rol = usuario.rol;
@@ -446,8 +466,12 @@ app.post('/sesionusuario', (req,res)=>
                 return console.log(" ERROR = " + err)
             }
             funciones.guardar('listadoUsuarios', respuesta);
+            
         });
         funciones.guardarinicio(usuario);
+        
+        
+        
         if(rol == "Aspirante")
         {
             db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
@@ -455,10 +479,13 @@ app.post('/sesionusuario', (req,res)=>
                 if (err){
                     return console.log("\nERROR = "+err)
                 }
+                
+                
                 let cursosDis = JSON.parse(JSON.stringify(respuesta));
                 return res.render('vistaAspirante',
                 {
                     cursosDisponibles: cursosDis
+                       
                 })
             });
         }
@@ -469,6 +496,8 @@ app.post('/sesionusuario', (req,res)=>
             return res.render('cursosCoordinador',{
                 coordinador: esCoordinador,
                 sesion: true
+                
+                
             });
         }
         else if(rol == 'Docente')
@@ -476,23 +505,12 @@ app.post('/sesionusuario', (req,res)=>
             return res.render('cursosDocente',{
                 coordinador: esCoordinador,
                 sesion: true
+
+                
             });
 
         }  
-        // CursoDocente.find({}, function(err, cursodocente) {
-        //     Curso.populate(cursodocente, {path: "cur_id"},
-        //     function(err, cursodocente){
-        //        if(err){
-        //            return console.log("ERROR = " + err)
-        //        }
-        //        res.render('vistaDocente',
-        //        {
-               
-        //        mostrarCursoDocente : cursodocente
-
-        //        }) 
-   
-        //    });      
+          
     });
 });
 

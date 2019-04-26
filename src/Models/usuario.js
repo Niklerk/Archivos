@@ -3,10 +3,10 @@ const uniqueValidator = require('mongoose-unique-validator');
 const schema = mongoose.Schema;
 
 const usuarioSchema = new schema({
-    _id: {
-        type: Object,
-        require : false,
-    },
+    // _id: {
+    //     type: Object,
+    //     require : false,
+    // },
     cedula: {
         type: Number,
         require : true,
@@ -34,6 +34,9 @@ const usuarioSchema = new schema({
     rol: {
         type: String,
         required : true
+    },
+    imagen : {
+        type: Buffer
     },
     CursoDocente : {
         type : mongoose.Schema.Types.ObjectId, ref : "CursoDocente"
