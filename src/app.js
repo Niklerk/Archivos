@@ -307,6 +307,12 @@ app.get('/cursosAspirante', (req,res) =>
     });
 });
 
+app.get('/horarioAspirante', (req,res) => 
+{
+    res.render('horarioAspirante');
+});
+
+
 app.get('/usuarios', (req,res)=>{
     res.render('usuarios');
 });

@@ -25,6 +25,11 @@ hbs.registerHelper('mostrarCursosAspirante', (listado_cursos_aspirante) =>
 	return funciones.mostrarCursosAspirante(listado_cursos_aspirante);
 })
 
+hbs.registerHelper('mostrarHorarioAspirante', (cursosAspirante) =>
+{
+	return funciones.mostrarHorarioAspirante(cursosAspirante);
+})
+
 hbs.registerHelper('crearusuario',(cedula, nombre, rol, telefono, correo, password)=>
 {
     return funciones.crearusuario(cedula, nombre, rol, telefono, correo, password);
