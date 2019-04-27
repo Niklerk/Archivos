@@ -204,37 +204,125 @@ app.post('/resultadoInscripcion', (req,res)=>
 
         var ident = res.locals.usuarioCompleto._id;
 
-        db.collection("cursosAspirantes").find({cur_id: codigoCurso}, {usu_id: ident}).toArray( (err, dupla) =>
+        console.log("codigoCurso = "+codigoCurso + " ident = "+ident);
+
+        db.collection("cursosAspirantes").find({cur_id: codigoCurso, usu_id: ident}).toArray( (err, dupla) =>
         {
             if (err){
                 return console.log(err)
             }
 
             dupla = JSON.parse(JSON.stringify(dupla));
-            if (dupla.cur_id != undefined)
+
+            console.log("dupla = "+JSON.stringify(dupla));
+
+            if (dupla.length > 0)
             {
                 return res.render ('resultadoInscripcion', {          
                     respuestaInscripcion: funciones.mostrarUsuarioInscrito()
                 })
             }
 
-            let duplaNueva = {
-                cur_id: codigoCurso,
-                usu_id: ident,
-                estado: true
-            };
+            let horariosCurso = curso.horarios;
+            horariosCurso = JSON.parse( JSON.stringify(horariosCurso) );
+            horariosCurso = horariosCurso.map(horario => horario.clase);
 
-            db.collection("cursosAspirantes").insertOne(duplaNueva, (err, resultado) => 
+            if(horariosCurso.length > 0)
             {
-                if (err){
-                    return console.log(err)
-                }
-                var usuario = res.locals.usuarioCompleto;
-                return res.render ('resultadoInscripcion', 
-                {          
-                    respuestaInscripcion: funciones.mostrarInscripcionExitosa(curso, usuario)
-                })   
-            });  
+                var ident = res.locals.usuarioCompleto._id;
+                var cursosAspirante = [];
+
+                db.collection("cursosAspirantes").find({ usu_id: ident }).toArray((err,respuesta) =>
+                {
+                    if (err){
+                        return console.log("\nERROR = "+err)
+                    }
+
+                    let duplasCursosAspirante = JSON.parse(JSON.stringify(respuesta));
+
+                    if(duplasCursosAspirante.length != 0)
+                    {
+                        db.collection("cursos").find({}).toArray((err,respuesta) =>
+                        {
+                            if (err){
+                                return console.log("\nERROR = "+err)
+                            }
+                            let listaCursos = JSON.parse(JSON.stringify(respuesta));
+
+                            duplasCursosAspirante.forEach(dupla =>
+                            {
+                                cursosAspirante.push(listaCursos.filter(curso => curso._id == dupla.cur_id).pop());
+                            });
+
+                            for (var i = 0; i < cursosAspirante.length; i++) 
+                            {
+                                let horarios = cursosAspirante[i].horarios;
+                                horarios = JSON.parse( JSON.stringify(horarios) );
+                                horarios = horarios.map(horario => horario.clase);
+
+                                if(horarios.length > 0)
+                                {
+                                    let comunes = horariosCurso.filter(x => horarios.includes(x));
+                                    if(comunes.length > 0)
+                                    {
+                                        return res.render ('resultadoInscripcion', {          
+                                            respuestaInscripcion: funciones.mostrarCruceCurso(curso, cursosAspirante[i])
+                                        })
+                                    }
+                                }  
+                            }
+
+                            let duplaNueva = {
+                                cur_id: codigoCurso,
+                                usu_id: ident,
+                                estado: true
+                            };
+
+                            db.collection("cursosAspirantes").insertOne(duplaNueva, (err, resultado) => 
+                            {
+                                if (err){
+                                    return console.log(err)
+                                }
+                                var usuario = res.locals.usuarioCompleto;
+                                return res.render ('resultadoInscripcion', 
+                                {          
+                                    respuestaInscripcion: funciones.mostrarInscripcionExitosa(curso, usuario)
+                                })   
+                            }); 
+                        });  
+                    }
+                    else
+                    {
+                        return res.render('cursosAspirante', 
+                        {          
+                            listado_cursos_aspirante: []
+                        }) 
+                    }
+                    
+                });
+            }
+            else
+            {
+                var ident = res.locals.usuarioCompleto._id;
+
+                let duplaNueva = {
+                    cur_id: codigoCurso,
+                    usu_id: ident,
+                    estado: true
+                };
+
+                db.collection("cursosAspirantes").insertOne(duplaNueva, (err, resultado) => 
+                {
+                    if (err){
+                        return console.log(err)
+                    }
+                    var usuario = res.locals.usuarioCompleto;
+                    return res.render ('resultadoInscripcion', 
+                    {          
+                        respuestaInscripcion: funciones.mostrarInscripcionExitosa(curso, usuario)
+                    })   
+                }); 
+            }
         });
     });
 });
@@ -244,7 +332,7 @@ app.post('/eliminarInscripcion', (req,res) =>
     let codigoCurso =  req.body.codigo;
     var ident = res.locals.usuarioCompleto._id;
 
-    db.collection("cursosAspirantes").findOneAndDelete( ({cur_id: codigoCurso}, {usu_id: ident}), req.body, (err, dupla) =>
+    db.collection("cursosAspirantes").findOneAndDelete( ({cur_id: codigoCurso, usu_id: ident}), req.body, (err, dupla) =>
     {
         if (err){
             return console.log("\nERROR = "+err)

@@ -425,6 +425,24 @@ const obtenerCabecera = () =>
     return texto;
 }
 
+const obtenerHorariosCurso = (horarios) =>
+{
+    horarios = JSON.parse( JSON.stringify(horarios) );
+    let horariosCurso = horarios.map(horario => horario.clase);
+
+    if(horariosCurso.length > 0)
+    {
+        let texto = '';
+        for (var i = 0; i < horariosCurso.length; i++)
+        {
+            texto = texto + horariosCurso[i] + "<br>"
+        };
+        return texto;
+    }
+    else
+        return "Sin horarios";
+}
+
 const obtenerCuerpoTotales = (cursos) =>
 {
     let texto = '';
@@ -461,6 +479,8 @@ const obtenerCuerpoTotales = (cursos) =>
                         Modalidad: ${curso.modalidad}
                         <br>
                         Intensidad: ${curso.intensidad}
+                        <br>
+                        Horarios: ${obtenerHorariosCurso(curso.horarios)}
                   </div>
                 </div>
               </div>`; 
@@ -575,7 +595,7 @@ const obtenerCuerpoInscritos = (cursos) =>
                             Valor: ${curso.valor} pesos.
                         </div>
                         <div class="col-sm-3 text-justify" >
-                            <button class="btn" name="codigo" value="${curso._id}" style="background-color: #338B57; color: white;">Eliminar Inscripción</button>
+                            <button class="btn btn-danger" name="codigo" value="${curso._id}">Eliminar Inscripción</button>
                         </div>
                     </div>
                 </div>
@@ -586,6 +606,8 @@ const obtenerCuerpoInscritos = (cursos) =>
                         Modalidad: ${curso.modalidad}
                         <br>
                         Intensidad: ${curso.intensidad}
+                        <br>
+                        Horarios: ${obtenerHorariosCurso(curso.horarios)}
                   </div>
                 </div>
               </div>`; 
@@ -683,6 +705,25 @@ const mostrarInscripcionExitosa = (curso, usuario) =>
     return texto;
 }
 
+const mostrarCruceCurso = (cursoInscribir, cursoInscrito) =>
+{
+    var texto = '';
+    texto = texto + 
+        `<div class="container">
+            <h3 style="color: #076633;">Inscripción Fallida</h3>
+            <h5>Lo sentimos, los horarios del curso <b>${cursoInscribir.nombre}</b> se cruzan con los 
+            horarios del curso <b>${cursoInscrito.nombre}:</b></h5>
+            <br>
+            <h5 style="color: #076633;">${cursoInscribir.nombre}</h5>
+            <h5>${obtenerHorariosCurso(cursoInscribir.horarios)}</h5>
+            <br>
+            <h5 style="color: #076633;">${cursoInscrito.nombre}</h5>
+            <h5>${obtenerHorariosCurso(cursoInscrito.horarios)}</h5>
+            <h5><a class="nav-link" href="/vistaAspirante"> >>Ver cursos disponibles</a></h5>
+        </div>`;
+    return texto;  
+}
+
 const mostrarUsuarioInscrito = () =>
 {
     var texto = '';
@@ -690,7 +731,7 @@ const mostrarUsuarioInscrito = () =>
         `<div class="container">
             <h3 style="color: #076633;">Inscripción Fallida</h3>
             <h5>Lo sentimos, usted ya se encuentra inscrito(a) en el curso.</h5>
-            <h5><a class="nav-link" href="/cursosAspirante"> >>Ver mis cursos inscritos</a></h5>
+            <h5><a class="nav-link" href="/vistaAspirante"> >>Ver cursos disponibles</a></h5>
         </div>`;
     return texto;  
 }
@@ -789,12 +830,8 @@ const obtenerCurso = (horarioFila, cursosPresenciales) =>
     return '';
 }
 
-const obtenerTablaHorario = (cursosAspirante) =>
+const obtenerTablaHorario = (cursosPresenciales) =>
 {
-    console.log(cursosAspirante);
-
-    let cursosPresenciales = cursosAspirante.filter(curso => curso.modalidad == "Presencial");
-
     var texto = '';
     texto = texto +
     `<div class='container table-responsive'>
@@ -862,13 +899,29 @@ const obtenerTablaHorario = (cursosAspirante) =>
     return texto;
 }
 
+const mostrarSinCursosPresenciales = () =>
+{
+    var texto = '';
+    texto = texto + 
+        `<div class="container">
+            <h5>Hasta el momento usted no se encuentra inscrito(a) en ningún curso presencial.</h5>
+            <h5>Anímate a inscribir uno de ellos en el siguiente enlace: 
+                <a class="nav-link" href="/vistaAspirante"> >>Cursos disponibles</a>
+            </h5>
+        </div>`;
+    return texto; 
+}
 
 const mostrarHorarioAspirante = (cursosAspirante) =>
 {
      if(cursosAspirante.length != 0)
     {
-        let tabla = obtenerTablaHorario(cursosAspirante);
-        return tabla;
+        let cursosPresenciales = cursosAspirante.filter(curso => curso.modalidad == "Presencial");
+        
+        if(cursosPresenciales.length > 0)
+            return obtenerTablaHorario(cursosAspirante);
+        else
+            return mostrarSinCursosPresenciales();
     }
     else
     {
@@ -1225,5 +1278,6 @@ module.exports = {
     guardar,
     guardarinicio,
     enviarConfirmacionRegistro,
-    mostrarHorarioAspirante
+    mostrarHorarioAspirante,
+    mostrarCruceCurso
 }
