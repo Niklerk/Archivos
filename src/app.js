@@ -9,7 +9,7 @@ const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
