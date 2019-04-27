@@ -1,6 +1,6 @@
 //const io = require('socket.io')();
-/*socket = io();
-//var socket = io();
+socket = io()
+/*var socket = io();
 
 //var param = new URLSearchParams(window.location.search);
 
