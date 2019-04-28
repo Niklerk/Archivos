@@ -492,6 +492,8 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 
         return console.log("error")
     }
+
+    console.log("DATO = "+dato);
     if (dato != null) {
        
        res.render('registro',{
@@ -503,6 +505,7 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
 
     if (!dato) {
 
+        funciones.enviarConfirmacionRegistro(req.body.correo)
     
         let usuario = new Usuario ({
             cedula: req.body.cedula,
@@ -523,13 +526,11 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
                    mostrar : err
                })
         }
-            
-               //funciones.enviarConfirmacionRegistro(req.body.correo)
-               res.render('registro',{
+                res.render('registro',{
                 
                   mostrar : "Usuario " + resultado.nombre + " registrado con exito"
           
-               })
+                })
 
         });
 
