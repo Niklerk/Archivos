@@ -686,7 +686,7 @@ io.on('connection', client => {
         console.log(listado)
         let texto = `Se ha conectado ${usuario}`
         io.emit('nuevoUsuario', texto )*/
-        console.log("desde usuarioNuevo = "+usuarioConectado);
+        console.log("desde usuarioNuevo = " + usuarioConectado);
     })
 });
 
