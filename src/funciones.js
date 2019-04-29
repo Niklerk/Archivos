@@ -1259,7 +1259,7 @@ const enviarConfirmacionRegistro = (correoDestino) =>
         to: correoDestino,
         from: "educontinuatdea@gmail.com",
         subject: 'Registro exitoso',
-        html: 'Gracias por inscribirte en nuestra plataforma'
+        html: 'Gracias por inscribirte en nuestra plataforma.'
     };
 
     sgMail.send(correo);
