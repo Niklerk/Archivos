@@ -1,4 +1,4 @@
-require('../.env');
+require('./config/config');
 const fs = require('fs');
 const Curso = require('./Models/curso');
 const CursoDocente = require('./Models/cursoDocente');
@@ -509,7 +509,7 @@ const mostrarCursoNoEncontrado = () =>
     let texto = "";
     texto = texto +
         `<div class="container">
-            <h5>Lo sentimos, no se encontró ningun curso con el nombre ingresado.</h5>
+            <h5>Lo sentimos, no se encontró ningun curso con el nombre.</h5>
             <h5><a class="nav-link" href="/vistaAspirante"> >>Ver cursos disponibles</a></h5>
         </div>`;
     return texto;  
