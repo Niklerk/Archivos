@@ -1,4 +1,4 @@
-require('./config/config');
+require('../.env');
 const express = require('express');
 const app = express();
 
