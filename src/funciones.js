@@ -504,8 +504,23 @@ const eliminadoExito = () =>
     return texto;
 }
 
+const mostrarCursoNoEncontrado = () =>
+{
+    let texto = "";
+    texto = texto +
+        `<div class="container">
+            <h5>Lo sentimos, no se encontró ningun curso con el nombre ingresado.</h5>
+            <h5><a class="nav-link" href="/vistaAspirante"> >>Ver cursos disponibles</a></h5>
+        </div>`;
+    return texto;  
+}
+
 const mostrarCursosTotalesAspirante = (cursosDisponibles) =>
 {
+    if(cursosDisponibles.length == 0)
+    {
+        return mostrarCursoNoEncontrado();
+    }
     let cabecera = obtenerCabecera();
     let cuerpo = obtenerCuerpoTotales(cursosDisponibles);
     let pie = obtenerPie();
@@ -929,6 +944,14 @@ const mostrarHorarioAspirante = (cursosAspirante) =>
     }
 }
 
+const guardarCursosDisponibles = (listaDisponibles) =>
+{
+    let datos = JSON.stringify(listaDisponibles);
+    fs.writeFile('listadoCursosDisponibles.json', datos, (err) => {
+        if (err) throw (err);
+    })
+}
+
 
 /******************* SECCION DE MARCELA FINALIZADA *************************************/
 
@@ -1279,5 +1302,6 @@ module.exports = {
     guardarinicio,
     enviarConfirmacionRegistro,
     mostrarHorarioAspirante,
-    mostrarCruceCurso
+    mostrarCruceCurso,
+    guardarCursosDisponibles
 }

@@ -8,6 +8,7 @@ const io = require('socket.io')(server);
 const path = require('path');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const port = process.env.PORT || 3000;
 
@@ -134,12 +135,79 @@ app.get('/vistaAspirante', (req,res)=>
         }
 
         let cursosDis = JSON.parse(JSON.stringify(respuesta));
+
+        funciones.guardarCursosDisponibles(cursosDis);
+
         res.render('vistaAspirante',
         {
             cursosDisponibles: cursosDis
             
         })
     });
+});
+
+app.post('/vistaAspirante', (req,res) =>
+{
+    let nombreCurso = req.body.nombreCurso;
+    nombreCurso = nombreCurso.toLowerCase();
+
+    if(nombreCurso != "")
+    {
+        db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
+        {
+            if (err){
+                return console.log("\nERROR EN VISTAASPIRANTE = "+err)
+            }
+
+            let cursosDis = JSON.parse(JSON.stringify(respuesta));
+
+            funciones.guardarCursosDisponibles(cursosDis);
+
+            fs.readFile('listadoCursosDisponibles.json', "utf8", function(err, data) 
+            {
+                if (err) 
+                {
+                    return console.log("\nERROR EN VISTAASPIRANTE = "+err)
+                } 
+                else 
+                {
+                    let cursosDis = JSON.parse(data);
+
+                    let cursos_aux = cursosDis;
+
+                    cursos_aux.forEach(curso => curso.nombre = curso.nombre.toLowerCase());
+                    cursos_aux = cursos_aux.filter(curso => curso.nombre == nombreCurso);
+                    let id = cursos_aux[0]._id;
+
+                    cursosDis = JSON.parse(data);
+
+                    cursosDis = cursosDis.filter(cursod => cursod._id == id);
+
+                    res.render('vistaAspirante',
+                    {
+                        cursosDisponibles: cursosDis
+                        
+                    })
+                }
+            });
+        });
+    }
+    else
+    {
+        db.collection("cursos").find({ estado: "Disponible" }).toArray((err,respuesta) =>
+        {
+            if (err){
+                return console.log("\nERROR EN VISTAASPIRANTE = "+err)
+            }
+
+            let cursosDis = JSON.parse(JSON.stringify(respuesta));
+            res.render('vistaAspirante',
+            {
+                cursosDisponibles: cursosDis
+                
+            })
+        });
+    }
 });
 
 app.get('/cursosCoordinador', (req,res)=>{
@@ -618,9 +686,11 @@ app.post('/sesionusuario', (req,res)=>
                 if (err){
                     return console.log("\nERROR = "+err)
                 }
-                
-                
+            
                 let cursosDis = JSON.parse(JSON.stringify(respuesta));
+
+                funciones.guardarCursosDisponibles(cursosDis);
+
                 return res.render('vistaAspirante',
                 {
                     cursosDisponibles: cursosDis
