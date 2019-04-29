@@ -1,4 +1,4 @@
-require('./config/config');
+require('../.env');
 const fs = require('fs');
 const Curso = require('./Models/curso');
 const CursoDocente = require('./Models/cursoDocente');
