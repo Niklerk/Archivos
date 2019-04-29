@@ -562,14 +562,14 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
     }
 
     console.log("DATO = "+dato);
-    /*if (dato != null) {
+    if (dato != null) {
        
        res.render('registro',{
          mostrar : "El correo " + dato.correo + " ya se encuentra registrado en la Base de datos" 
          
        }) 
 
-    }*/
+    }
 
     if (!dato) {
 
@@ -586,7 +586,7 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
         
         })
 
-        /*usuario.save((err, resultado) => {
+        usuario.save((err, resultado) => {
         
                if(err){
 
@@ -600,7 +600,7 @@ Usuario.findOne({ correo: req.body.correo }, (error, dato) => {
           
                 })
 
-        });*/
+        });
 
     }
 
